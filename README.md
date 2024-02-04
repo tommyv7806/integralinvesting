@@ -1,2 +1,17 @@
-# integralinvesting
+# Integral Investing
 This repo will contain the project for the CIS4891.0M1: SENIOR PROJECT class. It is an application called "Integral Investing" where users will be able to deposit funds and invest those funds into different stocks.
+
+# Overview
+### Creating an Account and Moving Money Around
+	
+The main purpose of this application is to allow users to deposit funds into their account, which they will then be able to use to invest in different stocks. At a high level, the main flow of the application will be something like this: First, users will register and create their login for the application. Their information will then be saved to the database, and this information will then be authenticated/retrieved any time they attempt to log in to the app. This will ideally give me some practice with setting up a secure authentication system for an application, as opposed to just saving the usernames/passwords in plaintext.
+ 
+After the account has been created, users will then need to link one of their bank accounts with the application in order to deposit funds into their account. For the purpose of this project, this part will be simulated and the user won’t need to connect to any actual bank account. Once the bank account has been linked with the application account, users will then be able to move funds between the accounts. This means that not only will users be able to send money from their bank account, but they will also be able to send money from the application to their bank account.
+
+### Working with an API to Retrieve Stock Information
+	
+Moving money in and out of the account is a necessary function, but the main functionality of this application will come from the investing portion. The funds that users have in their account will be available for purchasing stocks. The data for these stocks will come from an existing API that retrieves information from the stock market. So far, I have found several existing APIs that can be used to query the stock market data that will be able to cover my needs for this application. They all have some kind of free tier, which usually allows for a certain amount of API calls per minute or per day, which should be adequate for this kind of project. One potential way that I am hoping to maybe get around these limits is to try and use some kind of caching. Whenever the user logs into the application, one API call will be sent to retrieve the data for several hundred stocks (likely the most popular ones), and these results will be saved to the database. Then, whenever the user actually does a search to retrieve information about a particular stock, the application will query the cached data in the database instead of making live API calls. I believe this will also be adequate for this kind of project; however, in a real-life scenario, users would definitely want to make sure they have the most up-to-date pricing information.
+	
+Once the application sends the stock information back to the user, they will then be able to purchase an amount of that stock based on how much funds they have in their account. On the flip-side, whenever a user decides they want to sell some of their stocks, the application will either make a new call to the API, or use the cached data, to determine what the selling price would be. After the stocks have been sold, the money will then be deposited into the user’s account.
+	
+In addition to allowing users to be able to buy/sell stocks, as a stretch goal, I would also like to try and implement some kind of functionality for viewing a stock’s historical data. Of the APIs that I have reviewed, some do offer the ability to query historical data.
