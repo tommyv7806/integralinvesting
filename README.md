@@ -106,3 +106,5 @@ Scenario 4: Sell Stocks
 </br>&emsp;Then the system will remove the stocks from the user’s portfolio
 </br>&emsp;&emsp;And the system will update the amount of funds in the user’s account
 
+# Use-Case Diagram
+![Use-Case Diagram](https://github.com/tommyv7806/integralinvesting/assets/67933601/a6ccc2c9-dc22-4cc0-b58d-308955aeffe3)
