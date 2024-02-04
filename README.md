@@ -108,3 +108,6 @@ Scenario 4: Sell Stocks
 
 # Use-Case Diagram
 ![Use-Case Diagram](https://github.com/tommyv7806/integralinvesting/assets/67933601/a6ccc2c9-dc22-4cc0-b58d-308955aeffe3)
+
+# Solution Architecture
+![Solution Architecture](https://github.com/tommyv7806/integralinvesting/assets/67933601/d4f2f1fb-af1a-4abd-83ff-d39008410ea7)
