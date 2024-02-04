@@ -16,6 +16,19 @@ Once the application sends the stock information back to the user, they will the
 	
 In addition to allowing users to be able to buy/sell stocks, as a stretch goal, I would also like to try and implement some kind of functionality for viewing a stock’s historical data. Of the APIs that I have reviewed, some do offer the ability to query historical data.
 
+# Solution Architecture
+![Solution Architecture](https://github.com/tommyv7806/integralinvesting/assets/67933601/d4f2f1fb-af1a-4abd-83ff-d39008410ea7)
+
+# Wireframes
+## Portfolio Page
+![Portfolio Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/90145fd7-4727-4536-b4ea-42392fa8602c)
+
+## Browse Page
+![Browse Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/aa4eeff3-425f-4da3-9c78-dc849054a4c5)
+
+## Account Page
+![Account Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/d612ddc0-e8d8-4c1d-ab47-55abae70aca0)
+
 # User Stories
 1. Login Related
    - As a user, I need the ability to log in to the application using an external authentication service. 
@@ -109,5 +122,4 @@ Scenario 4: Sell Stocks
 # Use-Case Diagram
 ![Use-Case Diagram](https://github.com/tommyv7806/integralinvesting/assets/67933601/a6ccc2c9-dc22-4cc0-b58d-308955aeffe3)
 
-# Solution Architecture
-![Solution Architecture](https://github.com/tommyv7806/integralinvesting/assets/67933601/d4f2f1fb-af1a-4abd-83ff-d39008410ea7)
+
