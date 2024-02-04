@@ -15,3 +15,18 @@ Moving money in and out of the account is a necessary function, but the main fun
 Once the application sends the stock information back to the user, they will then be able to purchase an amount of that stock based on how much funds they have in their account. On the flip-side, whenever a user decides they want to sell some of their stocks, the application will either make a new call to the API, or use the cached data, to determine what the selling price would be. After the stocks have been sold, the money will then be deposited into the user’s account.
 	
 In addition to allowing users to be able to buy/sell stocks, as a stretch goal, I would also like to try and implement some kind of functionality for viewing a stock’s historical data. Of the APIs that I have reviewed, some do offer the ability to query historical data.
+
+# User Stories
+1. Login Related
+   - As a user, I need the ability to log in to the application using an external authentication service. 
+   - As a user, I need the ability to maintain my user information.
+2. Maintain Account Related
+   - As a user, I need the ability to link my financial institution to my account so that I can deposit and withdraw funds.
+3. Purchasing Related
+   - As a user, I need the ability to query stock market data in order to get the latest pricing information for stocks. 
+   - As a user, I need the ability to refine my query so that I can search for specific stocks.
+   - As a user, I need the ability to use the funds in my account to purchase a selected stock.
+4. Maintain Portfolio Related
+   - As a user, I need the ability to view my portfolio so that I can see how my investments are doing at a glance.
+   - As a user, I need the ability to refine/filter my portfolio data so that I can view data for particular stocks that I am invested in.
+   - As a user, I need the ability to sell stocks that I own for the stock’s current price.
