@@ -46,49 +46,49 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 
 # Use Cases
 ### Login
-Description: As a user, I need the ability to log into my account using third party authentication services.
+**Description:** As a user, I need the ability to log into my account using third party authentication services.
 
-Scenario 1: Login
+**Scenario 1: Login**
 </br>&emsp;Given a login screen
 </br>&emsp;When the user clicks the Login button
 </br>&emsp;Then the user will be able to use third party authentication services to log into their account
 
-Scenario 2: Logout
+**Scenario 2: Logout**
 </br>&emsp;Given a logged in user
 </br>&emsp;When the user clicks the Logout button
 </br>&emsp;Then the user will be logged out of their account
 
 ### Maintain Account
-Description: As a user, I need the ability to maintain my account within the app. This includes maintaining user information as well as adding/removing funds from the account.
+**Description:** As a user, I need the ability to maintain my account within the app. This includes maintaining user information as well as adding/removing funds from the account.
 
-Background: Given a user is logged in and on the Account Summary page
+**Background:** Given a user is logged in and on the Account Summary page
 
-Scenario 1: Maintain User Information
+**Scenario 1: Maintain User Information**
 </br>&emsp;When the user attempts to update their username
 </br>&emsp;Then they will be able to update their username and save successfully
 
-Scenario 2: Add Funds to Account
+**Scenario 2: Add Funds to Account**
 </br>&emsp;When the user clicks the Add Funds button
 </br>&emsp;Then a dialog window will open where the user can withdraw funds from their financial institution
 
-Scenario 3: Remove Funds from Account
+**Scenario 3: Remove Funds from Account**
 </br>&emsp;When the user clicks the Remove Funds button
 </br>&emsp;Then a dialog window will open where the user can deposit funds into their financial institution
 
 ### Purchase Stocks
-Description: As a user, I need the ability to browse and purchase stocks to add to my portfolio.
+**Description:** As a user, I need the ability to browse and purchase stocks to add to my portfolio.
 
-Scenario 1: Search for Stocks
+**Scenario 1: Search for Stocks**
 </br>&emsp;Given a user is on the Browse page
 </br>&emsp;When the user types in a search term and clicks the Search button
 </br>&emsp;Then the system will display a list of stocks that match the search term
 
-Scenario 2: Select Stock for Purchase
+**Scenario 2: Select Stock for Purchase**
 </br>&emsp;Given a user has searched for a particular stock
 </br>&emsp;When the user selects the stock
 </br>&emsp;Then they can enter a quantity of stocks to purchase
 
-Scenario 3: Add Purchased Stocks to Portfolio
+**Scenario 3: Add Purchased Stocks to Portfolio**
 </br>&emsp;Given a user has selected a stock 
 </br>&emsp;&emsp;And the user has entered a purchase quantity
 </br>&emsp;When the user clicks the Purchase button
@@ -96,23 +96,23 @@ Scenario 3: Add Purchased Stocks to Portfolio
 </br>&emsp;&emsp;And the system will add the newly purchased fund to the user’s portfolio if they have enough funds for the purchase
 
 ### Maintain Portfolio
-Description: As a user, I need the ability to view my portfolio and sell any stocks that I own.
+**Description:** As a user, I need the ability to view my portfolio and sell any stocks that I own.
 
-Scenario 1: View Portfolio
+**Scenario 1: View Portfolio**
 </br>&emsp;Given a user is on the Portfolio page
 </br>&emsp;Then the user will be able to see their portfolio with a breakdown of their stock investments
 
-Scenario 2: Refine Portfolio Display
+**Scenario 2: Refine Portfolio Display**
 </br>&emsp;Given a user is on the Portfolio page
 </br>&emsp;When the user adds a filter or sort to the portfolio
 </br>&emsp;Then the portfolio data will be displayed in the filtered/sorted manner
 
-Scenario 3: Select Stocks to Sell
+**Scenario 3: Select Stocks to Sell**
 </br>&emsp;Given the list of stocks in a user’s portfolio
 </br>&emsp;When the user selects one of the stocks
 </br>&emsp;Then they will be able to enter a quantity to sell
 
-Scenario 4: Sell Stocks
+**Scenario 4: Sell Stocks**
 </br>&emsp;Given a user has selected a stock to sell
 </br>&emsp;&emsp;And the user has entered a quantity to sell
 </br>&emsp;When the user clicks the Sell button
