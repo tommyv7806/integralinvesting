@@ -1,6 +1,34 @@
 # Integral Investing
 This repo will contain the project for the CIS4891.0M1: SENIOR PROJECT class. It is an application called "Integral Investing" where users will be able to deposit funds and invest those funds into different stocks.
 
+<table>
+<caption>Table of Contents</caption>
+    <tr>
+        <td width="25%"">Overview</td>
+	<td width="75%">Gives an overview of what the application does</td>
+    </tr>
+    <tr>
+        <td width="25%"">Solution Architecture</td>
+	<td width="75%">High level overview of the application's architecture</td>
+    </tr>
+    <tr>
+        <td width="25%"">Wireframes</td>
+	<td width="75%">Images that show the basic design/layout of the application</td>
+    </tr>
+    <tr>
+        <td width="25%"">User Stories</td>
+	<td width="75%">Provides examples from the user's perspective of what they need the application to do</td>
+    </tr>
+    <tr>
+        <td width="25%"">Use Cases</td>
+	<td width="75%">Several scenarios that describe how the user will use the software to achieve their goals</td>
+    </tr>
+    <tr>
+        <td width="25%"">Use Case Diagram</td>
+	<td width="75%">Graphical representation of the list of use cases for this application</td>
+    </tr>
+</table>
+
 # Overview
 ### Creating an Account and Moving Money Around
 	
