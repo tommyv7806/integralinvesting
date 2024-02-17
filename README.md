@@ -3,35 +3,57 @@ This repo will contain the project for the CIS4891.0M1: SENIOR PROJECT class. It
 
 <table>
 <caption>Table of Contents</caption>
-    <tr>
-        <td width="25%"">1. Overview</td>
-	<td width="75%">Gives an overview of what the application does</td>
-    </tr>
-    <tr>
-        <td width="25%"">2. Solution Architecture</td>
-	<td width="75%">High level overview of the application's architecture</td>
-    </tr>
-    <tr>
-        <td width="25%"">3. Wireframes</td>
-	<td width="75%">Images that show the basic design/layout of the application</td>
-    </tr>
-    <tr>
-        <td width="25%"">4. User Stories</td>
-	<td width="75%">Provides examples from the user's perspective of what they need the application to do</td>
-    </tr>
-    <tr>
-        <td width="25%"">5. Use Cases</td>
-	<td width="75%">Several scenarios that describe how the user will use the software to achieve their goals</td>
-    </tr>
-    <tr>
-        <td width="25%"">6. Use Case Diagram</td>
-	<td width="75%">Graphical representation of the list of use cases for this application</td>
-    </tr>
-	<tr>
-        <td width="25%"">7. Requirements</td>
-	<td width="75%">A list of requirements that describe what the software shall do</td>
-    </tr>
+<tr>
+<td width="25%"">
+	
+[1. Overview](https://github.com/tommyv7806/integralinvesting#1-overview)
+</td>
+<td width="75%">Gives an overview of what the application does</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[2. Solution Architecture](https://github.com/tommyv7806/integralinvesting#2-solution-architecture)
+</td>
+<td width="75%">High level overview of the application's architecture</td>
+</tr>
+<tr>
+<td width="25%"">
+
+[3. Wireframes](https://github.com/tommyv7806/integralinvesting#3-wireframes)
+</td>
+<td width="75%">Images that show the basic design/layout of the application</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[4. User Stories](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#4-user-stories)
+</td>
+<td width="75%">Provides examples from the user's perspective of what they need the application to do</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[5. Use Cases](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#5-use-cases)
+</td>
+<td width="75%">Several scenarios that describe how the user will use the software to achieve their goals</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[6. Use Case Diagram](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#6-use-case-diagram)
+</td>
+<td width="75%">Graphical representation of the list of use cases for this application</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[7. Requirements](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#7-requirements)
+</td>
+<td width="75%">A list of requirements that describe what the software shall do</td>
+</tr>
 </table>
+
 
 # 1. Overview
 ### Creating an Account and Moving Money Around
