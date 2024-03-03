@@ -238,3 +238,9 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 	<td width="60%">The system will give users the ability to sell stocks from their portfolio based on the latest pricing information</td>
     </tr>
 </table>
+
+# 8. Entity Relationship Diagram
+![ERD](https://github.com/tommyv7806/integralinvesting/assets/67933601/02f1b4b8-37e8-4cbc-8ea3-8d1bc3155a1c)
+
+# 9. UML Diagram
+![UML](https://github.com/tommyv7806/integralinvesting/assets/67933601/1240b9e1-82bc-45c9-b340-1be4905615c1)
