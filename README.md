@@ -1,7 +1,61 @@
 # Integral Investing
 This repo will contain the project for the CIS4891.0M1: SENIOR PROJECT class. It is an application called "Integral Investing" where users will be able to deposit funds and invest those funds into different stocks.
 
-# Overview
+<table>
+<caption>Table of Contents</caption>
+<tr>
+<td width="25%"">
+	
+[1. Overview](https://github.com/tommyv7806/integralinvesting#1-overview)
+</td>
+<td width="75%">Gives an overview of what the application does</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[2. Solution Architecture](https://github.com/tommyv7806/integralinvesting#2-solution-architecture)
+</td>
+<td width="75%">High level overview of the application's architecture</td>
+</tr>
+<tr>
+<td width="25%"">
+
+[3. Wireframes](https://github.com/tommyv7806/integralinvesting#3-wireframes)
+</td>
+<td width="75%">Images that show the basic design/layout of the application</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[4. User Stories](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#4-user-stories)
+</td>
+<td width="75%">Provides examples from the user's perspective of what they need the application to do</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[5. Use Cases](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#5-use-cases)
+</td>
+<td width="75%">Several scenarios that describe how the user will use the software to achieve their goals</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[6. Use Case Diagram](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#6-use-case-diagram)
+</td>
+<td width="75%">Graphical representation of the list of use cases for this application</td>
+</tr>
+<tr>
+<td width="25%"">
+	
+[7. Requirements](https://github.com/tommyv7806/integralinvesting?tab=readme-ov-file#7-requirements)
+</td>
+<td width="75%">A list of requirements that describe what the software shall do</td>
+</tr>
+</table>
+
+
+# 1. Overview
 ### Creating an Account and Moving Money Around
 	
 The main purpose of this application is to allow users to deposit funds into their account, which they will then be able to use to invest in different stocks. At a high level, the main flow of the application will be something like this: First, users will register and create their login for the application. Their information will then be saved to the database, and this information will then be authenticated/retrieved any time they attempt to log in to the app. This will ideally give me some practice with setting up a secure authentication system for an application, as opposed to just saving the usernames/passwords in plaintext.
@@ -16,20 +70,20 @@ Once the application sends the stock information back to the user, they will the
 	
 In addition to allowing users to be able to buy/sell stocks, as a stretch goal, I would also like to try and implement some kind of functionality for viewing a stock’s historical data. Of the APIs that I have reviewed, some do offer the ability to query historical data.
 
-# Solution Architecture
+# 2. Solution Architecture
 ![Solution Architecture](https://github.com/tommyv7806/integralinvesting/assets/67933601/d4f2f1fb-af1a-4abd-83ff-d39008410ea7)
 
-# Wireframes
-## Portfolio Page
+# 3. Wireframes
+### Portfolio Page
 ![Portfolio Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/90145fd7-4727-4536-b4ea-42392fa8602c)
 
-## Browse Page
+### Browse Page
 ![Browse Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/aa4eeff3-425f-4da3-9c78-dc849054a4c5)
 
-## Account Page
+### Account Page
 ![Account Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/d612ddc0-e8d8-4c1d-ab47-55abae70aca0)
 
-# User Stories
+# 4. User Stories
 1. Login Related
    - As a user, I need the ability to log in to the application using an external authentication service. 
    - As a user, I need the ability to maintain my user information.
@@ -44,7 +98,7 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
    - As a user, I need the ability to refine/filter my portfolio data so that I can view data for particular stocks that I am invested in.
    - As a user, I need the ability to sell stocks that I own for the stock’s current price.
 
-# Use Cases
+# 5. Use Cases
 ### Login
 **Description:** As a user, I need the ability to log into my account using third party authentication services.
 
@@ -119,7 +173,68 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 </br>&emsp;Then the system will remove the stocks from the user’s portfolio
 </br>&emsp;&emsp;And the system will update the amount of funds in the user’s account
 
-# Use-Case Diagram
+# 6. Use-Case Diagram
 ![Use-Case Diagram](https://github.com/tommyv7806/integralinvesting/assets/67933601/a6ccc2c9-dc22-4cc0-b58d-308955aeffe3)
 
-
+# 7. Requirements
+<table>
+<caption>Project Requirements</caption>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Description</th>
+    <tr>
+        <td width="10%"">LOGIN.01</td>
+	<td width="30%">Ability to log in to the application</td>
+	<td width="60%">The system will provide the ability for users to use a 3rd party authentication system to log in to their account</td>
+    </tr>
+    <tr>
+        <td width="10%"">LOGIN.02</td>
+	<td width="30%">Ability to log out of the application</td>
+	<td width="60%">The system will provide the ability for users to log out of their account</td>
+    </tr>
+    <tr>
+        <td width="10%"">ACCNT.01</td>
+	<td width="30%">Ability to link financial institution to account</td>
+	<td width="60%">The system will allow users to link their account with their financial institution</td>
+    </tr>
+    <tr>
+        <td width="10%"">ACCNT.02</td>
+	<td width="30%">Ability to add funds to account</td>
+	<td width="60%">The system will allow users to add funds to their account from their linked financial institution</td>
+    </tr>
+    <tr>
+        <td width="10%"">ACCNT.03</td>
+	<td width="30%">Ability to deposit funds from account to financial institution</td>
+	<td width="60%">The system will allow users to deposit funds from their account into their financial institution</td>
+    </tr>
+    <tr>
+        <td width="10%"">INVST.01</td>
+	<td width="30%">Ability to view list of available stocks</td>
+	<td width="60%">The system will display a list of available stocks to the user with the latest pricing information</td>
+    </tr>
+    <tr>
+        <td width="10%"">INVST.02</td>
+	<td width="30%">Ability to refine stock search</td>
+	<td width="60%">The system will allow users to refine their stock search with sorting and filters</td>
+    </tr>
+    <tr>
+        <td width="10%"">INVST.03</td>
+	<td width="30%">Ability to purchase stocks</td>
+	<td width="60%">The system will allow users to purchase available stocks if they have enough funds in their account</td>
+    </tr>
+    <tr>
+        <td width="10%"">PRTFL.01</td>
+	<td width="30%">Ability to view portfolio</td>
+	<td width="60%">The system will allow users to view a list of their current stock investments</td>
+    </tr>
+    <tr>
+        <td width="10%"">PRTFL.02</td>
+	<td width="30%">Ability to filter and sort portfolio</td>
+	<td width="60%">The system will provide users with the ability to filter and sort their stock investments in their portfolio</td>
+    </tr>
+    <tr>
+        <td width="10%"">PRTFL.03</td>
+	<td width="30%">Ability to sell stocks from portfolio</td>
+	<td width="60%">The system will give users the ability to sell stocks from their portfolio based on the latest pricing information</td>
+    </tr>
+</table>
