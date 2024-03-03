@@ -52,6 +52,18 @@ This repo will contain the project for the CIS4891.0M1: SENIOR PROJECT class. It
 </td>
 <td width="75%">A list of requirements that describe what the software shall do</td>
 </tr>
+<td width="25%"">
+	
+[8. Entity Relationship Diagram](https://github.com/tommyv7806/integralinvesting/blob/main/README.md#8-entity-relationship-diagram)
+</td>
+<td width="75%">Digram that displays the relationships between entities in the application</td>
+</tr>
+<td width="25%"">
+	
+[9. UML Diagram](https://github.com/tommyv7806/integralinvesting/blob/main/README.md#9-uml-diagram)
+</td>
+<td width="75%">Class diagram that shows the structure of the classes and objects that make up the application </td>
+</tr>
 </table>
 
 
