@@ -25,6 +25,15 @@
             <div class="right-section">
                 <h2>My Stocks</h2>
                 <div class="table-div">
+                    <!-- Dropdown for sorting -->
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy" onchange="sortStocks(this.value)">
+                        <option value="name">Name</option>
+                        <option value="symbol">Symbol</option>
+                        <option value="price">Price</option>
+                        <option value="quantity">Quantity</option>
+                    </select>
+                    <!-- Table for displaying stock records-->
                     <table class="stock-table">
                         <thead>
                             <tr>
@@ -66,6 +75,8 @@
 </body>
 
 <script>
+    // This method will open a popup window with a form that contains the info for the clicked on stock
+    // This pop up will allow the user to sell a designated number of stocks
     function openSellForm(stockName, stockPrice, stockQuantity) {
         var sellFormWindow = window.open("", "Sell Form", "width=400,height=300");
         
