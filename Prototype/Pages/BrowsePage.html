@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Page</title>
     <link rel="stylesheet" href="../Styling/CSS_Common.css">
+    <link rel="stylesheet" href="../Styling/CSS_Browse.css">
 </head>
 <body>
     <header>
@@ -18,8 +19,98 @@
     <main>
         <h1>Browse Page</h1>
         <div class="main-content">
-        
+            <div class="search-div">
+                <input type="text" id="searchInput" placeholder="Search for a stock...">
+                <button type="button" onclick="searchStock()">Search</button>
+                <!-- Dropdown for sorting -->                
+                <label for="sortBy">Sort by:</label>
+                    <select id="sortBy" onchange="sortStocks(this.value)">
+                        <option value="name">Name</option>
+                        <option value="symbol">Symbol</option>
+                        <option value="price">Price</option>
+                        <option value="quantity">Quantity</option>
+                    </select>
+            </div>
+
+                    
+            <table class="stock-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Symbol</th>
+                        <th>Current Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Stock records will be dynamically populated here from API results -->
+                    <tr>
+                        <td>Apple Inc.</td>
+                        <td>AAPL</td>
+                        <td>$150.25</td>
+                        <td><button onclick="openBuyForm('Apple Inc', 150.25)">Buy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Google LLC</td>
+                        <td>GOOGL</td>
+                        <td>$2805.50</td>
+                        <td><button onclick="openBuyForm()">Buy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Microsoft Corp</td>
+                        <td>MSFT</td>
+                        <td>$416.42</td>
+                        <td><button onclick="openBuyForm()">Buy</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 </body>
+<script>
+    // This function will run when the user clicks the search button and will make the call to
+    // the stock market API to get the relevant stock data
+    function searchStock() {
+        var searchInput = document.getElementById("searchInput").value;
+        // Call to API will go here and perform the search for the relevant stocks
+    }
+    
+    // This function will open a popup window with a form that allows users to buy shares of a stock
+    function openBuyForm(stockName, stockPrice) {
+        var buyFormWindow = window.open("", "Buy Form", "width=400,height=300");
+        
+        // HTML for the form inside of the popup for buying stocks
+        // Currently do not have the Total Cost functionality working
+        var buyFormHTML = '<head>' +
+            '<script>' +
+            'function calculateTotalCost() {' + 
+            'var stockPrice = parseFloat(document.getElementById("stockPrice").value);' +
+            'var numberOfStocks = parseInt(document.getElementById("numberOfStocks").value);' +
+            'var totalCost = stockPrice * numberOfStocks;' +
+            'document.getElementById("totalCost").value = totalCost.toFixed(2); }' +
+            '<\/script>' +
+            '</head>' +
+            '<form id="buyForm">' +
+            '<label for="stockName">Stock Name:</label>' +
+            '<input type="text" id="stockName" name="stockName" value="' + stockName + '" readonly><br>' +
+            '<label for="stockPrice">Stock Price:</label>' +
+            '<input type="number" id="stockPrice" name="stockPrice" value="' + stockPrice + '" step="0.01" readonly><br>' +
+            '<label for="numberOfStocks">Number of Stocks:</label>' +
+            '<input type="number" id="numberOfStocks" name="numberOfStocks" min="1" required onchange="calculateTotalCost()"><br>' +
+            '<label for="totalCost">Total Cost:</label>' +
+            '<input type="text" id="totalCost" name="totalCost" readonly><br>' +
+            '<button type="submit">Buy</button>' +    
+            '</form>';
+
+        buyFormWindow.document.body.innerHTML = buyFormHTML;
+    }
+    
+    // This function will calculate the total cost for the user when entering the number of stocks to purchase
+    function calculateTotalCost() {
+        var stockPrice = parseFloat(document.getElementById("stockPrice").value);
+        var numberOfStocks = parseInt(document.getElementById("numberOfStocks").value);
+        var totalCost = stockPrice * numberOfStocks;
+        document.getElementById("totalCost").value = totalCost.toFixed(2);
+    }
+</script>
 </html>

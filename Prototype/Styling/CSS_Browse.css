@@ -1,23 +1,8 @@
-.left-section {
-    flex: 1;
-    background: lightgreen;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.left-section img {
-        max-width: 100%;
-        height: auto;
-}
-.right-section {
-    width: 35%;
-    background: lightblue;
-    padding: 20px;
-    display: flex;
+.main-content {
     flex-direction: column;
+    width: 60%;
 }
-.right-section h2 {
+.search-div {
     height: 10%;
     width: auto;
 }
