@@ -32,6 +32,7 @@
                                 <th>Symbol</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,18 +41,21 @@
                                 <td>AAPL</td>
                                 <td>$150.25</td>
                                 <td>12</td>
+                                <td><button onclick="openSellForm('Apple Inc', 150.25, 12)">Sell</button></td>
                             </tr>
                             <tr>
                                 <td>Google LLC</td>
                                 <td>GOOGL</td>
                                 <td>$2805.50</td>
                                 <td>3</td>
+                                <td><button onclick="openSellForm()">Sell</button></td>
                             </tr>
                             <tr>
                                 <td>Microsoft Corp</td>
                                 <td>MSFT</td>
                                 <td>$416.42</td>
                                 <td>7</td>
+                                <td><button onclick="openSellForm()">Sell</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -60,4 +64,25 @@
         </div>
     </main>
 </body>
+
+<script>
+    function openSellForm(stockName, stockPrice, stockQuantity) {
+        var sellFormWindow = window.open("", "Sell Form", "width=400,height=300");
+        
+        // HTML for the form inside of the popup for selling stocks
+        var sellFormHTML = '<form id="sellForm">' +
+            '<label for="stockName">Stock Name:</label>&emsp;' +
+            '<input type="text" id="stockName" name="stockName" value="' + stockName + '" readonly><br>' +
+            '<label for="stockPrice">Stock Price:</label>&emsp;' +
+            '<input type="number" id="stockPrice" name="stockPrice" value="' + stockPrice + '" readonly><br>' +
+            '<label for="stockQuantity">Quantity:</label>&emsp;' +
+            '<input type="number" id="stockQuantity" name="stockQuantity" value="' + stockQuantity + '" min="1" readonly><br>' +
+            '<label for="sellQuantity">Quantity to Sell:</label>&emsp;' +
+            '<input type="number" id="sellQuantity" name="sellQuantity" min="1" max="'+stockQuantity+'" required><br>' +
+            '<button type="submit">Sell</button>' +
+            '</form>';
+        
+        sellFormWindow.document.body.innerHTML = sellFormHTML;
+    }
+</script>
 </html>
