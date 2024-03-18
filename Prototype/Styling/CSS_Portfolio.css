@@ -1,6 +1,5 @@
 .left-section {
     flex: 1;
-    background: lightgreen;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -12,7 +11,6 @@
 }
 .right-section {
     width: 35%;
-    background: lightblue;
     padding: 20px;
     display: flex;
     flex-direction: column;

@@ -24,15 +24,13 @@
                 <button type="button" onclick="searchStock()">Search</button>
                 <!-- Dropdown for sorting -->                
                 <label for="sortBy" id="sortByLabel">Sort by:</label>
-                    <select id="sortBy" onchange="sortStocks(this.value)">
-                        <option value="name">Name</option>
-                        <option value="symbol">Symbol</option>
-                        <option value="price">Price</option>
-                        <option value="quantity">Quantity</option>
-                    </select>
-            </div>
-
-                    
+                <select id="sortBy" onchange="sortStocks(this.value)">
+                    <option value="name">Name</option>
+                    <option value="symbol">Symbol</option>
+                    <option value="price">Price</option>
+                    <option value="quantity">Quantity</option>
+                </select>
+            </div>                    
             <table class="stock-table">
                 <thead>
                     <tr>
@@ -54,13 +52,13 @@
                         <td>Google LLC</td>
                         <td>GOOGL</td>
                         <td>$2805.50</td>
-                        <td><button onclick="openBuyForm()">Buy</button></td>
+                        <td><button onclick="openBuyForm('Google LLC', 2805.50)">Buy</button></td>
                     </tr>
                     <tr>
                         <td>Microsoft Corp</td>
                         <td>MSFT</td>
                         <td>$416.42</td>
-                        <td><button onclick="openBuyForm()">Buy</button></td>
+                        <td><button onclick="openBuyForm('Microsoft Corp', 416.42)">Buy</button></td>
                     </tr>
                 </tbody>
             </table>
