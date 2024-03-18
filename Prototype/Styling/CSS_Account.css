@@ -1,0 +1,33 @@
+.main-content {
+    flex-direction: column;
+    width: 60%;
+}
+.accountInfo-div p {
+    display: inline; 
+}
+.table-header {
+    display: inline;
+    margin-top: 1.5em;
+}
+#tableTitle {
+    font-weight: bolder;
+    font-size: 150%;
+}
+.bank-accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.bank-accounts-table th,
+.bank-accounts-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+.bank-accounts-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+.bank-accounts-table tbody tr:last-child td {
+    border-bottom: none;
+}
+

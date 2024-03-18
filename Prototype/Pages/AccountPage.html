@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Page</title>
     <link rel="stylesheet" href="../Styling/CSS_Common.css">
+    <link rel="stylesheet" href="../Styling/CSS_Account.css">
 </head>
 <body>
     <header>
@@ -18,8 +19,111 @@
     <main>
         <h1>Account Page</h1>
         <div class="main-content">
-        
+            <!-- Username and Current Fund Info -->
+            <div class="accountInfo-div">
+                <p>
+                    <span><b>Username: </b><span id="currentUsernameValue">User123456</span></span>&emsp;
+                    <button id="editUsernameButton" onclick="editUsername()">Edit Username</button>
+                </p>
+                <br><br>
+                <p> <span><b>Current Funds: </b><span id="currentFundsValue">$2,344.76</span></span></p>
+            </div>
+            <div class="table-div">
+            <!-- Table title and button to link new bank accounts -->
+                <div class="table-header">
+                    <p>
+                        <span id="tableTitle">Linked Bank Accounts</span>&emsp;
+                        <button id="linkNewAccountButton" onclick="openLinkAccountForm()">Link New Bank Account</button>
+                    </p>
+                </div>
+                <table class="bank-accounts-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows in this table will be dynamically populated from database -->
+                        <tr>
+                            <td>Bank Account 1</td>
+                            <td><button onclick="openWithdrawForm('Bank Account 1')">Withdraw Funds</button></td>
+                            <td><button onclick="openDepositForm('Bank Account 1')">Deposit Funds</button></td>
+                            <td><button onclick="unlinkBankAccount('Bank Account 1')">Unlink Account</button></td>
+                        </tr>
+                        <tr>
+                            <td>Bank Account 2</td>
+                            <td><button onclick="openWithdrawForm('Bank Account 2')">Withdraw Funds</button></td>
+                            <td><button onclick="openDepositForm('Bank Account 2')">Deposit Funds</button></td>
+                            <td><button onclick="unlinkBankAccount('Bank Account 2')">Unlink Account</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </body>
+<script>
+    // This function will handle the logic for updating the current username
+    function editUsername() {
+        var currentUsername = document.getElementById("currentUsernameValue").value;
+        // Logic will go here for updating the current username value
+    }
+    
+    // This function will open a popup window where users can enter the amount to withdraw from the linked account
+    function openWithdrawForm(accountName) {
+        var withdrawFormWindow = window.open("", "Withdraw Form", "width=400,height=300");
+        
+        var withdrawFormHTML = '<form id="withdrawForm">' +
+            '<label for="accountName">Account Name:</label>&emsp;' +
+            '<input type="text" id="accountName" name="accountName" value="' + accountName + '" readonly><br>' +
+            '<label for="amount">Amount:</label>&emsp;' +
+            '<input type="number" id="amount" name="amount" step="0.01" placeholder="Enter withdrawl amount" required><br>' +
+            '<button type="submit">Withdraw</button>' +
+            '</form>';
+        
+        withdrawFormWindow.document.body.innerHTML = withdrawFormHTML;
+    }
+    
+    // This function will open a popup window where users can enter the amount to deposit into the linked account
+    function openDepositForm(accountName) {
+        var depositFormWindow = window.open("", "Deposit Form", "width=400,height=300");
+        
+        var depositFormHTML = '<form id="depositForm">' +
+            '<label for="accountName">Account Name:</label>&emsp;' +
+            '<input type="text" id="accountName" name="accountName" value="' + accountName + '" readonly><br>' +
+            '<label for="amount">Amount:</label>&emsp;' +
+            '<input type="number" id="amount" name="amount" step="0.01" placeholder="Enter deposit amount" required><br>' +
+            '<button type="submit">Deposit</button>' +
+            '</form>';
+        
+        depositFormWindow.document.body.innerHTML = depositFormHTML;
+    }
+    
+    // This function will handle the logic for unlinking a bank account from the user's app account
+    function unlinkBankAccount(accountName) {
+        // Logic will go here
+    }
+    
+    // This function will open a popup window where users can link new bank accounts to their app account
+    function openLinkAccountForm() {
+        var linkAccountFormWindow = window.open("", "Link New Bank Account Form", "width=400,height=300");
+        
+        var linkAccountFormHTML = '<form id="depositForm">' +
+            '<label for="accountName">Account Name:</label>&emsp;' +
+            '<input type="text" id="accountName" name="accountName" placeholder="Enter account name" required><br>' +
+            '<label for="accountNumber">Account Number:</label>&emsp;' +
+            '<input type="number" id="accountNumber" name="accountNumber" placeholder="Enter account number" required><br>' +
+            '<label for="confirmAccountNumber">Confirm Account Number:</label>&emsp;' +
+            '<input type="number" id="confirmAccountNumber" name="confirmAccountNumber" placeholder="Confirm account number" required><br>' +
+            '<label for="routingNumber">Routing Number:</label>&emsp;' +
+            '<input type="number" id="routingNumber" name="routingNumber" placeholder="Enter routing number" required><br>' +
+            '<button type="submit">Link Account</button>' +
+            '</form>';
+        
+        linkAccountFormWindow.document.body.innerHTML = linkAccountFormHTML;
+    }
+</script>
 </html>

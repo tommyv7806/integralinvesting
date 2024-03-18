@@ -23,7 +23,7 @@
                 <input type="text" id="searchInput" placeholder="Search for a stock...">
                 <button type="button" onclick="searchStock()">Search</button>
                 <!-- Dropdown for sorting -->                
-                <label for="sortBy">Sort by:</label>
+                <label for="sortBy" id="sortByLabel">Sort by:</label>
                     <select id="sortBy" onchange="sortStocks(this.value)">
                         <option value="name">Name</option>
                         <option value="symbol">Symbol</option>
@@ -91,13 +91,13 @@
             '<\/script>' +
             '</head>' +
             '<form id="buyForm">' +
-            '<label for="stockName">Stock Name:</label>' +
+            '<label for="stockName">Stock Name:</label>&emsp;' +
             '<input type="text" id="stockName" name="stockName" value="' + stockName + '" readonly><br>' +
-            '<label for="stockPrice">Stock Price:</label>' +
+            '<label for="stockPrice">Stock Price:</label>&emsp;' +
             '<input type="number" id="stockPrice" name="stockPrice" value="' + stockPrice + '" step="0.01" readonly><br>' +
-            '<label for="numberOfStocks">Number of Stocks:</label>' +
+            '<label for="numberOfStocks">Number of Stocks:</label>&emsp;' +
             '<input type="number" id="numberOfStocks" name="numberOfStocks" min="1" required onchange="calculateTotalCost()"><br>' +
-            '<label for="totalCost">Total Cost:</label>' +
+            '<label for="totalCost">Total Cost:</label>&emsp;' +
             '<input type="text" id="totalCost" name="totalCost" readonly><br>' +
             '<button type="submit">Buy</button>' +    
             '</form>';
