@@ -1,0 +1,11 @@
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\DataAccessAPI.exe
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\appsettings.json
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\DataAccessAPI.dll
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\DataAccessAPI.deps.json
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\DataAccessAPI.runtimeconfig.json
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\DataAccessAPI.pdb
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\Microsoft.OpenApi.dll
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\veliy\Desktop\School\Spring 2024\Senior Project\integralinvesting\DataAccessAPI\DataAccessAPI\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
