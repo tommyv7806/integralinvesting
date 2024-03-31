@@ -266,11 +266,17 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 # 10. Data Access Layer
 A data access API was created for accessing data from the different models in the application. This API is hosted using Azure. 
 
-[Four data models](https://github.com/tommyv7806/integralinvesting/tree/main/DataAccessAPI/DataAccessAPI/Models) were created so far for the application:
+[Four class models](https://github.com/tommyv7806/integralinvesting/tree/main/DataAccessAPI/DataAccessAPI/Models) were created so far for the application:
 1. UserAccount
 2. BankAccount
 3. Portfolio
 4. PortfolioStock
+
+Sample Code from one of the class models:
+![PortfolioStockClassModelpng](https://github.com/tommyv7806/integralinvesting/assets/67933601/c44a35c7-f2c6-47fb-83e1-714ffa30b418)
+
+HTTP Respopnse for the above class model:
+![API_HTTP_Response](https://github.com/tommyv7806/integralinvesting/assets/67933601/65bea34d-9851-4525-ba11-a9d786e3f519)
 
 Each data model was set up with some mock data. In order to see the API in action, please use the following links:
 - UserAccount Data: https://dataaccessapi1.azurewebsites.net/UserAccount
