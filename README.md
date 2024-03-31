@@ -62,7 +62,13 @@ This repo will contain the project for the CIS4891.0M1: SENIOR PROJECT class. It
 	
 [9. UML Diagram](https://github.com/tommyv7806/integralinvesting/blob/main/README.md#9-uml-diagram)
 </td>
-<td width="75%">Class diagram that shows the structure of the classes and objects that make up the application </td>
+<td width="75%">Class diagram that shows the structure of the classes and objects that make up the application</td>
+</tr>
+<td width="25%"">
+	
+[10. Data Access Layer](https://github.com/tommyv7806/integralinvesting/blob/main/README.md#10-data-access-layer)
+</td>
+<td width="75%">Relevant information about the data access API for this application</td>
 </tr>
 </table>
 
@@ -95,7 +101,7 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 ### Account Page
 ![Account Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/d612ddc0-e8d8-4c1d-ab47-55abae70aca0)
 
-# 4. User Stories
+# 4. English User Stories
 1. Login Related
    - As a user, I need the ability to log in to the application using an external authentication service. 
    - As a user, I need the ability to maintain my user information.
@@ -185,7 +191,7 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 </br>&emsp;Then the system will remove the stocks from the user’s portfolio
 </br>&emsp;&emsp;And the system will update the amount of funds in the user’s account
 
-# 6. Use-Case Diagram
+# 6. UML Use-Case
 ![Use-Case Diagram](https://github.com/tommyv7806/integralinvesting/assets/67933601/a6ccc2c9-dc22-4cc0-b58d-308955aeffe3)
 
 # 7. Requirements
@@ -254,5 +260,20 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 # 8. Entity Relationship Diagram
 ![ERD](https://github.com/tommyv7806/integralinvesting/assets/67933601/02f1b4b8-37e8-4cbc-8ea3-8d1bc3155a1c)
 
-# 9. UML Diagram
+# 9. Class Diagrams
 ![UML](https://github.com/tommyv7806/integralinvesting/assets/67933601/1240b9e1-82bc-45c9-b340-1be4905615c1)
+
+# 10. Data Access Layer
+A data access API was created for accessing data from the different models in the application. This API is hosted using Azure. 
+
+[Four data models](https://github.com/tommyv7806/integralinvesting/tree/main/DataAccessAPI/DataAccessAPI/Models) were created so far for the application:
+1. UserAccount
+2. BankAccount
+3. Portfolio
+4. PortfolioStock
+
+Each data model was set up with some mock data. In order to see the API in action, please use the following links:
+- UserAccount Data: https://dataaccessapi1.azurewebsites.net/UserAccount
+- BankAccount Data: https://dataaccessapi1.azurewebsites.net/BankAccount
+- Portfolio Data: https://dataaccessapi1.azurewebsites.net/Portfolio
+- PortfolioStock Data: https://dataaccessapi1.azurewebsites.net/PortfolioStock
