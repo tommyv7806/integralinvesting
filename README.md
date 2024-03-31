@@ -95,7 +95,7 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 ### Account Page
 ![Account Page Wireframe](https://github.com/tommyv7806/integralinvesting/assets/67933601/d612ddc0-e8d8-4c1d-ab47-55abae70aca0)
 
-# 4. User Stories
+# 4. English User Stories
 1. Login Related
    - As a user, I need the ability to log in to the application using an external authentication service. 
    - As a user, I need the ability to maintain my user information.
@@ -185,7 +185,7 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 </br>&emsp;Then the system will remove the stocks from the user’s portfolio
 </br>&emsp;&emsp;And the system will update the amount of funds in the user’s account
 
-# 6. Use-Case Diagram
+# 6. UML Use-Case
 ![Use-Case Diagram](https://github.com/tommyv7806/integralinvesting/assets/67933601/a6ccc2c9-dc22-4cc0-b58d-308955aeffe3)
 
 # 7. Requirements
@@ -254,5 +254,5 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
 # 8. Entity Relationship Diagram
 ![ERD](https://github.com/tommyv7806/integralinvesting/assets/67933601/02f1b4b8-37e8-4cbc-8ea3-8d1bc3155a1c)
 
-# 9. UML Diagram
+# 9. Class Diagrams
 ![UML](https://github.com/tommyv7806/integralinvesting/assets/67933601/1240b9e1-82bc-45c9-b340-1be4905615c1)
