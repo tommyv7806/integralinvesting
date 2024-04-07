@@ -202,56 +202,116 @@ In addition to allowing users to be able to buy/sell stocks, as a stretch goal, 
     <th>Description</th>
     <tr>
         <td width="10%"">LOGIN.01</td>
+	<td width="30%">Ability to register a new account</td>
+	<td width="60%">The system will provide the ability for new users to register ands create a new account</td>
+    </tr>
+    <tr>
+        <td width="10%"">LOGIN.02</td>
 	<td width="30%">Ability to log in to the application</td>
 	<td width="60%">The system will provide the ability for users to use a 3rd party authentication system to log in to their account</td>
     </tr>
     <tr>
-        <td width="10%"">LOGIN.02</td>
+        <td width="10%"">LOGIN.03</td>
 	<td width="30%">Ability to log out of the application</td>
 	<td width="60%">The system will provide the ability for users to log out of their account</td>
     </tr>
     <tr>
+        <td width="10%"">LOGIN.04</td>
+	<td width="30%">Require user to verify email address upon registration</td>
+	<td width="60%">The system will require the user to confirm their email address before being able to fully use the application</td>
+    </tr>
+    <tr>
+        <td width="10%"">LOGIN.05</td>
+	<td width="30%">Password reset functionality</td>
+	<td width="60%">The system will provide the ability for users to reset their password.</td>
+    </tr>
+    <tr>
         <td width="10%"">ACCNT.01</td>
+	<td width="30%">Provide a User Account page for managing user-related data</td>
+	<td width="60%">The system will provide a User Account page where users can manage their data</td>
+    </tr>
+    <tr>
+        <td width="10%"">ACCNT.02</td>
 	<td width="30%">Ability to link financial institution to account</td>
 	<td width="60%">The system will allow users to link their account with their financial institution</td>
     </tr>
     <tr>
-        <td width="10%"">ACCNT.02</td>
+        <td width="10%"">ACCNT.03</td>
 	<td width="30%">Ability to add funds to account</td>
 	<td width="60%">The system will allow users to add funds to their account from their linked financial institution</td>
     </tr>
     <tr>
-        <td width="10%"">ACCNT.03</td>
+        <td width="10%"">ACCNT.04</td>
 	<td width="30%">Ability to deposit funds from account to financial institution</td>
 	<td width="60%">The system will allow users to deposit funds from their account into their financial institution</td>
     </tr>
     <tr>
-        <td width="10%"">INVST.01</td>
-	<td width="30%">Ability to view list of available stocks</td>
-	<td width="60%">The system will display a list of available stocks to the user with the latest pricing information</td>
+        <td width="10%"">ACCNT.05</td>
+	<td width="30%">Ability to unlink bank account</td>
+	<td width="60%">The system will allow users to unlink bank accounts from their application account</td>
     </tr>
     <tr>
+        <td width="10%"">ACCNT.06</td>
+	<td width="30%">Ability to edit user-related data</td>
+	<td width="60%">The system allow users to edit their acount email address, username, and password on the User Account page.</td>
+    </tr>
+    <tr>
+        <td width="10%"">INVST.01</td>
+	<td width="30%">Create Browse page for purchasing stocks</td>
+	<td width="60%">The system will allow provide a Browse page where users will be able to search for and purchase shares of different stocks</td>
+    </tr>	
+    <tr>
         <td width="10%"">INVST.02</td>
+	<td width="30%">Ability to search for available stocks</td>
+	<td width="60%">The system will contain a search bar where users can search for available stocks</td>
+    </tr>
+    <tr>
+        <td width="10%"">INVST.03</td>
 	<td width="30%">Ability to refine stock search</td>
 	<td width="60%">The system will allow users to refine their stock search with sorting and filters</td>
     </tr>
     <tr>
-        <td width="10%"">INVST.03</td>
+        <td width="10%"">INVST.04</td>
 	<td width="30%">Ability to purchase stocks</td>
 	<td width="60%">The system will allow users to purchase available stocks if they have enough funds in their account</td>
     </tr>
     <tr>
+        <td width="10%"">INVST.05</td>
+	<td width="30%">Display number of shares that user owns on Browse page</td>
+	<td width="60%">The system will display the number of shares that a user owns for a particular stock on the Browse page</td>
+    </tr>
+    <tr>
         <td width="10%"">PRTFL.01</td>
-	<td width="30%">Ability to view portfolio</td>
-	<td width="60%">The system will allow users to view a list of their current stock investments</td>
+	<td width="30%">Create a Portfolio page to display a user's portfolio</td>
+	<td width="60%">Add a Portfolio page to the application where users can maintain their portfolio data, such as selling shares</td>
     </tr>
     <tr>
         <td width="10%"">PRTFL.02</td>
+	<td width="30%">Ability to view portfolio stock shares</td>
+	<td width="60%">The system will allow users to view a list of their current stock investments</td>
+    </tr>
+    <tr>
+        <td width="10%"">PRTFL.03</td>
 	<td width="30%">Ability to filter and sort portfolio</td>
 	<td width="60%">The system will provide users with the ability to filter and sort their stock investments in their portfolio</td>
     </tr>
     <tr>
-        <td width="10%"">PRTFL.03</td>
+        <td width="10%"">PRTFL.04</td>
+	<td width="30%">Ability to sell stocks from portfolio</td>
+	<td width="60%">The system will give users the ability to sell stocks from their portfolio based on the latest pricing information</td>
+    </tr>
+    <tr>
+        <td width="10%"">API.01</td>
+	<td width="30%">Configure free stock market API </td>
+	<td width="60%">Add necessary connection information so that the application can interface with the stock market API.</td>
+    </tr>
+    <tr>
+        <td width="10%"">API.02</td>
+	<td width="30%">Ability to sell stocks from portfolio</td>
+	<td width="60%">The system will give users the ability to sell stocks from their portfolio based on the latest pricing information</td>
+    </tr>
+    <tr>
+        <td width="10%"">API.03</td>
 	<td width="30%">Ability to sell stocks from portfolio</td>
 	<td width="60%">The system will give users the ability to sell stocks from their portfolio based on the latest pricing information</td>
     </tr>
