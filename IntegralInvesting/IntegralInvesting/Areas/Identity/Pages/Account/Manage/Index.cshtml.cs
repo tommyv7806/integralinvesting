@@ -2,10 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using IntegralInvesting.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,30 +23,14 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
             // New custom fields added for First Name and Last Name
@@ -101,32 +82,57 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            // Update first and last name
-            user.FirstName = Input.FirstName;
-            user.LastName = Input.LastName;
+            bool isFirstNameChanged = HandleFirstNameChange(user);
+            bool isLastNameChanged = HandleLastNameChange(user);
 
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);
-                StatusMessage = "Your profile has been updated";
+                StatusMessage = UpdateStatusMessage(isFirstNameChanged, isLastNameChanged);
                 return RedirectToPage();
             }
 
-            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            //if (Input.PhoneNumber != phoneNumber)
-            //{
-            //    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            //    if (!setPhoneResult.Succeeded)
-            //    {
-            //        StatusMessage = "Unexpected error when trying to set phone number.";
-            //        return RedirectToPage();
-            //    }
-            //}
-
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private bool HandleFirstNameChange(IntegralInvestingUser user)
+        {
+            if (user.FirstName != Input.FirstName)
+            {
+                user.FirstName = Input.FirstName;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool HandleLastNameChange(IntegralInvestingUser user)
+        {
+            if (user.LastName != Input.LastName)
+            {
+                user.LastName = Input.LastName;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private string UpdateStatusMessage(bool isFirstNameChanged, bool isLastNameChanged)
+        {
+            if (isFirstNameChanged && !isLastNameChanged)
+                return "First Name updated successfully";
+
+            if (!isFirstNameChanged && isLastNameChanged)
+                return "Last Name updated successfully";
+
+            return "First Name and Last Name updated successfully";
         }
     }
 }
