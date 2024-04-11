@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegralInvesting", "IntegralInvesting\IntegralInvesting.csproj", "{06BE32D3-3A9E-4B84-810D-5A70267DF044}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessWebAPI", "DataAccessWebAPI\DataAccessWebAPI.csproj", "{2729CC48-C07C-4958-A848-8C7D6E385F52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{06BE32D3-3A9E-4B84-810D-5A70267DF044}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06BE32D3-3A9E-4B84-810D-5A70267DF044}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06BE32D3-3A9E-4B84-810D-5A70267DF044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2729CC48-C07C-4958-A848-8C7D6E385F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2729CC48-C07C-4958-A848-8C7D6E385F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2729CC48-C07C-4958-A848-8C7D6E385F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2729CC48-C07C-4958-A848-8C7D6E385F52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
