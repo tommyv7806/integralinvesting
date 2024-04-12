@@ -3,7 +3,6 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net.Sockets;
 using System.Text;
 
 namespace IntegralInvesting.Controllers
@@ -21,7 +20,7 @@ namespace IntegralInvesting.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
+        [HttpGet]   // Runs when the user clicks the Bank Accounts link at the top of the page
         public IActionResult Index()
         {
             ValidateUserIsLoggedIn();
@@ -37,11 +36,21 @@ namespace IntegralInvesting.Controllers
                 bankAccountList = JsonConvert.DeserializeObject<List<BankAccountViewModel>>(data);
             }
 
+            UserFundViewModel userFund = new UserFundViewModel();
+            response = _httpClient.GetAsync(_httpClient.BaseAddress + "/UserFund/GetUserFunds/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                userFund = JsonConvert.DeserializeObject<List<UserFundViewModel>>(data).Single();
+            }
+
+            ViewData["CurrentUserFunds"] = userFund.CurrentFunds;
             ViewData["UserId"] = currentUserId;
             return View(bankAccountList);
         }
 
-        [HttpGet]
+        [HttpGet]   
         public IActionResult LinkNewAccount()
         {
             ValidateUserIsLoggedIn();

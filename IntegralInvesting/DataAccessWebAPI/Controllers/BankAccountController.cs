@@ -11,10 +11,7 @@ namespace DataAccessWebAPI.Controllers
     {
         private readonly IntegralInvestingAppDbContext _context;
 
-        public BankAccountController(IntegralInvestingAppDbContext context)
-        {
-            _context = context;
-        }
+        public BankAccountController(IntegralInvestingAppDbContext context) { _context = context; }
 
         [HttpGet]
         public IActionResult Get()

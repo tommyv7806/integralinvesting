@@ -3,6 +3,7 @@ using DataAccessWebAPI.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessWebAPI.Migrations
 {
     [DbContext(typeof(IntegralInvestingAppDbContext))]
-    partial class IntegralInvestingAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240412125227_AddUserFundsTable")]
+    partial class AddUserFundsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,13 +37,12 @@ namespace DataAccessWebAPI.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<decimal>("CurrentFunds")
-                        .HasColumnType("decimal(8, 2)");
+                    b.Property<float>("CurrentFunds")
+                        .HasColumnType("real");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BankAccountId");
 
@@ -49,21 +51,20 @@ namespace DataAccessWebAPI.Migrations
 
             modelBuilder.Entity("DataAccessWebAPI.Models.UserFund", b =>
                 {
-                    b.Property<int>("UserFundId")
+                    b.Property<int>("UserFundsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserFundId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserFundsId"));
 
-                    b.Property<decimal>("CurrentFunds")
-                        .HasColumnType("decimal(8, 2)");
+                    b.Property<float>("CurrentFunds")
+                        .HasColumnType("real");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserFundId");
+                    b.HasKey("UserFundsId");
 
                     b.ToTable("UserFunds");
                 });

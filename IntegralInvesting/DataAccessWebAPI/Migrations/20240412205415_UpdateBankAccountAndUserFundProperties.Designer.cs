@@ -3,6 +3,7 @@ using DataAccessWebAPI.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessWebAPI.Migrations
 {
     [DbContext(typeof(IntegralInvestingAppDbContext))]
-    partial class IntegralInvestingAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240412205415_UpdateBankAccountAndUserFundProperties")]
+    partial class UpdateBankAccountAndUserFundProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

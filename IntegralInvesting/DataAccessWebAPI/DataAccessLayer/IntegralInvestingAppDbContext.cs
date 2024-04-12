@@ -8,5 +8,6 @@ namespace DataAccessWebAPI.DataAccessLayer
         public IntegralInvestingAppDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<UserFund> UserFunds { get; set; }
     }
 }
