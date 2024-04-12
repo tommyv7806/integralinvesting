@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntegralInvesting")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aa5f6b8a00d000e08f548c313c383cbca0bba1df")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cfb9fee191cbc6c74b7d69d4d4932e7559cf9e75")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntegralInvesting")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IntegralInvesting")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
