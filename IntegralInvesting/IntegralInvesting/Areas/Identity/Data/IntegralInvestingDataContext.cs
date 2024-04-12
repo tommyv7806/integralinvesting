@@ -1,6 +1,7 @@
 ﻿using IntegralInvesting.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using IntegralInvesting.Models;
 
 namespace IntegralInvesting.Data;
 
@@ -12,4 +13,6 @@ public class IntegralInvestingDataContext : IdentityDbContext<IntegralInvestingU
     {
         base.OnModelCreating(builder);
     }
+
+public DbSet<IntegralInvesting.Models.BankAccountViewModel> BankAccountViewModel { get; set; } = default!;
 }

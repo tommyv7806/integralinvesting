@@ -9,11 +9,9 @@ namespace  IntegralInvesting.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {
-        public static string LinkedAccount => "LinkedAccounts";
         public static string Index => "Index";
         public static string ChangePassword => "ChangePassword";
 
-        public static string LinkedAccountsNavClass(ViewContext viewContext) => PageNavClass(viewContext, LinkedAccount);
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 

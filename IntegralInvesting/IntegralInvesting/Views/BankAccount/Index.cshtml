@@ -1,0 +1,49 @@
+﻿@model IEnumerable<IntegralInvesting.Models.BankAccountViewModel>
+
+@{
+    ViewData["Title"] = "Bank Accounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Bank Accounts</h1>
+<h4>Current User Id: @ViewData["UserId"]</h4>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentFunds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentFunds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BankAccountId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BankAccountId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BankAccountId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

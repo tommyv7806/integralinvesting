@@ -42,10 +42,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/veliy/Desktop/School/Spring 2024/Senior Project/integralinvesting/IntegralInvesting/IntegralInvesting/Areas/Identity/Pages/Account/Manage/LinkedAccounts.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcTGlua2VkQWNjb3VudHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/veliy/Desktop/School/Spring 2024/Senior Project/integralinvesting/IntegralInvesting/IntegralInvesting/Areas/Identity/Pages/Account/Manage/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -80,6 +76,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/veliy/Desktop/School/Spring 2024/Senior Project/integralinvesting/IntegralInvesting/IntegralInvesting/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/veliy/Desktop/School/Spring 2024/Senior Project/integralinvesting/IntegralInvesting/IntegralInvesting/Views/BankAccount/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFua0FjY291bnRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/veliy/Desktop/School/Spring 2024/Senior Project/integralinvesting/IntegralInvesting/IntegralInvesting/Views/Home/Index.cshtml]
