@@ -88,7 +88,7 @@ namespace IntegralInvesting.Controllers
         {
             ValidateUserIsLoggedIn();
 
-            if (userFund.CurrentTransferAmount != null)
+            if (userFund.CurrentTransferAmount != null && userFund.CurrentTransferAmount >= 0)
                 userFund.CurrentFunds += (decimal)userFund.CurrentTransferAmount;
 
             try
@@ -134,8 +134,8 @@ namespace IntegralInvesting.Controllers
         {
             ValidateUserIsLoggedIn();
 
-            if (userFund.CurrentTransferAmount != null)
-                userFund.CurrentFunds += (decimal)userFund.CurrentTransferAmount;
+            if (userFund.CurrentTransferAmount != null && userFund.CurrentTransferAmount <= userFund.CurrentFunds)
+                userFund.CurrentFunds -= (decimal)userFund.CurrentTransferAmount;
 
             try
             {

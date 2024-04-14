@@ -100,7 +100,6 @@ namespace DataAccessWebAPI.Controllers
                 if (bankAccount == null)
                     return BadRequest($"Bank Account not found with Id of {model.BankAccountId}");
 
-                bankAccount.CurrentFunds = model.CurrentFunds;
                 bankAccount.UserId = model.UserId;
                 bankAccount.AccountName = model.AccountName;
 

@@ -8,7 +8,7 @@
 <div class="d-flex justify-content-center mt-3 mb-2">
     <div><h4>Current Funds in Account: @ViewData["CurrentUserFunds"]</h4></div>
     <div style="margin-left: 2em">
-        <a asp-controller="BankAccount" asp-action="LinkNewAccount" class="btn btn-warning">Deposit</a>
+        <a asp-controller="BankAccount" asp-action="DepositFunds" class="btn btn-warning">Deposit</a>
         <a asp-controller="BankAccount" asp-action="WithdrawFunds" class="btn btn-warning">Withdraw</a>
     </div>
 </div>
@@ -28,9 +28,6 @@
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CurrentFunds)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.AccountName)
             </th>
             <th></th>
@@ -43,14 +40,9 @@
                 @Html.DisplayFor(modelItem => item.UserId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CurrentFunds)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.AccountName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.BankAccountId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BankAccountId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.BankAccountId">Delete</a>
             </td>
         </tr>

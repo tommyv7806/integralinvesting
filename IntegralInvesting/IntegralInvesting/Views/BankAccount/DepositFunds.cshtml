@@ -1,15 +1,15 @@
 ﻿@model IntegralInvesting.Models.UserFundViewModel
 
 @{
-    ViewData["Title"] = "Withdraw Funds";
+    ViewData["Title"] = "DepositFunds";
 }
 
-<h1>Withdraw Funds from Bank Account</h1>
+<h1>Deposit Funds into Bank Account</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="BankAccount" asp-action="WithdrawTransaction" method="post">
+        <form asp-controller="BankAccount" asp-action="DepositTransaction" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserFundId" />
             <input type="hidden" asp-for="UserId" />
@@ -34,11 +34,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="CurrentTransferAmount" class="control-label"></label>
-                <input asp-for="CurrentTransferAmount" class="form-control" />
+                <input type="number" min="0" max="@Model.CurrentFunds" asp-for="CurrentTransferAmount" class="form-control" />
                 <span asp-validation-for="CurrentTransferAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Withdraw Funds" class="btn btn-primary" />
+                <input type="submit" value="Deposit Funds" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -12,9 +12,6 @@ namespace DataAccessWebAPI.Models
         [MaxLength(200)]
         public string UserId { get; set; }
 
-        [Column(TypeName = "decimal(8, 2)")]
-        public decimal CurrentFunds { get; set; }
-
         [Required]
         [MaxLength(60)]
         public string AccountName { get; set; }
