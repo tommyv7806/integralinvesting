@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
+using System.Net.Http;
+using IntegralInvesting.Models;
 
 namespace IntegralInvesting.Areas.Identity.Pages.Account
 {
@@ -106,6 +109,7 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    CreateUserFund(userId);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -158,6 +162,30 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IntegralInvestingUser>)_userStore;
+        }
+
+        private void CreateUserFund(string userId)
+        {
+            Uri apiBaseAddress = new Uri("https://localhost:7226/api");
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = apiBaseAddress;
+
+            var userFund = new UserFundViewModel
+            {
+                UserId = userId,
+                CurrentFunds = 0
+            };
+
+            try
+            {
+                string data = JsonConvert.SerializeObject(userFund);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = httpClient.PostAsync(httpClient.BaseAddress + "/UserFund/Post", content).Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
