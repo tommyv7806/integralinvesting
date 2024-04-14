@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntegralInvesting.Models
 {
@@ -12,7 +13,7 @@ namespace IntegralInvesting.Models
         public string UserId { get; set; }
 
         [DisplayName("Current Funds")]
-        public float CurrentFunds { get; set; }
+        public decimal CurrentFunds { get; set; }
 
         [Required]
         [MaxLength(60)]

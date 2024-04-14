@@ -13,6 +13,14 @@ namespace IntegralInvesting.Models
         [MaxLength(200)]
         public string UserId { get; set; }
 
-        public float CurrentFunds { get; set; }
+        [Range(0, 999999999.99)]
+        [DisplayName("Amount To Transfer")]
+        public decimal? CurrentTransferAmount { get; set; }
+
+        [DisplayName("Current Funds")]
+        public decimal CurrentFunds { get; set; }
+
+        [MaxLength(200)]
+        public string? CurrentTransferAccount { get; set; }
     }
 }

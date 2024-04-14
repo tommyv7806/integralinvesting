@@ -13,7 +13,7 @@ namespace DataAccessWebAPI.Models
         public string UserId { get; set; }
 
         [Column(TypeName = "decimal(8, 2)")]
-        public float CurrentFunds { get; set; }
+        public decimal CurrentFunds { get; set; }
 
         [Required]
         [MaxLength(60)]

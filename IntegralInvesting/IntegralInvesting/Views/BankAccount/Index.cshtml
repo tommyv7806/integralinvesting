@@ -5,15 +5,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Bank Accounts</h1>
-<h4>Current User Id: @ViewData["UserId"]</h4>
-<h4>Current Funds in Account: @ViewData["CurrentUserFunds"]</h4>
+<div class="d-flex justify-content-center mt-3 mb-2">
+    <div><h4>Current Funds in Account: @ViewData["CurrentUserFunds"]</h4></div>
+    <div style="margin-left: 2em">
+        <a asp-controller="BankAccount" asp-action="LinkNewAccount" class="btn btn-warning">Deposit</a>
+        <a asp-controller="BankAccount" asp-action="WithdrawFunds" class="btn btn-warning">Withdraw</a>
+    </div>
+</div>
 
 
-<p>
-    <a asp-controller="BankAccount" asp-action="LinkNewAccount">Link New Bank Account</a>
-</p>
-<table class="table">
+<div class="d-flex justify-content-between mt-3 mb-2">
+    <div><h2>Bank Accounts</h2></div>
+    <div>
+        <a asp-controller="BankAccount" asp-action="LinkNewAccount" class="btn btn-warning">Link New Account</a>
+    </div>
+</div>
+
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>

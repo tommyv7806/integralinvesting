@@ -15,4 +15,6 @@ public class IntegralInvestingDataContext : IdentityDbContext<IntegralInvestingU
     }
 
 public DbSet<IntegralInvesting.Models.BankAccountViewModel> BankAccountViewModel { get; set; } = default!;
+
+public DbSet<IntegralInvesting.Models.UserFundViewModel> UserFundViewModel { get; set; } = default!;
 }

@@ -93,7 +93,7 @@ namespace DataAccessWebAPI.Controllers
 
             try
             {
-                var userFund = _context.BankAccounts.Find(model.UserFundId);
+                var userFund = _context.UserFunds.Find(model.UserFundId);
 
                 if (userFund == null)
                     return BadRequest($"User Fund not found with Id of {model.UserFundId}");

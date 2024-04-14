@@ -13,6 +13,12 @@ namespace DataAccessWebAPI.Models
         public string UserId { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(8, 2)")]
-        public float CurrentFunds { get; set; } = 0;
+        public decimal CurrentFunds { get; set; } = 0;
+
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal? CurrentTransferAmount { get; set; }
+
+        [MaxLength(200)]
+        public string? CurrentTransferAccount { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using DataAccessWebAPI.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessWebAPI.Migrations
 {
     [DbContext(typeof(IntegralInvestingAppDbContext))]
-    partial class IntegralInvestingAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240414210845_AddCurrentTransferAmountToBankAccountModel")]
+    partial class AddCurrentTransferAmountToBankAccountModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,9 @@ namespace DataAccessWebAPI.Migrations
                     b.Property<decimal>("CurrentFunds")
                         .HasColumnType("decimal(8, 2)");
 
+                    b.Property<decimal?>("CurrentTransferAmount")
+                        .HasColumnType("decimal(8, 2)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -57,13 +63,6 @@ namespace DataAccessWebAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserFundId"));
 
                     b.Property<decimal>("CurrentFunds")
-                        .HasColumnType("decimal(8, 2)");
-
-                    b.Property<string>("CurrentTransferAccount")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<decimal?>("CurrentTransferAmount")
                         .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("UserId")

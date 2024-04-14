@@ -26,28 +26,11 @@ namespace IntegralInvesting.Controllers
             ValidateUserIsLoggedIn();
 
             var currentUserId = _userManager.GetUserId(this.User);
+            var currentUserBankAccounts = GetBankAccountsForCurrentUser(currentUserId);
+            var currentUserFunds = GetFundsForCurrentUser(currentUserId);
 
-            List<BankAccountViewModel> bankAccountList = new List<BankAccountViewModel>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/BankAccount/GetUserAccounts/" + currentUserId).Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                string data = response.Content.ReadAsStringAsync().Result;
-                bankAccountList = JsonConvert.DeserializeObject<List<BankAccountViewModel>>(data);
-            }
-
-            UserFundViewModel userFund = new UserFundViewModel();
-            response = _httpClient.GetAsync(_httpClient.BaseAddress + "/UserFund/GetUserFunds/" + currentUserId).Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                string data = response.Content.ReadAsStringAsync().Result;
-                userFund = JsonConvert.DeserializeObject<List<UserFundViewModel>>(data).Single();
-            }
-
-            ViewData["CurrentUserFunds"] = userFund.CurrentFunds;
-            ViewData["UserId"] = currentUserId;
-            return View(bankAccountList);
+            ViewData["CurrentUserFunds"] = currentUserFunds;
+            return View(currentUserBankAccounts);
         }
 
         [HttpGet]   
@@ -87,11 +70,158 @@ namespace IntegralInvesting.Controllers
             return View();            
         }
 
+        [HttpGet]
+        public IActionResult WithdrawFunds()
+        {
+            ValidateUserIsLoggedIn();
+
+            var currentUserId = _userManager.GetUserId(this.User);
+            var accountNames = GetAccountNamesForCurrentUser(currentUserId);
+            var currentUserFund = GetUserFundForCurrentUser(currentUserId);
+
+            ViewData["BankAccountNames"] = accountNames;
+            return View(currentUserFund);
+        }
+
+        [HttpPost]
+        public IActionResult WithdrawTransaction(UserFundViewModel userFund)
+        {
+            ValidateUserIsLoggedIn();
+
+            if (userFund.CurrentTransferAmount != null)
+                userFund.CurrentFunds += (decimal)userFund.CurrentTransferAmount;
+
+            try
+            {
+                string data = JsonConvert.SerializeObject(userFund);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/UserFund/Put", content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = $"Funds successfully withdrawn from {userFund.CurrentTransferAccount} bank account";
+                    userFund.CurrentTransferAmount = null;
+                    userFund.CurrentTransferAccount = null;
+
+                    return RedirectToAction("Index", "BankAccount");
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult DepositFunds()
+        {
+            ValidateUserIsLoggedIn();
+
+            var currentUserId = _userManager.GetUserId(this.User);
+            var accountNames = GetAccountNamesForCurrentUser(currentUserId);
+            var currentUserFund = GetUserFundForCurrentUser(currentUserId);
+
+            ViewData["BankAccountNames"] = accountNames;
+            return View(currentUserFund);
+        }
+
+        [HttpPost]
+        public IActionResult DepositTransaction(UserFundViewModel userFund)
+        {
+            ValidateUserIsLoggedIn();
+
+            if (userFund.CurrentTransferAmount != null)
+                userFund.CurrentFunds += (decimal)userFund.CurrentTransferAmount;
+
+            try
+            {
+                string data = JsonConvert.SerializeObject(userFund);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/UserFund/Put", content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = $"Funds successfully withdrawn from {userFund.CurrentTransferAccount} bank account";
+                    userFund.CurrentTransferAmount = null;
+                    userFund.CurrentTransferAccount = null;
+
+                    return RedirectToAction("Index", "BankAccount");
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return View();
+            }
+
+            return View();
+        }
+
         private void ValidateUserIsLoggedIn()
         {
             // If the user is not logged in, return them to the Login page
             if (!User.Identity.IsAuthenticated)
                 Response.Redirect("/");
+        }
+
+        private List<BankAccountViewModel> GetBankAccountsForCurrentUser(string currentUserId)
+        {
+            List<BankAccountViewModel> bankAccountList = new List<BankAccountViewModel>();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/BankAccount/GetUserAccounts/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                bankAccountList = JsonConvert.DeserializeObject<List<BankAccountViewModel>>(data);
+            }
+
+            return bankAccountList;
+        }
+
+        private decimal GetFundsForCurrentUser(string currentUserId)
+        {
+            UserFundViewModel userFund = new UserFundViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/UserFund/GetUserFunds/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                userFund = JsonConvert.DeserializeObject<List<UserFundViewModel>>(data).Single();
+            }
+
+            return userFund.CurrentFunds;
+        }
+
+        private UserFundViewModel GetUserFundForCurrentUser(string currentUserId)
+        {
+            UserFundViewModel userFund = new UserFundViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/UserFund/GetUserFunds/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                userFund = JsonConvert.DeserializeObject<List<UserFundViewModel>>(data).Single();
+            }
+
+            return userFund;
+        }
+
+        private List<string> GetAccountNamesForCurrentUser(string currentUserId)
+        {
+            var currentUserBankAccounts = GetBankAccountsForCurrentUser(currentUserId);
+
+            var accountNames = new List<string>();
+            foreach (var account in currentUserBankAccounts)
+            {
+                accountNames.Add(account.AccountName);
+            }
+
+            return accountNames;
         }
     }
 }
