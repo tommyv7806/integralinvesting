@@ -3,6 +3,7 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ServiceStack;
 using System.Text;
 
 namespace IntegralInvesting.Controllers
@@ -12,13 +13,26 @@ namespace IntegralInvesting.Controllers
         Uri baseAddress = new Uri("https://localhost:7226/api");
         private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
+        private readonly IConfiguration _config;
 
-        public BankAccountController(UserManager<IntegralInvestingUser> userManager)
+        public BankAccountController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAddress;
             _userManager = userManager;
+            _config = config;
         }
+
+        public class AlphaVantageData
+        {
+            public DateTime Timestamp { get; set; }
+            public decimal Open { get; set; }
+            public decimal High { get; set; }
+            public decimal Low { get; set; }
+            public decimal Close { get; set; }
+            public decimal Volume { get; set; }
+        }
+
 
         [HttpGet]   // Runs when the user clicks the Bank Accounts link at the top of the page
         public IActionResult Index()
@@ -48,6 +62,17 @@ namespace IntegralInvesting.Controllers
 
             var currentUserId = _userManager.GetUserId(this.User);
             bankAccount.UserId = currentUserId;
+
+            // API TEST SECTION
+            //var symbol = bankAccount.AccountName;
+            //var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
+
+            //var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={apiKey}&interval=60min&datatype=csv"
+            //    .GetStringFromUrl();
+
+            //var allPrices = stockApiResponse.FromCsv<List<AlphaVantageData>>().ToList();
+
+            /////////////////////
 
             try
             {
