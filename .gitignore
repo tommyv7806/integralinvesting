@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Ignore appsettings.json since it has API key
+IntegralInvesting/IntegralInvesting/appsettings.json
+
 # User-specific files
 *.rsuser
 *.suo
