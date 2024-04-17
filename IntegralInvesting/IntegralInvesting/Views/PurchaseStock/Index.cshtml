@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Purchase Page</h1>
+@* @{
+    if (ViewData["SearchString"] != null)
+    {
+        <h2>@ViewData["SearchString"]</h2>
+    }
+} *@
+<div>
+    <input name="SearchString" id="searchField" />
+    <input type="button" id="btnSubmit" value="Search" class="btn btn-primary" />
+</div>
+<div id=SearchResult>
+    <partial name="PurchaseSearchResultPartial.cshtml" model="new List<PurchaseStockViewModel>()" />
+</div>
+
+@section Scripts {
+    <script>
+        $('#btnSubmit').click(function () {
+            let searchStringValue = document.getElementById("searchField").value
+            GetSearchResults(searchStringValue);
+        });
+
+        function GetSearchResults(searchStringValue) {
+            $.ajax({
+                url: "/PurchaseStock/Search/",
+                type: "get",
+                data: { searchString: searchStringValue },
+                success: function (result) {
+                    $('#SearchResult').html(result);
+                }
+            });
+        }
+    </script>
+}
+

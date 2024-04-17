@@ -1,0 +1,67 @@
+﻿@model IEnumerable<IntegralInvesting.Models.PurchaseStockViewModel>
+
+@{
+    ViewData["Title"] = "Purchase Stocks";
+}
+
+@{
+    if (ViewData["ErrorMessage"] != null)
+    {
+        <h4>@ViewData["ErrorMessage"]</h4>
+    }
+}
+
+@{
+    if (Model.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Timestamp)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Open)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.High)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Low)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Close)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Volume)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Timestamp)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Open)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.High)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Low)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Close)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Volume)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

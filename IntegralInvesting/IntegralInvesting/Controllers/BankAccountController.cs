@@ -23,17 +23,6 @@ namespace IntegralInvesting.Controllers
             _config = config;
         }
 
-        public class AlphaVantageData
-        {
-            public DateTime Timestamp { get; set; }
-            public decimal Open { get; set; }
-            public decimal High { get; set; }
-            public decimal Low { get; set; }
-            public decimal Close { get; set; }
-            public decimal Volume { get; set; }
-        }
-
-
         [HttpGet]   // Runs when the user clicks the Bank Accounts link at the top of the page
         public IActionResult Index()
         {
@@ -62,17 +51,6 @@ namespace IntegralInvesting.Controllers
 
             var currentUserId = _userManager.GetUserId(this.User);
             bankAccount.UserId = currentUserId;
-
-            // API TEST SECTION
-            //var symbol = bankAccount.AccountName;
-            //var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
-
-            //var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={apiKey}&interval=60min&datatype=csv"
-            //    .GetStringFromUrl();
-
-            //var allPrices = stockApiResponse.FromCsv<List<AlphaVantageData>>().ToList();
-
-            /////////////////////
 
             try
             {
