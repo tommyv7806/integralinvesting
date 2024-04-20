@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using System.Net.Http;
 using IntegralInvesting.Models;
 
 namespace IntegralInvesting.Areas.Identity.Pages.Account
@@ -26,6 +25,9 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IntegralInvestingUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly HttpClient _httpClient;
+        Uri baseAddress = new Uri("https://localhost:7226/api");
+        
 
         public RegisterModel(
             UserManager<IntegralInvestingUser> userManager,
@@ -40,6 +42,10 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+
+
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = baseAddress;
         }
 
         [BindProperty]
@@ -109,7 +115,11 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+
+                    // Create UserFund and Portfolio record for each new user account
                     CreateUserFund(userId);
+                    CreateUserPortfolio(userId);
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -166,21 +176,25 @@ namespace IntegralInvesting.Areas.Identity.Pages.Account
 
         private void CreateUserFund(string userId)
         {
-            Uri apiBaseAddress = new Uri("https://localhost:7226/api");
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = apiBaseAddress;
+            var userFund = new UserFundViewModel { UserId = userId, CurrentFunds = 0 };
 
-            var userFund = new UserFundViewModel
-            {
-                UserId = userId,
-                CurrentFunds = 0
-            };
+            MakeAPICall(userFund, "/UserFund/Post");
+        }
 
+        private void CreateUserPortfolio(string userId)
+        {
+            var userPortfolio = new PortfolioViewModel { UserId = userId };
+
+            MakeAPICall(userPortfolio, "/Portfolio/Post");
+        }
+
+        private void MakeAPICall(IModel model, string apiAction)
+        {
             try
             {
-                string data = JsonConvert.SerializeObject(userFund);
+                string data = JsonConvert.SerializeObject(model);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync(httpClient.BaseAddress + "/UserFund/Post", content).Result;
+                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + apiAction, content).Result;
             }
             catch (Exception e)
             {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntegralInvesting.Models
 {
-    public class UserFundViewModel
+    public class UserFundViewModel : IModel
     {
         [Key]
         public int UserFundId { get; set; }

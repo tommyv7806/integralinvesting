@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntegralInvesting.Models
 {
-    public class PortfolioViewModel
+    public class PortfolioViewModel : IModel
     {
         public PortfolioViewModel() => PortfolioStocks = new List<PortfolioStockViewModel>();
 

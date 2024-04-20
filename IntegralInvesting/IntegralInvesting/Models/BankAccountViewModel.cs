@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntegralInvesting.Models
 {
-    public class BankAccountViewModel
+    public class BankAccountViewModel : IModel
     {
         [Key]
         public int BankAccountId { get; set; }

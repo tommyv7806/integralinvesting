@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntegralInvesting.Models
 {
-    public class PortfolioStockViewModel
+    public class PortfolioStockViewModel : IModel
     {
         [Key]
         public int PortfolioStockId { get; set; }
