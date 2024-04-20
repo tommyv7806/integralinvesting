@@ -57,7 +57,7 @@ namespace DataAccessWebAPI.Controllers
                 var bankAccounts = _context.BankAccounts.Where(b => b.UserId == userId).ToList();
 
                 if (bankAccounts.Count == 0)
-                    return NotFound("Bank Accounts not available");
+                    return NotFound($"Bank Accounts not available for user with UserId of '{userId}'");
 
                 return Ok(bankAccounts);
             }

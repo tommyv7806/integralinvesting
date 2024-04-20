@@ -10,7 +10,7 @@ namespace DataAccessWebAPI.Models
 
         // Foregin key properties
         public int PortfolioId { get; set; }
-        public Portfolio Portfolio { get; set; }
+        public Portfolio? Portfolio { get; set; }
 
         [Required]
         [MaxLength(200)]
