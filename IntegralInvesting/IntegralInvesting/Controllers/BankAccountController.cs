@@ -13,14 +13,12 @@ namespace IntegralInvesting.Controllers
         Uri baseAddress = new Uri("https://localhost:7226/api");
         private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
-        private readonly IConfiguration _config;
 
-        public BankAccountController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
+        public BankAccountController(UserManager<IntegralInvestingUser> userManager)
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAddress;
             _userManager = userManager;
-            _config = config;
         }
 
         [HttpGet]   // Runs when the user clicks the Bank Accounts link at the top of the page

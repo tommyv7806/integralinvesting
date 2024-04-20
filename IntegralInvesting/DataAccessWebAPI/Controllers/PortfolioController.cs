@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DataAccessWebAPI.DataAccessLayer;
 using DataAccessWebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessWebAPI.Controllers
 {
@@ -53,7 +54,10 @@ namespace DataAccessWebAPI.Controllers
         {
             try
             {
-                var portfolio = _context.Portfolios.Where(p => p.UserId == userId).ToList();
+                var portfolio = _context.Portfolios
+                    .Include(p => p.PortfolioStocks)
+                    .Where(p => p.UserId == userId)
+                    .ToList();
 
                 if (portfolio.Count == 0)
                     return NotFound($"Portfolio not available for user with UserId of '{userId}'");

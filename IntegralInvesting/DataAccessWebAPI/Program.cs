@@ -1,5 +1,6 @@
 using DataAccessWebAPI.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,8 @@ var connectionString = builder.Configuration.GetConnectionString("IntegralInvest
 builder.Services.AddDbContext<IntegralInvestingAppDbContext>(options => options.UseSqlServer(connectionString));
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
