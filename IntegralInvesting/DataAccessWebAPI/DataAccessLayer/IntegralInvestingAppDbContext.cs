@@ -9,5 +9,8 @@ namespace DataAccessWebAPI.DataAccessLayer
 
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<UserFund> UserFunds { get; set; }
+        public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<PortfolioStock> PortfolioStocks { get; set; }
+
     }
 }
