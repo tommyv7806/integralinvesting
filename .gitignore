@@ -5,6 +5,7 @@
 
 # Ignore appsettings.json since it has API key
 IntegralInvesting/IntegralInvesting/appsettings.json
+IntegralInvesting/IntegralInvesting/appsettings.Development.json
 
 # User-specific files
 *.rsuser
