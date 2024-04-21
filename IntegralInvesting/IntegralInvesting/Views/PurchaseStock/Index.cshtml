@@ -1,4 +1,5 @@
 ﻿
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -10,13 +11,35 @@
         <h2>@ViewData["SearchString"]</h2>
     }
 } *@
+
+<h4>Details Search</h4>
 <div>
     <input name="SearchString" id="searchField" />
     <input type="button" id="btnSubmit" value="Search" class="btn btn-primary" />
 </div>
-<div id=SearchResult>
-    <partial name="PurchaseSearchResultPartial.cshtml" model="new List<PurchaseStockViewModel>()" />
+
+<h4>Name Search</h4>
+<div>
+    <input name="SearchString" id="testSearchField" />
+    <input type="button" id="testBtnSubmit" value="Search" class="btn btn-primary" />
 </div>
+
+<div class="container">
+    <div class="row">
+        <!-- Left side of page where initial search results are displayed -->
+        <div class="col-5" id=SearchResult>
+            <partial name="TestPurchaseSearchResultPartial.cshtml" model="new List<StockSearchViewModel>()" />
+        </div>
+        
+        <!-- Right side of page where stock details are displayed -->
+        <div class="col-7" id=SearchResultDetail>
+            <partial name="PurchaseSearchResultPartial.cshtml" model="new List<PurchaseStockViewModel>()" />
+        </div>
+    </div>
+</div>
+
+
+
 
 @section Scripts {
     <script>
@@ -28,6 +51,22 @@
         function GetSearchResults(searchStringValue) {
             $.ajax({
                 url: "/PurchaseStock/Search/",
+                type: "get",
+                data: { searchString: searchStringValue },
+                success: function (result) {
+                    $('#SearchResultDetail').html(result);
+                }
+            });
+        }
+
+        $('#testBtnSubmit').click(function () {
+            let searchStringValue = document.getElementById("testSearchField").value
+            TestGetSearchResults(searchStringValue);
+        });
+
+        function TestGetSearchResults(searchStringValue) {
+            $.ajax({
+                url: "/PurchaseStock/TestSearch/",
                 type: "get",
                 data: { searchString: searchStringValue },
                 success: function (result) {

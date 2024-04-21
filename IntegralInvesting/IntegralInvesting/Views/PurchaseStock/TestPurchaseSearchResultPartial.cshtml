@@ -1,0 +1,68 @@
+﻿@model IEnumerable<IntegralInvesting.Models.StockSearchViewModel>
+
+@{
+    ViewData["Title"] = "Purchase Stocks";
+}
+
+@{
+    if (ViewData["ErrorMessage"] != null)
+    {
+        <h4>@ViewData["ErrorMessage"]</h4>
+    }
+}
+
+@{
+    if (Model.Any())
+    {
+        <div class="d-flex">
+            <div class="overflow-auto" style="height: 400px">
+                @foreach (var item in Model)
+                {
+                    <div class="card m-2">
+                        <div class="row g-0">
+                            <div>
+                                <div class="card-body container">
+                                    <h5 class="card-title">
+                                        <a href="javascript:GetSearchResults('@item.Symbol')" id="@item.Symbol">@Html.DisplayFor(modelItem => item.Name)</a> - @Html.DisplayFor(modelItem => item.Symbol)
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p class="card-text">
+                                                <span style="font-weight:bold;">Type:</span> @Html.DisplayFor(modelItem => item.Type)
+                                            </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="card-text">
+                                                <span style="font-weight:bold;">Region:</span> @Html.DisplayFor(modelItem => item.Region)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <script>
+        // $('a.symbolLink').click(function () {
+        //     let symbolValue = this.id;
+        //     GetSearchResults(symbolValue
+        // });
+
+        function GetSearchResults(symbolValue) {
+            $.ajax({
+                url: "/PurchaseStock/Search/",
+                type: "get",
+                data: { searchString: symbolValue },
+                success: function (result) {
+                    $('#SearchResultDetail').html(result);
+                }
+            });
+        }
+    </script>
+}

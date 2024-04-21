@@ -54,5 +54,33 @@ namespace IntegralInvesting.Controllers
 
             return PartialView("PurchaseSearchResultPartial", new List<PurchaseStockViewModel>());
         }
+
+        public IActionResult TestSearch(string searchString)
+        {
+            if (searchString != null)
+            {
+                // API TEST SECTION
+                var symbol = searchString;
+                var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
+
+                var stockApiResponse = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={symbol}&apikey={apiKey}&datatype=csv"
+                    .GetStringFromUrl();
+
+                if (stockApiResponse.Contains("Invalid API call"))
+                {
+                    ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
+                    return PartialView("TestPurchaseSearchResultPartial", new List<StockSearchViewModel>());
+                }
+
+                var results = stockApiResponse.FromCsv<List<StockSearchViewModel>>().ToList();
+
+                /////////////////////
+
+                return PartialView("TestPurchaseSearchResultPartial", results);
+            }
+
+
+            return PartialView("TestPurchaseSearchResultPartial", new List<StockSearchViewModel>());
+        }
     }
 }

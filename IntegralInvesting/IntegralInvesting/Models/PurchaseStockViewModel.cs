@@ -8,6 +8,5 @@
         public decimal Low { get; set; }
         public decimal Close { get; set; }
         public decimal Volume { get; set; }
-        public string TestString { get; set; } = string.Empty;
     }
 }
