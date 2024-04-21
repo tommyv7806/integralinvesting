@@ -27,12 +27,10 @@ namespace IntegralInvesting.Controllers
             return View();
         }
 
-        public IActionResult Search(string searchString)
+        public IActionResult DetailsSearch(string symbol)
         {
-            if (searchString != null)
+            if (symbol != null)
             {
-                // API TEST SECTION
-                var symbol = searchString;
                 var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
 
                 var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={apiKey}&interval=60min&datatype=csv"
@@ -41,25 +39,22 @@ namespace IntegralInvesting.Controllers
                 if (stockApiResponse.Contains("Invalid API call"))
                 {
                     ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
-                    return PartialView("PurchaseSearchResultPartial", new List<PurchaseStockViewModel>());
+                    return PartialView("SearchResultDetailsPartial", new List<PurchaseStockViewModel>());
                 }
 
                 var allPrices = stockApiResponse.FromCsv<List<PurchaseStockViewModel>>().ToList();
 
-                /////////////////////
-
-                return PartialView("PurchaseSearchResultPartial", allPrices);
+                return PartialView("SearchResultDetailsPartial", allPrices);
             }
             
 
-            return PartialView("PurchaseSearchResultPartial", new List<PurchaseStockViewModel>());
+            return PartialView("SearchResultDetailsPartial", new List<PurchaseStockViewModel>());
         }
 
-        public IActionResult TestSearch(string searchString)
+        public IActionResult InitialSearch(string searchString)
         {
             if (searchString != null)
             {
-                // API TEST SECTION
                 var symbol = searchString;
                 var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
 
@@ -69,18 +64,16 @@ namespace IntegralInvesting.Controllers
                 if (stockApiResponse.Contains("Invalid API call"))
                 {
                     ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
-                    return PartialView("TestPurchaseSearchResultPartial", new List<StockSearchViewModel>());
+                    return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
                 }
 
                 var results = stockApiResponse.FromCsv<List<StockSearchViewModel>>().ToList();
 
-                /////////////////////
-
-                return PartialView("TestPurchaseSearchResultPartial", results);
+                return PartialView("InitialSearchResultPartial", results);
             }
 
 
-            return PartialView("TestPurchaseSearchResultPartial", new List<StockSearchViewModel>());
+            return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
         }
     }
 }

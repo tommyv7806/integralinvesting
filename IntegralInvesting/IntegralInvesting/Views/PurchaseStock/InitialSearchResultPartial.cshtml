@@ -23,7 +23,7 @@
                             <div>
                                 <div class="card-body container">
                                     <h5 class="card-title">
-                                        <a href="javascript:GetSearchResults('@item.Symbol')" id="@item.Symbol">@Html.DisplayFor(modelItem => item.Name)</a> - @Html.DisplayFor(modelItem => item.Symbol)
+                                        <a href="javascript:GetSearchResultDetails('@item.Symbol')" id="@item.Symbol">@Html.DisplayFor(modelItem => item.Name)</a> - @Html.DisplayFor(modelItem => item.Symbol)
                                     </h5>
                                     <div class="row">
                                         <div class="col-6">
@@ -45,24 +45,4 @@
             </div>
         </div>
     }
-}
-
-@section Scripts {
-    <script>
-        // $('a.symbolLink').click(function () {
-        //     let symbolValue = this.id;
-        //     GetSearchResults(symbolValue
-        // });
-
-        function GetSearchResults(symbolValue) {
-            $.ajax({
-                url: "/PurchaseStock/Search/",
-                type: "get",
-                data: { searchString: symbolValue },
-                success: function (result) {
-                    $('#SearchResultDetail').html(result);
-                }
-            });
-        }
-    </script>
 }

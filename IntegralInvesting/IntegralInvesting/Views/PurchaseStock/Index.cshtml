@@ -1,72 +1,53 @@
-﻿
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
 <h1>Purchase Page</h1>
-@* @{
-    if (ViewData["SearchString"] != null)
-    {
-        <h2>@ViewData["SearchString"]</h2>
-    }
-} *@
-
-<h4>Details Search</h4>
-<div>
-    <input name="SearchString" id="searchField" />
-    <input type="button" id="btnSubmit" value="Search" class="btn btn-primary" />
-</div>
 
 <h4>Name Search</h4>
 <div>
-    <input name="SearchString" id="testSearchField" />
-    <input type="button" id="testBtnSubmit" value="Search" class="btn btn-primary" />
+    <input name="SearchString" id="searchField" />
+    <input type="button" id="btnSubmit" value="Search" class="btn btn-primary" />
 </div>
 
 <div class="container">
     <div class="row">
         <!-- Left side of page where initial search results are displayed -->
         <div class="col-5" id=SearchResult>
-            <partial name="TestPurchaseSearchResultPartial.cshtml" model="new List<StockSearchViewModel>()" />
+            <partial name="InitialSearchResultPartial.cshtml" model="new List<StockSearchViewModel>()" />
         </div>
         
         <!-- Right side of page where stock details are displayed -->
         <div class="col-7" id=SearchResultDetail>
-            <partial name="PurchaseSearchResultPartial.cshtml" model="new List<PurchaseStockViewModel>()" />
+            <partial name="SearchResultDetailsPartial.cshtml" model="new List<PurchaseStockViewModel>()" />
         </div>
     </div>
 </div>
 
-
-
-
 @section Scripts {
     <script>
-        $('#btnSubmit').click(function () {
-            let searchStringValue = document.getElementById("searchField").value
-            GetSearchResults(searchStringValue);
-        });
-
-        function GetSearchResults(searchStringValue) {
+        // Gets the details for a particular stock and displays them on the right side of the page
+        function GetSearchResultDetails(searchStringValue) {
             $.ajax({
-                url: "/PurchaseStock/Search/",
+                url: "/PurchaseStock/DetailsSearch/",
                 type: "get",
-                data: { searchString: searchStringValue },
+                data: { symbol: searchStringValue },
                 success: function (result) {
                     $('#SearchResultDetail').html(result);
                 }
             });
         }
 
-        $('#testBtnSubmit').click(function () {
-            let searchStringValue = document.getElementById("testSearchField").value
-            TestGetSearchResults(searchStringValue);
+        // Set up Search button so that it calls GetInitialSearchResult() when clicked
+        $('#btnSubmit').click(function () {
+            let searchStringValue = document.getElementById("searchField").value
+            GetInitialSearchResult(searchStringValue);
         });
 
-        function TestGetSearchResults(searchStringValue) {
+        // Gets the initial list of search results and displays them on the left side of the page
+        function GetInitialSearchResult(searchStringValue) {
             $.ajax({
-                url: "/PurchaseStock/TestSearch/",
+                url: "/PurchaseStock/InitialSearch/",
                 type: "get",
                 data: { searchString: searchStringValue },
                 success: function (result) {
