@@ -26,6 +26,9 @@ namespace DataAccessWebAPI.Models
         [Column(TypeName = "decimal(8, 2)")]
         public decimal PurchasePrice { get; set; } = 0m;
 
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal PurchaseTotal { get; set; } = 0m;
+
         public int PurchaseQuantity { get; set; } = 0;
     }
 }

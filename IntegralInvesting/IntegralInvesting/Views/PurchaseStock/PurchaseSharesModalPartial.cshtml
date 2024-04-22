@@ -1,10 +1,14 @@
 ﻿@model IntegralInvesting.Models.PortfolioStockViewModel
+@{
+    int CalculateMaxNumberOfShares()
+    {
+        var currentUserFunds = ViewData["UserFunds"];
+        return Convert.ToInt16(Convert.ToDecimal(currentUserFunds) / Model.PurchasePrice);
+    }
+}
 
 <div class="modal-header">
-    <h5 class="modal-title" id="purchaseStockLabel">Purchase Stock</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">×</span>
-    </button>
+    <h5 class="modal-title" id="purchaseStockLabel">Purchase Stock with Funds: @ViewData["UserFunds"]</h5>
 </div>
 <div class="modal-body">
     <form asp-controller="PurchaseStock" asp-action="PurchaseShares" method="post">
@@ -27,8 +31,13 @@
         </div>
         <div class="form-group">
             <label asp-for="PurchaseQuantity" class="control-label"></label>
-            <input type="number" asp-for="PurchaseQuantity" class="form-control" />
+            <input type="number" id="purchaseQuantityField" max="@CalculateMaxNumberOfShares()" asp-for="PurchaseQuantity" class="form-control" onchange="CalculatePurchaseTotal('@Model.PurchasePrice')"/>
             <span asp-validation-for="PurchaseQuantity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PurchaseTotal" class="control-label"></label>
+            <input readonly id="purchaseTotalField" asp-for="PurchaseTotal" class="form-control" />
+            <span asp-validation-for="PurchaseTotal" class="text-danger"></span>
         </div>
         <div class="form-group">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -36,7 +45,6 @@
         </div>
     </form>
 </div>
-<div class="modal-footer">
-    
-</div>
+
+
 

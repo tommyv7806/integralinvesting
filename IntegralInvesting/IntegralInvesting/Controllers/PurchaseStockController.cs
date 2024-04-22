@@ -2,9 +2,11 @@
 using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using ServiceStack;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IntegralInvesting.Controllers
 {
@@ -85,6 +87,11 @@ namespace IntegralInvesting.Controllers
             model.PurchasePrice = decimal.Parse(latestPrice);
             model.Symbol = symbol;
 
+            var currentUserId = _userManager.GetUserId(this.User);
+            var userFunds = GetFundsForCurrentUser(currentUserId).CurrentFunds;
+
+            ViewData["UserFunds"] = userFunds;
+
             return PartialView("PurchaseSharesModalPartial", model);
         }
 
@@ -93,9 +100,25 @@ namespace IntegralInvesting.Controllers
         {
             var currentUserId = _userManager.GetUserId(this.User);
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
-
             model.PortfolioId = userPortfolio.PortfolioId;
 
+            var userFunds = GetFundsForCurrentUser(currentUserId);
+            userFunds.CurrentFunds -= model.PurchaseTotal;
+
+            // Update User Funds
+            try
+            {
+                string data = JsonConvert.SerializeObject(userFunds);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/UserFund/Put", content).Result;
+            }
+            catch (Exception e) 
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+
+            // Add PortfolioStock to Portfolio
             try
             {
                 string data = JsonConvert.SerializeObject(model);
@@ -105,7 +128,7 @@ namespace IntegralInvesting.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = "Shares successfully purchased";
-                    return PartialView("PurchaseSharesModalPartial", model);
+                    return RedirectToAction("Index", "Portfolio");
                 }
             }
             catch (Exception e)
@@ -129,6 +152,20 @@ namespace IntegralInvesting.Controllers
             }
 
             return portfolio;
+        }
+
+        private UserFundViewModel GetFundsForCurrentUser(string currentUserId)
+        {
+            UserFundViewModel userFund = new UserFundViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/UserFund/GetUserFunds/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                userFund = JsonConvert.DeserializeObject<List<UserFundViewModel>>(data).Single();
+            }
+
+            return userFund;
         }
     }
 }
