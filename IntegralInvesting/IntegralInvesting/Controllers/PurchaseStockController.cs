@@ -2,18 +2,24 @@
 using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ServiceStack;
+using System.Text;
 
 namespace IntegralInvesting.Controllers
 {
     public class PurchaseStockController : Controller
     {
+        Uri baseAddress = new Uri("https://localhost:7226/api");
+        private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
         private readonly IConfiguration _config;
         private readonly string _apiKey;
 
         public PurchaseStockController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = baseAddress;
             _userManager = userManager;
             _config = config;
 
@@ -26,7 +32,7 @@ namespace IntegralInvesting.Controllers
             return View();
         }
 
-        public IActionResult DetailsSearch(string symbol)
+        public IActionResult DetailsSearch(string symbol, string stockName)
         {
             if (symbol != null)
             {
@@ -41,6 +47,9 @@ namespace IntegralInvesting.Controllers
 
                 var allPrices = stockApiResponse.FromCsv<List<StockDetailsViewModel>>().ToList();
 
+                ViewData["Symbol"] = symbol;
+                ViewData["StockName"] = stockName;
+                ViewData["LatestPrice"] = allPrices.First().Close;
                 return PartialView("SearchResultDetailsPartial", allPrices);
             }
             
@@ -66,6 +75,60 @@ namespace IntegralInvesting.Controllers
             }
 
             return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
+        }
+
+        [HttpGet]
+        public IActionResult OpenPurchaseModal(string stockName, string latestPrice, string symbol)
+        {
+            var model = new PortfolioStockViewModel();
+            model.Name = stockName;
+            model.PurchasePrice = decimal.Parse(latestPrice);
+            model.Symbol = symbol;
+
+            return PartialView("PurchaseSharesModalPartial", model);
+        }
+
+        [HttpPost]
+        public IActionResult PurchaseShares(PortfolioStockViewModel model)
+        {
+            var currentUserId = _userManager.GetUserId(this.User);
+            var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
+
+            model.PortfolioId = userPortfolio.PortfolioId;
+
+            try
+            {
+                string data = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/PortfolioStock/Post", content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Shares successfully purchased";
+                    return PartialView("PurchaseSharesModalPartial", model);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return PartialView("PurchaseSharesModalPartial", model);
+            }
+
+            return PartialView("PurchaseSharesModalPartial", model);
+        }
+
+        private PortfolioViewModel GetPortfolioForCurrentUser(string currentUserId)
+        {
+            PortfolioViewModel portfolio = new PortfolioViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Portfolio/GetUserPortfolio/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                portfolio = JsonConvert.DeserializeObject<List<PortfolioViewModel>>(data).Single();
+            }
+
+            return portfolio;
         }
     }
 }

@@ -86,9 +86,9 @@ namespace DataAccessWebAPI.Controllers
                     return BadRequest($"Portfolio Stock not found with Id of {model.PortfolioStockId}");
 
                 portfolioStock.PortfolioId = model.PortfolioId;
-                portfolioStock.NumberOfShares = model.NumberOfShares;
                 portfolioStock.PurchasePrice = model.PurchasePrice;
                 portfolioStock.CurrentPrice = model.CurrentPrice;
+                portfolioStock.PurchaseQuantity = model.PurchaseQuantity;
 
                 _context.SaveChanges();
                 return Ok("Portfolio Stock details updated");

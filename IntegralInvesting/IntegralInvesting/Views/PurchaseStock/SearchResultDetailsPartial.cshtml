@@ -12,6 +12,14 @@
 @{
     if (Model.Any())
     {
+        <!-- Purchase button -->
+        <a class="btn btn-success" data-modal="" id="btnOpenPurchaseModal" onclick="OpenPurchaseSharesModal('@ViewData["StockName"]', '@ViewData["LatestPrice"]', '@ViewData["Symbol"]')">
+            Purchase
+        </a>
+
+        <h4>@ViewData["StockName"]</h4>
+        <h4>@ViewData["LatestPrice"]</h4>
+
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -63,3 +71,4 @@
         </table>
     }
 }
+

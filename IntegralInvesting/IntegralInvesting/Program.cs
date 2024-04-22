@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using IntegralInvesting.Data;
 using IntegralInvesting.Areas.Identity.Data;
+using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IntegralInvestingDataContextConnection") ?? throw new InvalidOperationException("Connection string 'IntegralInvestingDataContextConnection' not found.");
 
@@ -13,6 +14,8 @@ builder.Services.AddDefaultIdentity<IntegralInvestingUser>(options => options.Si
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve); 
 
 var app = builder.Build();
 

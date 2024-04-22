@@ -1,0 +1,42 @@
+﻿@model IntegralInvesting.Models.PortfolioStockViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title" id="purchaseStockLabel">Purchase Stock</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form asp-controller="PurchaseStock" asp-action="PurchaseShares" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input readonly asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Symbol" class="control-label"></label>
+            <input readonly asp-for="Symbol" class="form-control" />
+            <span asp-validation-for="Symbol" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PurchasePrice" class="control-label"></label>
+            <input readonly asp-for="PurchasePrice" class="form-control" />
+            <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PurchaseQuantity" class="control-label"></label>
+            <input type="number" asp-for="PurchaseQuantity" class="form-control" />
+            <span asp-validation-for="PurchaseQuantity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" id="btnModalPurchaseSubmit" class="btn btn-primary" data-save="modal">Save</button>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    
+</div>
+
