@@ -10,20 +10,19 @@ namespace IntegralInvesting.Controllers
     {
         private readonly UserManager<IntegralInvestingUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly string _apiKey;
 
         public PurchaseStockController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
             _userManager = userManager;
             _config = config;
+
+            _apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
         }
 
         [HttpGet]
         public IActionResult Index(string searchString)
         {
-            if (searchString != null)
-            {
-                ViewData["SearchString"] = searchString;
-            }
             return View();
         }
 
@@ -31,34 +30,28 @@ namespace IntegralInvesting.Controllers
         {
             if (symbol != null)
             {
-                var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
-
-                var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={apiKey}&interval=60min&datatype=csv"
+                var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={_apiKey}&interval=60min&datatype=csv"
                     .GetStringFromUrl();
 
                 if (stockApiResponse.Contains("Invalid API call"))
                 {
                     ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
-                    return PartialView("SearchResultDetailsPartial", new List<PurchaseStockViewModel>());
+                    return PartialView("SearchResultDetailsPartial", new List<StockDetailsViewModel>());
                 }
 
-                var allPrices = stockApiResponse.FromCsv<List<PurchaseStockViewModel>>().ToList();
+                var allPrices = stockApiResponse.FromCsv<List<StockDetailsViewModel>>().ToList();
 
                 return PartialView("SearchResultDetailsPartial", allPrices);
             }
             
-
-            return PartialView("SearchResultDetailsPartial", new List<PurchaseStockViewModel>());
+            return PartialView("SearchResultDetailsPartial", new List<StockDetailsViewModel>());
         }
 
         public IActionResult InitialSearch(string searchString)
         {
             if (searchString != null)
             {
-                var symbol = searchString;
-                var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
-
-                var stockApiResponse = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={symbol}&apikey={apiKey}&datatype=csv"
+                var stockApiResponse = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={searchString}&apikey={_apiKey}&datatype=csv"
                     .GetStringFromUrl();
 
                 if (stockApiResponse.Contains("Invalid API call"))
@@ -71,7 +64,6 @@ namespace IntegralInvesting.Controllers
 
                 return PartialView("InitialSearchResultPartial", results);
             }
-
 
             return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
         }

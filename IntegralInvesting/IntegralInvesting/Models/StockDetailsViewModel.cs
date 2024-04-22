@@ -1,6 +1,6 @@
 ﻿namespace IntegralInvesting.Models
 {
-    public class PurchaseStockViewModel : IModel
+    public class StockDetailsViewModel : IModel
     {
         public DateTime Timestamp { get; set; }
         public decimal Open { get; set; }
