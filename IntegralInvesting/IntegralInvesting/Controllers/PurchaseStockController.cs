@@ -60,24 +60,20 @@ namespace IntegralInvesting.Controllers
         {
             if (symbol != null)
             {
-                var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={_apiKey}&interval=60min&datatype=csv"
-                    .GetStringFromUrl();
-
-                if (stockApiResponse.Contains("Invalid API call"))
-                {
-                    ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
-                    return PartialView("SearchResultDetailsPartial", new List<StockDetailsViewModel>());
-                }
-
-                var allPrices = stockApiResponse.FromCsv<List<StockDetailsViewModel>>().ToList();
+                var stockDetails = GetBasicStockDetails(symbol);
 
                 ViewData["Symbol"] = symbol;
                 ViewData["StockName"] = stockName;
-                ViewData["LatestPrice"] = allPrices.First().Close;
-                return PartialView("SearchResultDetailsPartial", allPrices);
+                ViewData["Price"] = stockDetails.Price;
+
+                var timeDetails = GetStockTimeDetails(symbol);
+
+                stockDetails.StockTimeDetailsList.AddRange(timeDetails);
+
+                return PartialView("SearchResultDetailsPartial", stockDetails);
             }
             
-            return PartialView("SearchResultDetailsPartial", new List<StockDetailsViewModel>());
+            return PartialView("SearchResultDetailsPartial", new StockDetailsViewModel());
         }
 
         // Opens the modal where users can enter the number of shares of a particular stock they want to purchase
@@ -133,6 +129,27 @@ namespace IntegralInvesting.Controllers
             }
 
             return PartialView("PurchaseSharesModalPartial", model);
+        }
+
+        private StockDetailsViewModel GetBasicStockDetails(string symbol)
+        {
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={_apiKey}&datatype=csv"
+                    .GetStringFromUrl();
+
+            if (stockApiResponse.Contains("Invalid API call"))
+            {
+                ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
+            }
+
+            return stockApiResponse.FromCsv<StockDetailsViewModel>();
+        }
+
+        private List<StockTimeDetails> GetStockTimeDetails(string symbol)
+        {
+            var timeDetailsApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={_apiKey}&interval=60min&datatype=csv"
+                    .GetStringFromUrl();
+
+            return timeDetailsApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
         }
 
         private void UpdateUserCurrentFunds(UserFundViewModel userFunds)

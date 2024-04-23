@@ -1,8 +1,8 @@
 ﻿@{ ViewData["Title"] = "Index"; }
 
-<h1>Purchase Page</h1>
+<h4>Browse Stocks</h4>
 
-<h4>Name Search</h4>
+<!-- Search bar div -->
 <div>
     <input name="SearchString" id="searchField" />
     <input type="button" id="btnSubmit" value="Search" class="btn btn-primary" />
@@ -17,7 +17,7 @@
         
         <!-- Right side of page where stock details are displayed -->
         <div class="col-7" id=SearchResultDetail>
-            <partial name="SearchResultDetailsPartial.cshtml" model="new List<StockDetailsViewModel>()" />
+            <partial name="SearchResultDetailsPartial.cshtml" model="new StockDetailsViewModel()" />
         </div>
     </div>
 </div>

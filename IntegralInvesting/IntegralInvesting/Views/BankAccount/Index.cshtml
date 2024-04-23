@@ -6,7 +6,7 @@
 }
 
 <div class="d-flex justify-content-center mt-3 mb-2">
-    <div><h5>Current Funds in Account: @ViewData["CurrentUserFunds"]</h5></div>
+    <div><h5>Current Funds in Account: $@ViewData["CurrentUserFunds"]</h5></div>
     <div style="margin-left: 2em">
         <a asp-controller="BankAccount" asp-action="DepositFunds" class="btn btn-warning">Deposit Funds</a>
         <a asp-controller="BankAccount" asp-action="WithdrawFunds" class="btn btn-warning">Withdraw Funds</a>
@@ -16,7 +16,7 @@
 <div class="d-flex justify-content-between mt-5 mb-2">
     <div><h2>Linked Bank Accounts</h2></div>
     <div>
-        <a asp-controller="BankAccount" asp-action="LinkNewAccount" class="btn btn-warning">Link New Account</a>
+        <a asp-controller="BankAccount" asp-action="LinkNewAccount" class="btn btn-success">Link New Account</a>
     </div>
 </div>
 
