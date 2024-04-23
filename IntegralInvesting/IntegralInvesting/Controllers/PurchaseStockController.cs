@@ -2,11 +2,9 @@
 using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using ServiceStack;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IntegralInvesting.Controllers
 {
@@ -16,7 +14,7 @@ namespace IntegralInvesting.Controllers
         private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
         private readonly IConfiguration _config;
-        private readonly string _apiKey;
+        private readonly string? _apiKey;
 
         public PurchaseStockController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
@@ -28,12 +26,34 @@ namespace IntegralInvesting.Controllers
             _apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
         }
 
+        // Displays the Purchase page without any search results - Only displays the search bar
         [HttpGet]
         public IActionResult Index(string searchString)
         {
             return View();
         }
 
+        // After the user clicks the search button, display the initial search results on left side of screen
+        public IActionResult InitialSearch(string searchString)
+        {
+            if (searchString != null)
+            {
+                var stockApiResponse = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={searchString}&apikey={_apiKey}&datatype=csv"
+                    .GetStringFromUrl();
+
+                if (stockApiResponse.Contains("Invalid API call"))
+                    return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
+
+                var results = stockApiResponse.FromCsv<List<StockSearchViewModel>>().ToList();
+                var filteredResults = results.Where(r => r.Symbol.Length < 5).ToList();
+
+                return PartialView("InitialSearchResultPartial", filteredResults);
+            }
+
+            return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
+        }
+
+        // When the user clicks on one of the search results, display the details for that stock
         public IActionResult DetailsSearch(string symbol, string stockName)
         {
             if (symbol != null)
@@ -58,27 +78,7 @@ namespace IntegralInvesting.Controllers
             return PartialView("SearchResultDetailsPartial", new List<StockDetailsViewModel>());
         }
 
-        public IActionResult InitialSearch(string searchString)
-        {
-            if (searchString != null)
-            {
-                var stockApiResponse = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={searchString}&apikey={_apiKey}&datatype=csv"
-                    .GetStringFromUrl();
-
-                if (stockApiResponse.Contains("Invalid API call"))
-                {
-                    ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
-                    return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
-                }
-
-                var results = stockApiResponse.FromCsv<List<StockSearchViewModel>>().ToList();
-
-                return PartialView("InitialSearchResultPartial", results);
-            }
-
-            return PartialView("InitialSearchResultPartial", new List<StockSearchViewModel>());
-        }
-
+        // Opens the modal where users can enter the number of shares of a particular stock they want to purchase
         [HttpGet]
         public IActionResult OpenPurchaseModal(string stockName, string latestPrice, string symbol)
         {
@@ -99,26 +99,19 @@ namespace IntegralInvesting.Controllers
         public IActionResult PurchaseShares(PortfolioStockViewModel model)
         {
             var currentUserId = _userManager.GetUserId(this.User);
+
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
             model.PortfolioId = userPortfolio.PortfolioId;
 
             var userFunds = GetFundsForCurrentUser(currentUserId);
             userFunds.CurrentFunds -= model.PurchaseTotal;
 
-            // Update User Funds
-            try
-            {
-                string data = JsonConvert.SerializeObject(userFunds);
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                var stringContent = content.ReadAsStringAsync().Result;
-                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/UserFund/Put", content).Result;
-            }
-            catch (Exception e) 
-            {
-                TempData["ErrorMessage"] = e.Message;
-            }
+            UpdateUserCurrentFunds(userFunds);
+            return AddSharesToPortfolio(model);
+        }
 
-            // Add PortfolioStock to Portfolio
+        private IActionResult AddSharesToPortfolio(PortfolioStockViewModel model)
+        {
             try
             {
                 string data = JsonConvert.SerializeObject(model);
@@ -138,6 +131,21 @@ namespace IntegralInvesting.Controllers
             }
 
             return PartialView("PurchaseSharesModalPartial", model);
+        }
+
+        private void UpdateUserCurrentFunds(UserFundViewModel userFunds)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(userFunds);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/UserFund/Put", content).Result;
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
         }
 
         private PortfolioViewModel GetPortfolioForCurrentUser(string currentUserId)

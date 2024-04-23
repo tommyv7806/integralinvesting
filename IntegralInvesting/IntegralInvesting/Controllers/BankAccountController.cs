@@ -20,7 +20,8 @@ namespace IntegralInvesting.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]   // Runs when the user clicks the Bank Accounts link at the top of the page
+        // Runs when the user clicks the Bank Accounts link at the top of the page
+        [HttpGet]   
         public IActionResult Index()
         {
             ValidateUserIsLoggedIn();
@@ -33,6 +34,7 @@ namespace IntegralInvesting.Controllers
             return View(currentUserBankAccounts);
         }
 
+        // When the user wants to link a new account
         [HttpGet]   
         public IActionResult LinkNewAccount()
         {
@@ -41,6 +43,7 @@ namespace IntegralInvesting.Controllers
             return View();
         }
 
+        // When the user saves the newly linked account
         [HttpPost]
         public IActionResult SaveLinkedAccount(BankAccountViewModel bankAccount)
         {
@@ -70,6 +73,7 @@ namespace IntegralInvesting.Controllers
             return View();            
         }
 
+        // When the user wants to withdraw funds from their linked bank account
         [HttpGet]
         public IActionResult WithdrawFunds()
         {

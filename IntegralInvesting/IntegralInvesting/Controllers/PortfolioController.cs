@@ -1,6 +1,5 @@
 ﻿using IntegralInvesting.Areas.Identity.Data;
 using IntegralInvesting.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -20,6 +19,7 @@ namespace IntegralInvesting.Controllers
             _userManager = userManager;
         }
 
+        // Display the information for the user's Portfolio
         public ActionResult Index()
         {
             ValidateUserIsLoggedIn();
