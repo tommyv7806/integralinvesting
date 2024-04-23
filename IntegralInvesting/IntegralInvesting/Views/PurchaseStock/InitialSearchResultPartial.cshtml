@@ -43,4 +43,8 @@
             </div>
         </div>
     }
+    else if (ViewData["SearchQuery"] != null)
+    {
+        <h4> No results found for '@ViewData["SearchQuery"]'</h4>
+    }
 }

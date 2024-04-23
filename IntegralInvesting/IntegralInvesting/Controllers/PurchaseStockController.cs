@@ -36,6 +36,8 @@ namespace IntegralInvesting.Controllers
         // After the user clicks the search button, display the initial search results on left side of screen
         public IActionResult InitialSearch(string searchString)
         {
+            ViewData["SearchQuery"] = searchString;
+
             if (searchString != null)
             {
                 var stockApiResponse = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={searchString}&apikey={_apiKey}&datatype=csv"
@@ -120,7 +122,7 @@ namespace IntegralInvesting.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = "Shares successfully purchased";
+                    TempData["SuccessMessage"] = $"{model.PurchaseQuantity} shares successfully purchased for {model.Name}";
                     return RedirectToAction("Index", "Portfolio");
                 }
             }

@@ -150,7 +150,7 @@ namespace IntegralInvesting.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = $"Funds successfully withdrawn from {userFund.CurrentTransferAccount} bank account";
+                    TempData["SuccessMessage"] = $"Funds successfully deposited into {userFund.CurrentTransferAccount} bank account";
                     userFund.CurrentTransferAmount = null;
                     userFund.CurrentTransferAccount = null;
 
