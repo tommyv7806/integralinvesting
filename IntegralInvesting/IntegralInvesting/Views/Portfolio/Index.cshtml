@@ -1,13 +1,19 @@
 ﻿@model IEnumerable<IntegralInvesting.Models.PortfolioStockViewModel>
 
-@{ ViewData["Title"] = "Index"; }
+@{ ViewData["Title"] = "Portfolio Page"; }
+
+<!-- Sell Shares Modal placeholder -->
+<div id="sell-modal-placeholder" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div id='modal-sell-content'></div>
+        </div>
+    </div>
+</div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PortfolioId)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -18,36 +24,38 @@
                 @Html.DisplayNameFor(model => model.CurrentPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PurchasePrice)
+                @Html.DisplayNameFor(model => model.PurchaseQuantity)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PortfolioId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Symbol)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchasePrice)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PortfolioStockId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PortfolioStockId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PortfolioStockId">Delete</a>
-            </td>
-        </tr>
-}
+    @{
+        var groupedStocks = Model.GroupBy(m => m.Symbol);
+        foreach (var stock in groupedStocks)
+        {
+            <tr>
+                <td>
+                    @stock.First().Name
+                </td>
+                <td>
+                    @stock.First().Symbol
+                </td>
+                <td>
+                    @stock.First().CurrentPrice
+                </td>
+                <td>
+                    @stock.Sum(s => s.PurchaseQuantity)
+                </td>
+                <td>
+                    <!-- Sell button -->
+                        <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@stock.Sum(s => s.PurchaseQuantity)', '@stock.First().CurrentPrice')">
+                        Purchase
+                    </a>
+                </td>
+            </tr>
+        }
+    }
     </tbody>
 </table>
 <div class="container">
