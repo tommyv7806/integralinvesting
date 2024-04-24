@@ -11,6 +11,6 @@ namespace DataAccessWebAPI.DataAccessLayer
         public DbSet<UserFund> UserFunds { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<PortfolioStock> PortfolioStocks { get; set; }
-
+        public DbSet<PortfolioAsset> PortfolioAssets { get; set; }
     }
 }

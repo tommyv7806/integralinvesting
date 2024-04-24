@@ -132,21 +132,21 @@ namespace IntegralInvesting.Controllers
         }
 
         // Opens the modal where users can enter the number of shares of a particular stock they want to sell
-        [HttpGet]
-        public IActionResult OpenSellModal(int numberOfShares, string currentPrice)
-        {
-            //var model = new PortfolioStockViewModel();
-            //model.Name = stockName;
-            //model.PurchasePrice = decimal.Parse(latestPrice);
-            //model.Symbol = symbol;
+        //[HttpGet]
+        //public IActionResult OpenSellModal(int numberOfShares, string currentPrice)
+        //{
+        //    //var model = new PortfolioStockViewModel();
+        //    //model.Name = stockName;
+        //    //model.PurchasePrice = decimal.Parse(latestPrice);
+        //    //model.Symbol = symbol;
 
-            //var currentUserId = _userManager.GetUserId(this.User);
-            //var userFunds = GetFundsForCurrentUser(currentUserId).CurrentFunds;
+        //    //var currentUserId = _userManager.GetUserId(this.User);
+        //    //var userFunds = GetFundsForCurrentUser(currentUserId).CurrentFunds;
 
-            //ViewData["UserFunds"] = userFunds;
+        //    //ViewData["UserFunds"] = userFunds;
 
-            //return PartialView("PurchaseSharesModalPartial", model);
-        }
+        //    //return PartialView("PurchaseSharesModalPartial", model);
+        //}
 
         private StockDetailsViewModel GetBasicStockDetails(string symbol)
         {
