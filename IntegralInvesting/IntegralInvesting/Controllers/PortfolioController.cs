@@ -3,6 +3,8 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ServiceStack;
+using System.Text;
 
 namespace IntegralInvesting.Controllers
 {
@@ -11,12 +13,14 @@ namespace IntegralInvesting.Controllers
         Uri baseAddress = new Uri("https://localhost:7226/api");
         private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
+        private readonly IConfiguration _config;
 
-        public PortfolioController(UserManager<IntegralInvestingUser> userManager)
+        public PortfolioController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAddress;
             _userManager = userManager;
+            _config = config;
         }
 
         // Display the information for the user's Portfolio
@@ -26,7 +30,168 @@ namespace IntegralInvesting.Controllers
             var currentUserId = _userManager.GetUserId(this.User);
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
 
+            foreach (var asset in userPortfolio.PortfolioAssets)
+            {
+                var stockDetails = GetBasicStockDetails(asset.Symbol);
+                asset.CurrentPrice = stockDetails.Price;
+            }
+
             return View(userPortfolio.PortfolioAssets);
+        }
+
+        // Opens the modal where users can enter the number of shares of a particular stock they want to sell
+        [HttpGet]
+        public IActionResult OpenSellModal(string symbol, decimal currentPrice, int numberOfShares)
+        {
+            var portfolioAsset = GetSelectedPortfolioAsset(symbol);
+            portfolioAsset.NumberOfShares = numberOfShares;
+            portfolioAsset.CurrentPrice = currentPrice;
+
+            return PartialView("SellSharesModalPartial", portfolioAsset);
+        }
+
+        [HttpPost]
+        public IActionResult SellShares(PortfolioAssetViewModel portfolioAsset)
+        {
+            ValidateUserIsLoggedIn();
+            var currentUserId = _userManager.GetUserId(this.User);
+
+            var userFunds = GetFundsForCurrentUser(currentUserId);
+            userFunds.CurrentFunds += portfolioAsset.SaleTotal;
+            UpdateUserCurrentFunds(userFunds);
+
+
+            var portfolioStocks = GetPortfolioStocksForPortfolioAsset(portfolioAsset.PortfolioAssetId);
+            portfolioAsset.PortfolioStocks.AddDistinctRange(portfolioStocks);
+
+            var sellQuantity = portfolioAsset.SellQuantity;
+
+            foreach (var stock in portfolioAsset.PortfolioStocks)
+            {
+                if (sellQuantity > 0)
+                {
+                    // If num of shares for stock is greater than sell qty, reduce num of shares by sell qty amount
+                    if (stock.PurchaseQuantity > sellQuantity)
+                    {
+                        stock.PurchaseQuantity -= sellQuantity;
+                        sellQuantity = 0;
+
+                        UpdatePortfolioStock(stock);
+                    }
+                    // If num of shares for stock is less than sell qty, reduce num of shares to zero, delete PortfolioStock record, and subtract num of shares from sell qty
+                    else if (stock.PurchaseQuantity <= sellQuantity)
+                    {
+                        sellQuantity -= stock.PurchaseQuantity;
+
+                        // Delete PortfolioStock record
+                        DeletePortfolioStock(stock);
+                    }
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        private void DeletePortfolioStock(PortfolioStockViewModel portfolioStock)
+        {
+            try
+            {
+                var response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/PortfolioStock/Delete/" + portfolioStock.PortfolioStockId).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var portfolioAsset = GetSelectedPortfolioAsset(portfolioStock.Symbol);
+
+                    if (portfolioAsset != null && portfolioAsset.PortfolioStocks.Count() == 0)
+                        DeletePortfolioAsset(portfolioStock.PortfolioAssetId);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+        }
+
+        private void DeletePortfolioAsset(int id)
+        {
+            var response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/PortfolioAsset/Delete/" + id).Result;
+        }
+
+        private UserFundViewModel GetFundsForCurrentUser(string currentUserId)
+        {
+            UserFundViewModel userFund = new UserFundViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/UserFund/GetUserFunds/" + currentUserId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                userFund = JsonConvert.DeserializeObject<List<UserFundViewModel>>(data).Single();
+            }
+
+            return userFund;
+        }
+
+        private void UpdateUserCurrentFunds(UserFundViewModel userFunds)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(userFunds);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/UserFund/Put", content).Result;
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+        }
+
+        private void UpdatePortfolioStock(PortfolioStockViewModel portfolioStock)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(portfolioStock);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/PortfolioStock/Put", content).Result;
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+        }
+
+        private PortfolioAssetViewModel GetSelectedPortfolioAsset(string symbol)
+        {
+            PortfolioAssetViewModel portfolioAsset = new PortfolioAssetViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbol/" + symbol).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                portfolioAsset = JsonConvert.DeserializeObject<PortfolioAssetViewModel>(data);
+            }
+            else
+            {
+                return null;
+            }
+
+            return portfolioAsset;
+        }
+
+        private StockDetailsViewModel GetBasicStockDetails(string symbol)
+        {
+            var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
+
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={apiKey}&datatype=csv"
+                    .GetStringFromUrl();
+
+            if (stockApiResponse.Contains("Invalid API call"))
+            {
+                ViewData["ErrorMessage"] = "Please enter a valid stock symbol (e.g., MSFT, AAPL, etc.)";
+            }
+
+            return stockApiResponse.FromCsv<StockDetailsViewModel>();
         }
 
         private void ValidateUserIsLoggedIn()
@@ -48,6 +213,20 @@ namespace IntegralInvesting.Controllers
             }
 
             return portfolio;
+        }
+
+        private List<PortfolioStockViewModel> GetPortfolioStocksForPortfolioAsset(int portfolioAssetId)
+        {
+            List<PortfolioStockViewModel> portfolioStocks = new List<PortfolioStockViewModel>();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioStock/GetPortfolioStocksForPortfolioAsset/" + portfolioAssetId).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                portfolioStocks = JsonConvert.DeserializeObject<List<PortfolioStockViewModel>>(data);
+            }
+
+            return portfolioStocks;
         }
     }
 }

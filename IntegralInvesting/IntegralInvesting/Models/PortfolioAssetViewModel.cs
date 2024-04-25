@@ -31,5 +31,11 @@ namespace IntegralInvesting.Models
 
         [NotMapped]
         public int NumberOfShares { get; set; } = 0;
+
+        [NotMapped]
+        public int SellQuantity { get; set; } = 0;
+
+        [NotMapped]
+        public decimal SaleTotal { get; set; } = 0;
     }
 }

@@ -25,12 +25,12 @@ $('#btnModalPurchaseSubmit').click(function (event) {
 });
 
 // Opens the modal where users can enter the number of shares they want to sell of the selected stock
-function OpenSellSharesModal(numberOfSharesValue, currentPriceValue) {
-    var data = { numberOfShares: numberOfSharesValue, currentPrice: currentPriceValue };
+function OpenSellSharesModal(symbolValue, currentPriceValue, numberOfSharesValue) {
+    var data = { symbol: symbolValue, currentPrice: currentPriceValue, numberOfShares: numberOfSharesValue };
     $.ajax(
         {
             type: 'GET',
-            url: '/PurchaseStock/OpenSellModal',
+            url: '/Portfolio/OpenSellModal',
             contentType: 'application/json; charset=utf=8',
             data: data,
             success: function (result) {
@@ -50,9 +50,19 @@ $('#btnModalSellSubmit').click(function (event) {
     Add();
 });
 
+// Calculate and set the PurchaseTotal value on the modal where users buy their shares
+
 function CalculatePurchaseTotal(purchasePrice) {
     var purchaseQuantity = $('#purchaseQuantityField').val();
     var purchaseTotal = parseFloat(purchaseQuantity * purchasePrice).toFixed(2);
 
     $('#purchaseTotalField').val(String(purchaseTotal));
+}
+
+// Calculate and set the SaleTotal value on the modal where users sell their shares
+function CalculateSaleTotal(currentPrice) {
+    var sellQuantity = $('#sellQuantityField').val();
+    var saleTotal = parseFloat(sellQuantity * currentPrice).toFixed(2);
+
+    $('#saleTotalField').val(String(saleTotal));
 }

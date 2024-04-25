@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<IntegralInvesting.Models.PortfolioAssetViewModel>
+
 @{
     int CalculateNumberOfShares(string symbol)
     {
@@ -42,21 +43,26 @@
     </thead>
     <tbody>
     @{
-        var groupedStocks = Model.GroupBy(m => m.Symbol);
-        foreach (var stock in groupedStocks)
+        foreach (var stock in Model)
         {
             <tr>
                 <td>
-                    @stock.First().Name
+                    @stock.Name
                 </td>
                 <td>
-                    @stock.First().Symbol
+                    @stock.Symbol
                 </td>
                 <td>
-                    @stock.First().CurrentPrice
+                    @stock.CurrentPrice
                 </td>
                 <td>
-                    @CalculateNumberOfShares(stock.First().Symbol)
+                    @CalculateNumberOfShares(stock.Symbol)
+                </td>
+                <td>
+                    <!-- Sell button -->
+                        <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@stock.Symbol', '@stock.CurrentPrice', '@CalculateNumberOfShares(stock.Symbol)')">
+                        Sell Shares
+                    </a>
                 </td>
             </tr>
         }

@@ -157,38 +157,6 @@ namespace IntegralInvesting.Controllers
             return PartialView("PurchaseSharesModalPartial", portfolioStock);
         }
 
-        // Opens the modal where users can enter the number of shares of a particular stock they want to sell
-        //[HttpGet]
-        //public IActionResult OpenSellModal(int numberOfShares, string currentPrice)
-        //{
-        //    //var model = new PortfolioStockViewModel();
-        //    //model.Name = stockName;
-        //    //model.PurchasePrice = decimal.Parse(latestPrice);
-        //    //model.Symbol = symbol;
-
-        //    //var currentUserId = _userManager.GetUserId(this.User);
-        //    //var userFunds = GetFundsForCurrentUser(currentUserId).CurrentFunds;
-
-        //    //ViewData["UserFunds"] = userFunds;
-
-        //    //return PartialView("PurchaseSharesModalPartial", model);
-        //}
-
-        private void UpdatePortfolioAsset(PortfolioAssetViewModel portfolioAsset)
-        {
-            try
-            {
-                string data = JsonConvert.SerializeObject(portfolioAsset);
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                var stringContent = content.ReadAsStringAsync().Result;
-                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/PortfolioAsset/Put", content).Result;
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-            }
-        }
-
         private void CreateNewPortfolioAsset(PortfolioAssetViewModel portfolioAsset)
         {
             try

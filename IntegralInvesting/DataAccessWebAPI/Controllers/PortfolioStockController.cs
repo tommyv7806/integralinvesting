@@ -48,23 +48,23 @@ namespace DataAccessWebAPI.Controllers
             }
         }
 
-        //[HttpGet("{portfolioId}")]
-        //public IActionResult GetPortfolioStocksForUserPortfolio(int portfolioId)
-        //{
-        //    try
-        //    {
-        //        var portfolioStocks = _context.PortfolioStocks.Where(ps => ps.PortfolioId == portfolioId).ToList();
+        [HttpGet("{portfolioAssetId}")]
+        public IActionResult GetPortfolioStocksForPortfolioAsset(int portfolioAssetId)
+        {
+            try
+            {
+                var portfolioStocks = _context.PortfolioStocks.Where(ps => ps.PortfolioAssetId == portfolioAssetId).ToList();
 
-        //        if (portfolioStocks.Count == 0)
-        //            return NotFound($"Portfolio Stocks not available for Portfolio with PortfolioId of '{portfolioId}'");
+                if (portfolioStocks.Count == 0)
+                    return NotFound($"Portfolio Stocks not available for Portfolio Asset with PortfolioAssetId of '{portfolioAssetId}'");
 
-        //        return Ok(portfolioStocks);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(e.Message);
-        //    }
-        //}
+                return Ok(portfolioStocks);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPut]
         public IActionResult Put(PortfolioStock model)
@@ -85,7 +85,6 @@ namespace DataAccessWebAPI.Controllers
                     return BadRequest($"Portfolio Stock not found with Id of {model.PortfolioStockId}");
 
                 portfolioStock.PortfolioAssetId = model.PortfolioAssetId;
-                portfolioStock.PurchasePrice = model.PurchasePrice;
                 portfolioStock.CurrentPrice = model.CurrentPrice;
                 portfolioStock.PurchaseQuantity = model.PurchaseQuantity;
 
@@ -113,7 +112,7 @@ namespace DataAccessWebAPI.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
