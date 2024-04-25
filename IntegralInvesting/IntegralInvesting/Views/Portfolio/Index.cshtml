@@ -1,4 +1,15 @@
-﻿@model IEnumerable<IntegralInvesting.Models.PortfolioStockViewModel>
+﻿@model IEnumerable<IntegralInvesting.Models.PortfolioAssetViewModel>
+@{
+    int CalculateNumberOfShares(string symbol)
+    {
+        var portfolioAsset = Model.SingleOrDefault(m => m.Symbol == symbol);
+
+        if (portfolioAsset == null)
+            return 0;
+
+        return portfolioAsset.PortfolioStocks.Sum(ps => ps.PurchaseQuantity);
+    }
+}
 
 @{ ViewData["Title"] = "Portfolio Page"; }
 
@@ -24,7 +35,7 @@
                 @Html.DisplayNameFor(model => model.CurrentPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PurchaseQuantity)
+                @Html.DisplayNameFor(model => model.NumberOfShares)
             </th>
             <th></th>
         </tr>
@@ -45,13 +56,7 @@
                     @stock.First().CurrentPrice
                 </td>
                 <td>
-                    @stock.Sum(s => s.PurchaseQuantity)
-                </td>
-                <td>
-                    <!-- Sell button -->
-                        <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@stock.Sum(s => s.PurchaseQuantity)', '@stock.First().CurrentPrice')">
-                        Purchase
-                    </a>
+                    @CalculateNumberOfShares(stock.First().Symbol)
                 </td>
             </tr>
         }

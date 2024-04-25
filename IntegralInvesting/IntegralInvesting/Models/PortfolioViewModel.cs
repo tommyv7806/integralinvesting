@@ -5,7 +5,7 @@ namespace IntegralInvesting.Models
 {
     public class PortfolioViewModel : IModel
     {
-        public PortfolioViewModel() => PortfolioStocks = new List<PortfolioStockViewModel>();
+        public PortfolioViewModel() => PortfolioAssets = new List<PortfolioAssetViewModel>();
 
         [Key]
         public int PortfolioId { get; set; }
@@ -15,6 +15,6 @@ namespace IntegralInvesting.Models
         public string UserId { get; set; } = string.Empty;
 
         [ValidateNever]
-        public ICollection<PortfolioStockViewModel> PortfolioStocks { get; set; }
+        public ICollection<PortfolioAssetViewModel> PortfolioAssets { get; set; }
     }
 }

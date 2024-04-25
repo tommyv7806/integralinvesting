@@ -26,7 +26,7 @@ namespace IntegralInvesting.Controllers
             var currentUserId = _userManager.GetUserId(this.User);
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
 
-            return View(userPortfolio.PortfolioStocks);
+            return View(userPortfolio.PortfolioAssets);
         }
 
         private void ValidateUserIsLoggedIn()
