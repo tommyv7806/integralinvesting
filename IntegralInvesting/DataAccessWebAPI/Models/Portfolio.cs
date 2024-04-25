@@ -5,7 +5,7 @@ namespace DataAccessWebAPI.Models
 {
     public class Portfolio
     {
-        public Portfolio() => PortfolioStocks = new List<PortfolioStock>();
+        public Portfolio() => PortfolioAssets = new List<PortfolioAsset>();
 
         [Key]
         public int PortfolioId { get; set; }
@@ -15,6 +15,6 @@ namespace DataAccessWebAPI.Models
         public string UserId { get; set; } = string.Empty;
 
         [ValidateNever]
-        public ICollection<PortfolioStock> PortfolioStocks { get; set; }
+        public ICollection<PortfolioAsset> PortfolioAssets { get; set; }
     }
 }

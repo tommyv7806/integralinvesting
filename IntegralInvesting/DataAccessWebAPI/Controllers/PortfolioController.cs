@@ -55,7 +55,7 @@ namespace DataAccessWebAPI.Controllers
             try
             {
                 var portfolio = _context.Portfolios
-                    .Include(p => p.PortfolioStocks)
+                    .Include(p => p.PortfolioAssets)
                     .Where(p => p.UserId == userId)
                     .ToList();
 

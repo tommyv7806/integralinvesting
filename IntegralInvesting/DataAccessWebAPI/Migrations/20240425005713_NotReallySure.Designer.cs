@@ -4,6 +4,7 @@ using DataAccessWebAPI.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessWebAPI.Migrations
 {
     [DbContext(typeof(IntegralInvestingAppDbContext))]
-    partial class IntegralInvestingAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240425005713_NotReallySure")]
+    partial class NotReallySure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,6 +82,9 @@ namespace DataAccessWebAPI.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("NumberOfShares")
+                        .HasColumnType("int");
+
                     b.Property<int>("PortfolioId")
                         .HasColumnType("int");
 
@@ -113,6 +119,9 @@ namespace DataAccessWebAPI.Migrations
                     b.Property<int>("PortfolioAssetId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PortfolioId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("PurchasePrice")
                         .HasColumnType("decimal(8, 2)");
 
@@ -130,6 +139,8 @@ namespace DataAccessWebAPI.Migrations
                     b.HasKey("PortfolioStockId");
 
                     b.HasIndex("PortfolioAssetId");
+
+                    b.HasIndex("PortfolioId");
 
                     b.ToTable("PortfolioStocks");
                 });
@@ -165,7 +176,7 @@ namespace DataAccessWebAPI.Migrations
             modelBuilder.Entity("DataAccessWebAPI.Models.PortfolioAsset", b =>
                 {
                     b.HasOne("DataAccessWebAPI.Models.Portfolio", "Portfolio")
-                        .WithMany("PortfolioAssets")
+                        .WithMany()
                         .HasForeignKey("PortfolioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -181,12 +192,16 @@ namespace DataAccessWebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DataAccessWebAPI.Models.Portfolio", null)
+                        .WithMany("PortfolioStocks")
+                        .HasForeignKey("PortfolioId");
+
                     b.Navigation("PortfolioAsset");
                 });
 
             modelBuilder.Entity("DataAccessWebAPI.Models.Portfolio", b =>
                 {
-                    b.Navigation("PortfolioAssets");
+                    b.Navigation("PortfolioStocks");
                 });
 
             modelBuilder.Entity("DataAccessWebAPI.Models.PortfolioAsset", b =>

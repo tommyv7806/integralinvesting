@@ -8,9 +8,8 @@ namespace DataAccessWebAPI.Models
         [Key]
         public int PortfolioStockId { get; set; }
 
-        // Foregin key properties
-        public int PortfolioId { get; set; }
-        public Portfolio? Portfolio { get; set; }
+        public int PortfolioAssetId { get; set; }
+        public PortfolioAsset? PortfolioAsset { get; set; }
 
         [Required]
         [MaxLength(200)]

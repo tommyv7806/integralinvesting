@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessWebAPI.Models
+namespace IntegralInvesting.Models
 {
-    public class PortfolioAsset
+    public class PortfolioAssetViewModel
     {
-        public PortfolioAsset() => PortfolioStocks = new List<PortfolioStock>();
+        public PortfolioAssetViewModel() => PortfolioStocks = new List<PortfolioStockViewModel>();
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PortfolioAssetId { get; set; }
 
         // Foregin key properties
         public int PortfolioId { get; set; }
-        public Portfolio? Portfolio { get; set; }
+        public PortfolioViewModel? Portfolio { get; set; }
 
         [ValidateNever]
-        public ICollection<PortfolioStock> PortfolioStocks { get; set; }
+        public ICollection<PortfolioStockViewModel> PortfolioStocks { get; set; }
 
         [Required]
         [MaxLength(200)]

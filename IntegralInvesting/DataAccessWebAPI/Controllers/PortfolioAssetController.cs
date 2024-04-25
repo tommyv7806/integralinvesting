@@ -2,6 +2,7 @@
 using DataAccessWebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessWebAPI.Controllers
 {
@@ -67,6 +68,26 @@ namespace DataAccessWebAPI.Controllers
             }
         }
 
+        [HttpGet("{symbol}")]
+        public IActionResult GetPortfolioAssetForStockSymbol(string symbol)
+        {
+            try
+            {
+                var portfolioAsset = _context.PortfolioAssets
+                    .Include(pa => pa.PortfolioStocks)
+                    .SingleOrDefault(pa => pa.Symbol.ToLower() == symbol.ToLower());
+
+                if (portfolioAsset == null)
+                    return NotFound($"Portfolio Assets not available for Portfolio with Symbol of '{symbol}'");
+
+                return Ok(portfolioAsset);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPut]
         public IActionResult Put(PortfolioAsset model)
         {
@@ -86,7 +107,6 @@ namespace DataAccessWebAPI.Controllers
                     return BadRequest($"Portfolio Asset not found with Id of {model.PortfolioAssetId}");
 
                 portfolioAsset.PortfolioId = model.PortfolioId;
-                portfolioAsset.NumberOfShares = model.NumberOfShares;
                 portfolioAsset.CurrentPrice = model.CurrentPrice;
                 portfolioAsset.Symbol = model.Symbol;
                 portfolioAsset.Name = model.Name;

@@ -49,23 +49,23 @@ namespace DataAccessWebAPI.Controllers
             }
         }
 
-        [HttpGet("{portfolioId}")]
-        public IActionResult GetPortfolioStocksForUserPortfolio(int portfolioId)
-        {
-            try
-            {
-                var portfolioStocks = _context.PortfolioStocks.Where(ps => ps.PortfolioId == portfolioId).ToList();
+        //[HttpGet("{portfolioId}")]
+        //public IActionResult GetPortfolioStocksForUserPortfolio(int portfolioId)
+        //{
+        //    try
+        //    {
+        //        var portfolioStocks = _context.PortfolioStocks.Where(ps => ps.PortfolioId == portfolioId).ToList();
 
-                if (portfolioStocks.Count == 0)
-                    return NotFound($"Portfolio Stocks not available for Portfolio with PortfolioId of '{portfolioId}'");
+        //        if (portfolioStocks.Count == 0)
+        //            return NotFound($"Portfolio Stocks not available for Portfolio with PortfolioId of '{portfolioId}'");
 
-                return Ok(portfolioStocks);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
+        //        return Ok(portfolioStocks);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         [HttpPut]
         public IActionResult Put(PortfolioStock model)
@@ -74,7 +74,7 @@ namespace DataAccessWebAPI.Controllers
             {
                 if (model == null)
                     return BadRequest("Portfolio Stock data is invalid");
-                else if (model.PortfolioId == 0)
+                else if (model.PortfolioStockId == 0)
                     return BadRequest($"Portfolio Stock Id {model.PortfolioStockId} is invalid");
             }
 
@@ -85,7 +85,7 @@ namespace DataAccessWebAPI.Controllers
                 if (portfolioStock == null)
                     return BadRequest($"Portfolio Stock not found with Id of {model.PortfolioStockId}");
 
-                portfolioStock.PortfolioId = model.PortfolioId;
+                portfolioStock.PortfolioAssetId = model.PortfolioAssetId;
                 portfolioStock.PurchasePrice = model.PurchasePrice;
                 portfolioStock.CurrentPrice = model.CurrentPrice;
                 portfolioStock.PurchaseQuantity = model.PurchaseQuantity;

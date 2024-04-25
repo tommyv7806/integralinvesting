@@ -26,7 +26,7 @@ $('#btnModalPurchaseSubmit').click(function (event) {
 
 // Opens the modal where users can enter the number of shares they want to sell of the selected stock
 function OpenSellSharesModal(numberOfSharesValue, currentPriceValue) {
-    var data = { numberOfShares: numberOfSharesValue, currentPrice = currentPriceValue };
+    var data = { numberOfShares: numberOfSharesValue, currentPrice: currentPriceValue };
     $.ajax(
         {
             type: 'GET',

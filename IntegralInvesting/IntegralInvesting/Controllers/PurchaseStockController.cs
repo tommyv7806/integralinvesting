@@ -99,17 +99,40 @@ namespace IntegralInvesting.Controllers
             var currentUserId = _userManager.GetUserId(this.User);
 
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
-            model.PortfolioId = userPortfolio.PortfolioId;
+            //model.PortfolioId = userPortfolio.PortfolioId;
 
             var userFunds = GetFundsForCurrentUser(currentUserId);
             userFunds.CurrentFunds -= model.PurchaseTotal;
 
             UpdateUserCurrentFunds(userFunds);
-            return AddSharesToPortfolio(model);
+            return AddSharesToPortfolio(model, userPortfolio);
         }
 
-        private IActionResult AddSharesToPortfolio(PortfolioStockViewModel model)
+        private IActionResult AddSharesToPortfolio(PortfolioStockViewModel model, PortfolioViewModel portfolio)
         {
+            var portfolioAsset = GetPortfolioAssetForCurrentStock(model.Symbol);
+
+            if (portfolioAsset != null)
+            {
+                model.PortfolioAssetId = portfolioAsset.PortfolioAssetId;
+            }
+            else
+            {
+                portfolioAsset = new PortfolioAssetViewModel
+                {
+                    Name = model.Name,
+                    Symbol = model.Symbol,
+                    PortfolioId = portfolio.PortfolioId,
+                    NumberOfShares = 0
+                };
+
+                CreateNewPortfolioAsset(portfolioAsset);
+            }
+
+            var existingPortfolioAsset = GetPortfolioAssetForCurrentStock(model.Symbol);
+
+            model.PortfolioAssetId = existingPortfolioAsset.PortfolioAssetId;
+
             try
             {
                 string data = JsonConvert.SerializeObject(model);
@@ -147,6 +170,40 @@ namespace IntegralInvesting.Controllers
 
         //    //return PartialView("PurchaseSharesModalPartial", model);
         //}
+
+        private void UpdatePortfolioAsset(PortfolioAssetViewModel portfolioAsset)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(portfolioAsset);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                var stringContent = content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/PortfolioAsset/Put", content).Result;
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+        }
+
+        private void CreateNewPortfolioAsset(PortfolioAssetViewModel portfolioAsset)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(portfolioAsset);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/PortfolioAsset/Post", content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = $"Shares successfully purchased for {portfolioAsset.Name}";
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
+        }
 
         private StockDetailsViewModel GetBasicStockDetails(string symbol)
         {
@@ -196,6 +253,24 @@ namespace IntegralInvesting.Controllers
             }
 
             return portfolio;
+        }
+
+        private PortfolioAssetViewModel GetPortfolioAssetForCurrentStock(string symbol)
+        {
+            PortfolioAssetViewModel portfolioAsset = new PortfolioAssetViewModel();
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbol/" + symbol).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                portfolioAsset = JsonConvert.DeserializeObject<PortfolioAssetViewModel>(data);
+            }
+            else
+            {
+                return null;
+            }
+
+            return portfolioAsset;
         }
 
         private UserFundViewModel GetFundsForCurrentUser(string currentUserId)
