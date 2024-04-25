@@ -94,64 +94,67 @@ namespace IntegralInvesting.Controllers
         }
 
         [HttpPost]
-        public IActionResult PurchaseShares(PortfolioStockViewModel model)
+        public IActionResult PurchaseShares(PortfolioStockViewModel portfolioStock)
         {
             var currentUserId = _userManager.GetUserId(this.User);
-
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
-            //model.PortfolioId = userPortfolio.PortfolioId;
 
             var userFunds = GetFundsForCurrentUser(currentUserId);
-            userFunds.CurrentFunds -= model.PurchaseTotal;
+            userFunds.CurrentFunds -= portfolioStock.PurchaseTotal;
 
             UpdateUserCurrentFunds(userFunds);
-            return AddSharesToPortfolio(model, userPortfolio);
+            CreateOrUpdatePortfolioAsset(portfolioStock, userPortfolio);
+
+            return CreateNewPortfolioStock(portfolioStock);
         }
 
-        private IActionResult AddSharesToPortfolio(PortfolioStockViewModel model, PortfolioViewModel portfolio)
+        private void CreateOrUpdatePortfolioAsset(PortfolioStockViewModel portfolioStock, PortfolioViewModel portfolio)
         {
-            var portfolioAsset = GetPortfolioAssetForCurrentStock(model.Symbol);
+            var portfolioAsset = GetPortfolioAssetForCurrentStock(portfolioStock.Symbol);
 
             if (portfolioAsset != null)
             {
-                model.PortfolioAssetId = portfolioAsset.PortfolioAssetId;
+                portfolioStock.PortfolioAssetId = portfolioAsset.PortfolioAssetId;
             }
             else
             {
                 portfolioAsset = new PortfolioAssetViewModel
                 {
-                    Name = model.Name,
-                    Symbol = model.Symbol,
+                    Name = portfolioStock.Name,
+                    Symbol = portfolioStock.Symbol,
                     PortfolioId = portfolio.PortfolioId,
                     NumberOfShares = 0
                 };
 
                 CreateNewPortfolioAsset(portfolioAsset);
             }
+        }
 
-            var existingPortfolioAsset = GetPortfolioAssetForCurrentStock(model.Symbol);
+        private IActionResult CreateNewPortfolioStock(PortfolioStockViewModel portfolioStock)
+        {
+            var existingPortfolioAsset = GetPortfolioAssetForCurrentStock(portfolioStock.Symbol);
 
-            model.PortfolioAssetId = existingPortfolioAsset.PortfolioAssetId;
+            portfolioStock.PortfolioAssetId = existingPortfolioAsset.PortfolioAssetId;
 
             try
             {
-                string data = JsonConvert.SerializeObject(model);
+                string data = JsonConvert.SerializeObject(portfolioStock);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/PortfolioStock/Post", content).Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = $"{model.PurchaseQuantity} shares successfully purchased for {model.Name}";
+                    TempData["SuccessMessage"] = $"{portfolioStock.PurchaseQuantity} shares successfully purchased for {portfolioStock.Name}";
                     return RedirectToAction("Index", "Portfolio");
                 }
             }
             catch (Exception e)
             {
                 TempData["ErrorMessage"] = e.Message;
-                return PartialView("PurchaseSharesModalPartial", model);
+                return PartialView("PurchaseSharesModalPartial", portfolioStock);
             }
 
-            return PartialView("PurchaseSharesModalPartial", model);
+            return PartialView("PurchaseSharesModalPartial", portfolioStock);
         }
 
         // Opens the modal where users can enter the number of shares of a particular stock they want to sell
