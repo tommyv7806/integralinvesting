@@ -44,3 +44,18 @@ body {
 .login-logut-card .card-body {
     padding: 10px 20px;
 }
+
+/* Background color for header throughout the site */
+.header-custom {
+    background-color: #11A65B;
+}
+
+/* Colors for Login and Register buttons */
+#loginSubmit, #registerSubmit {
+    background-color: #11A65B;
+}
+
+/* Colors for certain headers: H2 elements on the Login and Register pages */
+.main-green {
+    color: #11A65B;
+}
