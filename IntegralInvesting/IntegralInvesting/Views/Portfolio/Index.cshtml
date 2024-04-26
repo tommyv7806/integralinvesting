@@ -45,26 +45,26 @@
     @{
         foreach (var stock in Model)
         {
-            <tr>
-                <td>
-                    @stock.Name
-                </td>
-                <td>
-                    @stock.Symbol
-                </td>
-                <td>
-                    @stock.CurrentPrice
-                </td>
-                <td>
-                    @CalculateNumberOfShares(stock.Symbol)
-                </td>
-                <td>
-                    <!-- Sell button -->
-                        <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@stock.Symbol', '@stock.CurrentPrice', '@CalculateNumberOfShares(stock.Symbol)')">
-                        Sell Shares
-                    </a>
-                </td>
-            </tr>
+                    <tr>
+                        <td>
+                            @stock.Name
+                        </td>
+                        <td>
+                            @stock.Symbol
+                        </td>
+                        <td>
+                            @stock.CurrentPrice
+                        </td>
+                        <td>
+                            @CalculateNumberOfShares(stock.Symbol)
+                        </td>
+                        <td>
+                            <!-- Sell button -->
+                                <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@stock.Symbol', '@stock.CurrentPrice', '@CalculateNumberOfShares(stock.Symbol)')">
+                                Sell Shares
+                            </a>
+                        </td>
+                    </tr>
         }
     }
     </tbody>
@@ -105,16 +105,67 @@
 @section Scripts {
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
+        var dayOneTotal = 0, dayTwoTotal = 0, dayThreeTotal = 0, dayFourTotal = 0, dayFiveTotal = 0, daySixTotal = 0, daySevenTotal = 0;
+        var dayOneDate = '', dayTwoDate = '', dayThreeDate = '', dayFourDate = '', dayFiveDate = '', daySixDate = '', daySevenDate = '';
+
+        function getDailyTotals() {
+            @foreach (var asset in Model)
+            {
+                @:dayOneTotal += @asset.LastSevenDaysData.ElementAt(0).Close;
+                @:dayTwoTotal += @asset.LastSevenDaysData.ElementAt(1).Close;
+                @:dayThreeTotal += @asset.LastSevenDaysData.ElementAt(2).Close;
+                @:dayFourTotal += @asset.LastSevenDaysData.ElementAt(3).Close;
+                @:dayFiveTotal += @asset.LastSevenDaysData.ElementAt(4).Close;
+                @:daySixTotal += @asset.LastSevenDaysData.ElementAt(5).Close;
+                @:daySevenTotal += @asset.LastSevenDaysData.ElementAt(6).Close;
+            }
+        }
+
+        function getDailyDates() {
+            @{
+                var firstAsset = Model.First();
+                var dayOne = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
+            var dayTwo = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
+            var dayThree = firstAsset.LastSevenDaysData.ElementAt(2).Timestamp;
+            var dayFour = firstAsset.LastSevenDaysData.ElementAt(3).Timestamp;
+            var dayFive = firstAsset.LastSevenDaysData.ElementAt(4).Timestamp;
+            var daySix = firstAsset.LastSevenDaysData.ElementAt(5).Timestamp;
+            var daySeven = firstAsset.LastSevenDaysData.ElementAt(6).Timestamp;
+
+            @:dayOneDate = '@firstAsset.LastSevenDaysData.ElementAt(0).Timestamp.ToShortDateString().Replace("/2024","")';
+                // @:dayTwoDate = @dayTwo;
+                // @:dayThreeDate = @dayThree;
+                // @:dayFourDate = @dayFour;
+                // @:dayFiveDate = @dayFive;
+                // @:daySixDate = @daySix;
+                // @:daySevenDate = @daySeven;
+
+            @:dayTwoDate = '@firstAsset.LastSevenDaysData.ElementAt(1).Timestamp.ToShortDateString().Replace("/2024", "")';
+            @:dayThreeDate = '@firstAsset.LastSevenDaysData.ElementAt(2).Timestamp.ToShortDateString().Replace("/2024", "")';
+            @:dayFourDate = '@firstAsset.LastSevenDaysData.ElementAt(3).Timestamp.ToShortDateString().Replace("/2024", "")';
+            @:dayFiveDate = '@firstAsset.LastSevenDaysData.ElementAt(4).Timestamp.ToShortDateString().Replace("/2024", "")';
+            @:daySixDate = '@firstAsset.LastSevenDaysData.ElementAt(5).Timestamp.ToShortDateString().Replace("/2024", "")';
+            @:daySevenDate = '@firstAsset.LastSevenDaysData.ElementAt(6).Timestamp.ToShortDateString().Replace("/2024", "")';
+            }
+        }
+
         google.charts.load('current', { packages: ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
+            debugger;
+            getDailyTotals();
+            getDailyDates();
+
             var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales'],
-                ['2004', 1000],
-                ['2005', 1170],
-                ['2006', 660],
-                ['2007', 1030]
+                ['Day', 'Amount'],
+                [dayOneDate, dayOneTotal],
+                [dayTwoDate, dayTwoTotal],
+                [dayThreeDate, dayThreeTotal],
+                [dayFourDate, dayFourTotal],
+                [dayFiveDate, dayFiveTotal],
+                [daySixDate, daySixTotal],
+                [daySevenDate, daySevenTotal]
             ]);
 
             var options = {

@@ -3,6 +3,7 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NuGet.Packaging;
 using ServiceStack;
 using System.Text;
 
@@ -14,6 +15,7 @@ namespace IntegralInvesting.Controllers
         private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly string? _apiKey;
 
         public PortfolioController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
@@ -21,6 +23,7 @@ namespace IntegralInvesting.Controllers
             _httpClient.BaseAddress = baseAddress;
             _userManager = userManager;
             _config = config;
+            _apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
         }
 
         // Display the information for the user's Portfolio
@@ -34,9 +37,23 @@ namespace IntegralInvesting.Controllers
             {
                 var stockDetails = GetBasicStockDetails(asset.Symbol);
                 asset.CurrentPrice = stockDetails.Price;
+
+                PopulateDataForLastWeek(asset);
             }
 
             return View(userPortfolio.PortfolioAssets);
+        }
+
+        private void PopulateDataForLastWeek(PortfolioAssetViewModel asset)
+        {
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={asset.Symbol}&apikey={_apiKey}&datatype=csv"
+                    .GetStringFromUrl();
+
+            var results = stockApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
+
+            var lastSevenDaysData = results.Take(7).Reverse().ToList();
+
+            asset.LastSevenDaysData.AddRange(lastSevenDaysData);
         }
 
         // Opens the modal where users can enter the number of shares of a particular stock they want to sell
@@ -181,9 +198,7 @@ namespace IntegralInvesting.Controllers
 
         private StockDetailsViewModel GetBasicStockDetails(string symbol)
         {
-            var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
-
-            var stockApiResponse = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={apiKey}&datatype=csv"
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={_apiKey}&datatype=csv"
                     .GetStringFromUrl();
 
             if (stockApiResponse.Contains("Invalid API call"))
