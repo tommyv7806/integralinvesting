@@ -12,95 +12,59 @@
 @{
     if (Model.Symbol != null)
     {
-        <!-- Purchase button -->
-        <a class="btn btn-success" data-modal="" id="btnOpenPurchaseModal" onclick="OpenPurchaseSharesModal('@ViewData["StockName"]', '@ViewData["Price"]', '@ViewData["Symbol"]')">
-            Purchase
-        </a>
+        
+        <div class="row">
+            <h3 class="col-8">@ViewData["StockName"]</h3>
+            <!-- Purchase button -->
+            <a class="btn green-button col-4" data-modal="" id="btnOpenPurchaseModal" onclick="OpenPurchaseSharesModal('@ViewData["StockName"]', '@ViewData["Price"]', '@ViewData["Symbol"]')">
+                Purchase
+            </a>
+        </div>
 
-        <h4>@ViewData["StockName"]</h4>
-        <h4>@ViewData["Price"]</h4>
-
+        <h4 class="main-green" style="margin-top: 0.5em;">Current Data</h4>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.High)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Low)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Volume)
-                    </th>
+                    <th> @Html.DisplayNameFor(model => model.High) </th>
+                    <th> @Html.DisplayNameFor(model => model.Low)  </th>
+                    <th> @Html.DisplayNameFor(model => model.Price) </th>
+                    <th> @Html.DisplayNameFor(model => model.Volume) </th>
                 </tr>
             </thead>
             <tbody>
                 @{
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.High)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.Low)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.Volume)
-                        </td>
+                        <td> @Html.DisplayFor(modelItem => modelItem.High) </td>
+                        <td> @Html.DisplayFor(modelItem => modelItem.Low)  </td>
+                        <td> @Html.DisplayFor(modelItem => modelItem.Price) </td>
+                        <td> @Html.DisplayFor(modelItem => modelItem.Volume) </td>
                     </tr>
                 }
             </tbody>
         </table>
 
+        <h4 class="main-green" style="margin-top: 0.5em;">Data From Past 7 Days</h4>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>
-                        TimeStamp
-                    </th>
-                    <th>
-                        High
-                    </th>
-                    <th>
-                        Low
-                    </th>
-                    <th>
-                        Open
-                    </th>
-                    <th>
-                        Close
-                    </th>
+                    <th> Date </th>
+                    <th> High </th>
+                    <th> Low  </th>
+                    <th> Open </th>
+                    <th> Close </th>
                 </tr>
             </thead>
             <tbody>
-                @{
-                    foreach (var item in Model.StockTimeDetailsList)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Timestamp)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.High)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Low)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Open)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Close)
-                            </td>
-                        </tr>
-                    }
-                    
-                }
+                @foreach (var item in Model.StockTimeDetailsList)
+                {
+                    <tr>
+                        <td> @item.Timestamp.ToShortDateString() </td>
+                        <td> @item.High </td>
+                        <td> @item.Low  </td>
+                        <td> @item.Open </td>
+                        <td> @item.Close </td>
+                    </tr>
+                } 
             </tbody>
         </table>
     }

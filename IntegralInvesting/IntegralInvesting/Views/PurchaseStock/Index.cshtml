@@ -1,17 +1,16 @@
 ﻿@{ ViewData["Title"] = "Index"; }
 
-<h4>Browse Stocks</h4>
-
-<!-- Search bar div -->
-<div>
+<!-- Title and search bar div -->
+<div style="padding-left: 3.2em; margin-bottom: 0.5em;">
+    <h2>Browse Stocks</h2>
     <input name="SearchString" id="searchField" />
-    <input type="button" id="btnSubmit" value="Search" class="btn btn-primary" />
+    <input type="button" id="btnSubmit" value="Search" class="btn green-button" />
 </div>
 
 <div class="container">
     <div class="row">
         <!-- Left side of page where initial search results are displayed -->
-        <div class="col-5" id=SearchResult>
+        <div class="col-5 d-flex" id=SearchResult>
             <partial name="InitialSearchResultPartial.cshtml" model="new List<StockSearchViewModel>()" />
         </div>
         
@@ -24,7 +23,7 @@
 
 <!-- Purchase Shares Modal placeholder -->
 <div id="purchase-modal-placeholder" class="modal fade">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div id='modal-purchase-content'></div>
         </div>
@@ -34,11 +33,11 @@
 @section Scripts {
     <script>
         // Gets the details for a particular stock and displays them on the right side of the page
-        function GetSearchResultDetails(searchStringValue, stockNameValue) {
+        function GetSearchResultDetails(symbolValue, stockNameValue) {
             $.ajax({
                 url: "/PurchaseStock/DetailsSearch/",
                 type: "get",
-                data: { symbol: searchStringValue, stockName: stockNameValue },
+                data: { symbol: symbolValue, stockName: stockNameValue },
                 success: function (result) {
                     $('#SearchResultDetail').html(result);
                 }

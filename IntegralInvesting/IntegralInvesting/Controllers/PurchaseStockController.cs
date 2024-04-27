@@ -3,6 +3,7 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NuGet.ContentModel;
 using ServiceStack;
 using System.Text;
 
@@ -36,7 +37,7 @@ namespace IntegralInvesting.Controllers
         // After the user clicks the search button, display the initial search results on left side of screen
         public IActionResult InitialSearch(string searchString)
         {
-            ViewData["SearchQuery"] = searchString;
+            TempData["SearchQuery"] = searchString;
 
             if (searchString != null)
             {
@@ -191,10 +192,14 @@ namespace IntegralInvesting.Controllers
 
         private List<StockTimeDetails> GetStockTimeDetails(string symbol)
         {
-            var timeDetailsApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={_apiKey}&interval=60min&datatype=csv"
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={_apiKey}&datatype=csv"
                     .GetStringFromUrl();
 
-            return timeDetailsApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
+            var results = stockApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
+
+            var lastSevenDaysData = results.Take(7).Reverse().ToList();
+
+            return lastSevenDaysData;
         }
 
         private void UpdateUserCurrentFunds(UserFundViewModel userFunds)
