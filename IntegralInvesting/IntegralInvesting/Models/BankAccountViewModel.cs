@@ -20,5 +20,20 @@ namespace IntegralInvesting.Models
         [MaxLength(60)]
         [DisplayName("Account Name")]
         public string AccountName { get; set; }
+
+        [NotMapped]
+        [MaxLength(12)]
+        [DisplayName("Routing Number")]
+        public string? RoutingNumber { get; set; }
+
+        [NotMapped]
+        [MaxLength(12)]
+        [DisplayName("Account Number")]
+        public string? AccountNumber { get; set; }
+
+        [NotMapped]
+        [MaxLength(12)]
+        [DisplayName("Confirm Account Number")]
+        public string? ConfirmAccountNumber { get; set; }
     }
 }

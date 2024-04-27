@@ -17,7 +17,9 @@
     <div class="d-flex justify-content-between mt-5 mb-2">
         <div><h2>Linked Bank Accounts</h2></div>
         <div>
-            <a asp-controller="BankAccount" asp-action="LinkNewAccount" class="btn green-button">Link New Account</a>
+            <a class="btn green-button" data-modal="" id="btnOpenLinkNewBankAccModal" onclick="OpenLinkNewBankAccModal()">
+                Link New Account
+            </a>
         </div>
     </div>
 
@@ -46,3 +48,11 @@
     </table>
 </div>
 
+<!-- Link New Bank Account Modal placeholder -->
+<div id="linkNewBankAcc-modal-placeholder" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div id='modal-linkNewBankAcc-content'></div>
+        </div>
+    </div>
+</div>

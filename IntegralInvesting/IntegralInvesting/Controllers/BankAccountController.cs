@@ -34,13 +34,11 @@ namespace IntegralInvesting.Controllers
             return View(currentUserBankAccounts);
         }
 
-        // When the user wants to link a new account
-        [HttpGet]   
-        public IActionResult LinkNewAccount()
+        // Opens the modal where users can link new bank accounts to their app account
+        [HttpGet]
+        public IActionResult OpenLinkNewAccountModal()
         {
-            ValidateUserIsLoggedIn();
-
-            return View();
+            return PartialView("LinkNewAccountModalPartial");
         }
 
         // When the user saves the newly linked account

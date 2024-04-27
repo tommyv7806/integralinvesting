@@ -50,6 +50,30 @@ $('#btnModalSellSubmit').click(function (event) {
     Add();
 });
 
+// Opens the modal where users can link a new bank account to their app account
+function OpenLinkNewBankAccModal() {
+    $.ajax(
+        {
+            type: 'GET',
+            url: '/BankAccount/LinkNewAccount',
+            contentType: 'application/json; charset=utf=8',
+            success: function (result) {
+                $('#modal-linkNewBankAcc-content').html(result);
+                $('#linkNewBankAcc-modal-placeholder').modal('show');
+            },
+            error: function (er) {
+                alert(er);
+            }
+        });
+}
+
+// Onclick event for Link Account button inside the modal that hides the modal when clicked
+$('#btnModalLinkNewBankAccSubmit').click(function (event) {
+    event.preventDefault();
+    $('#sell-modal-placeholder').modal('hide');
+    Add();
+});
+
 // Calculate and set the PurchaseTotal value on the modal where users buy their shares
 
 function CalculatePurchaseTotal(purchasePrice) {
