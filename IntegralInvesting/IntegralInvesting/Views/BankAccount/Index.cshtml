@@ -8,8 +8,15 @@
 <div class="d-flex justify-content-center mt-3 mb-2">
     <div><h5>Current Funds in Account: $@ViewData["CurrentUserFunds"]</h5></div>
     <div style="margin-left: 2em">
-        <a asp-controller="BankAccount" asp-action="DepositFunds" class="btn yellow-button">Deposit Funds</a>
-        <a asp-controller="BankAccount" asp-action="WithdrawFunds" class="btn yellow-button">Withdraw Funds</a>
+        @* <a asp-controller="BankAccount" asp-action="DepositFunds" class="btn yellow-button">Deposit Funds</a>
+        <a asp-controller="BankAccount" asp-action="WithdrawFunds" class="btn yellow-button">Withdraw Funds</a> *@
+
+        <a class="btn yellow-button" data-modal="" id="btnOpenDepositFundsModal" onclick="OpenDepositFundsModal()">
+            Deposit Funds
+        </a>
+        <a class="btn yellow-button" data-modal="" id="btnOpenWithdrawFundsModal" onclick="OpenWithdrawFundsModal()">
+            Withdraw Funds
+        </a>
     </div>
 </div>
 
@@ -50,9 +57,28 @@
 
 <!-- Link New Bank Account Modal placeholder -->
 <div id="linkNewBankAcc-modal-placeholder" class="modal fade">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div id='modal-linkNewBankAcc-content'></div>
         </div>
     </div>
 </div>
+
+<!-- Deposit Funds Modal placeholder -->
+<div id="depositFunds-modal-placeholder" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='modal-depositFunds-content'></div>
+        </div>
+    </div>
+</div>
+
+<!-- Withdraw Funds Modal placeholder -->
+<div id="withdrawFunds-modal-placeholder" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='modal-withdrawFunds-content'></div>
+        </div>
+    </div>
+</div>
+

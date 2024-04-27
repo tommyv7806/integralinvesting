@@ -55,7 +55,7 @@ function OpenLinkNewBankAccModal() {
     $.ajax(
         {
             type: 'GET',
-            url: '/BankAccount/LinkNewAccount',
+            url: '/BankAccount/OpenLinkNewAccountModal',
             contentType: 'application/json; charset=utf=8',
             success: function (result) {
                 $('#modal-linkNewBankAcc-content').html(result);
@@ -70,7 +70,55 @@ function OpenLinkNewBankAccModal() {
 // Onclick event for Link Account button inside the modal that hides the modal when clicked
 $('#btnModalLinkNewBankAccSubmit').click(function (event) {
     event.preventDefault();
-    $('#sell-modal-placeholder').modal('hide');
+    $('#linkNewBankAcc-modal-placeholder').modal('hide');
+    Add();
+});
+
+// Opens the modal where users can deposit funds into their linked bank accounts
+function OpenDepositFundsModal() {
+    $.ajax(
+        {
+            type: 'GET',
+            url: '/BankAccount/OpenDepositFundsModal',
+            contentType: 'application/json; charset=utf=8',
+            success: function (result) {
+                $('#modal-depositFunds-content').html(result);
+                $('#depositFunds-modal-placeholder').modal('show');
+            },
+            error: function (er) {
+                alert(er);
+            }
+        });
+}
+
+// Onclick event for Link Account button inside the modal that hides the modal when clicked
+$('#btnModalDepositFundsSubmit').click(function (event) {
+    event.preventDefault();
+    $('#depositFunds-modal-placeholder').modal('hide');
+    Add();
+});
+
+// Opens the modal where users can withdraw funds from their linked bank accounts
+function OpenWithdrawFundsModal() {
+    $.ajax(
+        {
+            type: 'GET',
+            url: '/BankAccount/OpenWithdrawFundsModal',
+            contentType: 'application/json; charset=utf=8',
+            success: function (result) {
+                $('#modal-withdrawFunds-content').html(result);
+                $('#withdrawFunds-modal-placeholder').modal('show');
+            },
+            error: function (er) {
+                alert(er);
+            }
+        });
+}
+
+// Onclick event for Link Account button inside the modal that hides the modal when clicked
+$('#btnModalWithdrawFundsSubmit').click(function (event) {
+    event.preventDefault();
+    $('#withdrawFunds-modal-placeholder').modal('hide');
     Add();
 });
 

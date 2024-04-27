@@ -71,6 +71,19 @@ namespace IntegralInvesting.Controllers
             return View();            
         }
 
+        [HttpGet]
+        public IActionResult OpenWithdrawFundsModal()
+        {
+            ValidateUserIsLoggedIn();
+
+            var currentUserId = _userManager.GetUserId(this.User);
+            var accountNames = GetAccountNamesForCurrentUser(currentUserId);
+            var currentUserFund = GetUserFundForCurrentUser(currentUserId);
+
+            ViewData["BankAccountNames"] = accountNames;
+            return PartialView("WithdrawFundsModalPartial", currentUserFund);
+        }
+
         // When the user wants to withdraw funds from their linked bank account
         [HttpGet]
         public IActionResult WithdrawFunds()
@@ -116,6 +129,20 @@ namespace IntegralInvesting.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult OpenDepositFundsModal()
+        {
+            ValidateUserIsLoggedIn();
+
+            var currentUserId = _userManager.GetUserId(this.User);
+            var accountNames = GetAccountNamesForCurrentUser(currentUserId);
+            var currentUserFund = GetUserFundForCurrentUser(currentUserId);
+            
+            ViewData["BankAccountNames"] = accountNames;
+
+            return PartialView("DepositFundsModalPartial", currentUserFund);
         }
 
         [HttpGet]
