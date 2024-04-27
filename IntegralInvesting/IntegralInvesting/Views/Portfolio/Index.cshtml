@@ -70,14 +70,15 @@
         var dayOneTotal = 0, dayTwoTotal = 0, dayThreeTotal = 0, dayFourTotal = 0, dayFiveTotal = 0, daySixTotal = 0, daySevenTotal = 0;
         var dayOneDate = '', dayTwoDate = '', dayThreeDate = '', dayFourDate = '', dayFiveDate = '', daySixDate = '', daySevenDate = '';
 
+        var portfolioAmount = getPortfolioAmount();
+
         // Methods to create chart
         google.charts.load('current', { packages: ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        getPortfolioAmount();
+        google.charts.setOnLoadCallback(drawChart);      
 
         function drawChart() {
             getDailyTotals();
+            getDailyGains();
             getDailyDates();
 
             var data = google.visualization.arrayToDataTable([
@@ -95,7 +96,7 @@
                 title: 'Last 7 Days Performance',
                 curveType: 'function',
                 legend: 'none',
-                vAxis: { format: 'currency', title: 'Amount' },
+                vAxis: { format: 'currency', title: 'Gain Amount' },
                 hAxis: { title: 'Date', },
                 lineWidth: 4,
                 colors: ['#11A65B'],
@@ -116,6 +117,16 @@
                 @:daySixTotal += (@asset.LastSevenDaysData.ElementAt(5).Close * @asset.NumberOfShares);
                 @:daySevenTotal += (@asset.LastSevenDaysData.ElementAt(6).Close * @asset.NumberOfShares);
             }
+        }
+
+        function getDailyGains() {
+            dayOneTotal = portfolioAmount - dayOneTotal;
+            dayTwoTotal = portfolioAmount - dayTwoTotal;
+            dayThreeTotal = portfolioAmount - dayThreeTotal;
+            dayFourTotal = portfolioAmount - dayFourTotal;
+            dayFiveTotal = portfolioAmount - dayFiveTotal;
+            daySixTotal = portfolioAmount - daySixTotal;
+            daySevenTotal = portfolioAmount - daySevenTotal;
         }
 
         function getDailyDates() {
@@ -143,9 +154,11 @@
                 }
 
                 portfolioAmount = Math.Round(portfolioAmount, 2);
-             }
+            }
 
-             $('#portfolioAmountField').text(String(@portfolioAmount));
+            $('#portfolioAmountField').text(String(@portfolioAmount));
+
+            return @portfolioAmount;
         }
     </script>
 }
