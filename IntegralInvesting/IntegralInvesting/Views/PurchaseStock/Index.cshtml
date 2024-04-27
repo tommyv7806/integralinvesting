@@ -32,6 +32,12 @@
 
 @section Scripts {
     <script>
+        // After a user purchases shares, they are returned to the Purchase page with previous search results displayed
+        if ('@ViewData["SearchQuery"]' && '@ViewData["Symbol"]' && '@ViewData["StockName"]') {
+            GetInitialSearchResult('@ViewData["SearchQuery"]');
+            GetSearchResultDetails('@ViewData["Symbol"]', '@ViewData["StockName"]');
+        }
+
         // Gets the details for a particular stock and displays them on the right side of the page
         function GetSearchResultDetails(symbolValue, stockNameValue) {
             $.ajax({
@@ -40,6 +46,7 @@
                 data: { symbol: symbolValue, stockName: stockNameValue },
                 success: function (result) {
                     $('#SearchResultDetail').html(result);
+                    $('#SearchResultDetail').show();
                 }
             });
         }
@@ -47,6 +54,9 @@
         // Set up Search button so that it calls GetInitialSearchResult() when clicked
         $('#btnSubmit').click(function () {
             let searchStringValue = document.getElementById("searchField").value
+
+            $('#SearchResultDetail').hide();
+
             GetInitialSearchResult(searchStringValue);
         });
 
