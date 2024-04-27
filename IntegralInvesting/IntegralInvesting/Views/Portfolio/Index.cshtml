@@ -111,41 +111,34 @@
         function getDailyTotals() {
             @foreach (var asset in Model)
             {
-                @:dayOneTotal += @asset.LastSevenDaysData.ElementAt(0).Close;
-                @:dayTwoTotal += @asset.LastSevenDaysData.ElementAt(1).Close;
-                @:dayThreeTotal += @asset.LastSevenDaysData.ElementAt(2).Close;
-                @:dayFourTotal += @asset.LastSevenDaysData.ElementAt(3).Close;
-                @:dayFiveTotal += @asset.LastSevenDaysData.ElementAt(4).Close;
-                @:daySixTotal += @asset.LastSevenDaysData.ElementAt(5).Close;
-                @:daySevenTotal += @asset.LastSevenDaysData.ElementAt(6).Close;
+                @:dayOneTotal += (@asset.LastSevenDaysData.ElementAt(0).Close * @asset.NumberOfShares);
+                @:dayTwoTotal += (@asset.LastSevenDaysData.ElementAt(1).Close * @asset.NumberOfShares);
+                @:dayThreeTotal += (@asset.LastSevenDaysData.ElementAt(2).Close * @asset.NumberOfShares);
+                @:dayFourTotal += (@asset.LastSevenDaysData.ElementAt(3).Close * @asset.NumberOfShares);
+                @:dayFiveTotal += (@asset.LastSevenDaysData.ElementAt(4).Close * @asset.NumberOfShares);
+                @:daySixTotal += (@asset.LastSevenDaysData.ElementAt(5).Close * @asset.NumberOfShares);
+                @:daySevenTotal += (@asset.LastSevenDaysData.ElementAt(6).Close * @asset.NumberOfShares);
             }
         }
 
         function getDailyDates() {
             @{
                 var firstAsset = Model.First();
-                var dayOne = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
-            var dayTwo = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
-            var dayThree = firstAsset.LastSevenDaysData.ElementAt(2).Timestamp;
-            var dayFour = firstAsset.LastSevenDaysData.ElementAt(3).Timestamp;
-            var dayFive = firstAsset.LastSevenDaysData.ElementAt(4).Timestamp;
-            var daySix = firstAsset.LastSevenDaysData.ElementAt(5).Timestamp;
-            var daySeven = firstAsset.LastSevenDaysData.ElementAt(6).Timestamp;
+                // var dayOne = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
+                // var dayTwo = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
+                // var dayThree = firstAsset.LastSevenDaysData.ElementAt(2).Timestamp;
+                // var dayFour = firstAsset.LastSevenDaysData.ElementAt(3).Timestamp;
+                // var dayFive = firstAsset.LastSevenDaysData.ElementAt(4).Timestamp;
+                // var daySix = firstAsset.LastSevenDaysData.ElementAt(5).Timestamp;
+                // var daySeven = firstAsset.LastSevenDaysData.ElementAt(6).Timestamp;
 
-            @:dayOneDate = '@firstAsset.LastSevenDaysData.ElementAt(0).Timestamp.ToShortDateString().Replace("/2024","")';
-                // @:dayTwoDate = @dayTwo;
-                // @:dayThreeDate = @dayThree;
-                // @:dayFourDate = @dayFour;
-                // @:dayFiveDate = @dayFive;
-                // @:daySixDate = @daySix;
-                // @:daySevenDate = @daySeven;
-
-            @:dayTwoDate = '@firstAsset.LastSevenDaysData.ElementAt(1).Timestamp.ToShortDateString().Replace("/2024", "")';
-            @:dayThreeDate = '@firstAsset.LastSevenDaysData.ElementAt(2).Timestamp.ToShortDateString().Replace("/2024", "")';
-            @:dayFourDate = '@firstAsset.LastSevenDaysData.ElementAt(3).Timestamp.ToShortDateString().Replace("/2024", "")';
-            @:dayFiveDate = '@firstAsset.LastSevenDaysData.ElementAt(4).Timestamp.ToShortDateString().Replace("/2024", "")';
-            @:daySixDate = '@firstAsset.LastSevenDaysData.ElementAt(5).Timestamp.ToShortDateString().Replace("/2024", "")';
-            @:daySevenDate = '@firstAsset.LastSevenDaysData.ElementAt(6).Timestamp.ToShortDateString().Replace("/2024", "")';
+                @:dayOneDate = '@firstAsset.LastSevenDaysData.ElementAt(0).Timestamp.ToShortDateString().Replace("/2024","")';
+                @:dayTwoDate = '@firstAsset.LastSevenDaysData.ElementAt(1).Timestamp.ToShortDateString().Replace("/2024", "")';
+                @:dayThreeDate = '@firstAsset.LastSevenDaysData.ElementAt(2).Timestamp.ToShortDateString().Replace("/2024", "")';
+                @:dayFourDate = '@firstAsset.LastSevenDaysData.ElementAt(3).Timestamp.ToShortDateString().Replace("/2024", "")';
+                @:dayFiveDate = '@firstAsset.LastSevenDaysData.ElementAt(4).Timestamp.ToShortDateString().Replace("/2024", "")';
+                @:daySixDate = '@firstAsset.LastSevenDaysData.ElementAt(5).Timestamp.ToShortDateString().Replace("/2024", "")';
+                @:daySevenDate = '@firstAsset.LastSevenDaysData.ElementAt(6).Timestamp.ToShortDateString().Replace("/2024", "")';
             }
         }
 
@@ -153,7 +146,7 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            debugger;
+            //debugger;
             getDailyTotals();
             getDailyDates();
 

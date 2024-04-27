@@ -37,6 +37,7 @@ namespace IntegralInvesting.Controllers
             {
                 var stockDetails = GetBasicStockDetails(asset.Symbol);
                 asset.CurrentPrice = stockDetails.Price;
+                asset.NumberOfShares = asset.PortfolioStocks.Sum(ps => ps.PurchaseQuantity);
 
                 PopulateDataForLastWeek(asset);
             }
