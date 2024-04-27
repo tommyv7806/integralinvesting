@@ -23,75 +23,36 @@
     </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Symbol)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CurrentPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfShares)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @{
-        foreach (var stock in Model)
-        {
-                    <tr>
-                        <td>
-                            @stock.Name
-                        </td>
-                        <td>
-                            @stock.Symbol
-                        </td>
-                        <td>
-                            @stock.CurrentPrice
-                        </td>
-                        <td>
-                            @CalculateNumberOfShares(stock.Symbol)
-                        </td>
-                        <td>
-                            <!-- Sell button -->
-                                <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@stock.Symbol', '@stock.CurrentPrice', '@CalculateNumberOfShares(stock.Symbol)')">
-                                Sell Shares
-                            </a>
-                        </td>
-                    </tr>
-        }
-    }
-    </tbody>
-</table>
+<h2 style="padding-left: 2em;">Portfolio Amount: <span id="portfolioAmountField"></span></h2>
+
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <div id="mychart" style="width: 100%; height: 85%"></div>
+            <div id="mychart" style="width: 100%; height: 100%"></div>
         </div>
         <div class="d-flex col-6">
-            <div class="overflow-auto" style="height: 400px">
-                @foreach (var item in Model)
+            <div class="overflow-auto" style="height: 30em;">
+                @foreach (var asset in Model)
                 {
                     <div class="card m-2">
                         <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain1.webp" class="img-fluid rounded-start" />
+                            <div class="col-md-4 text-center" style="display: flex; justify-content: center; align-items: center;">
+                                <h2 class="align-middle">@asset.Symbol</h2>
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">
-                                        This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                                    <h4 class="card-title">@asset.Name</h4>
+                                    <p class="card-text" style="margin-top: 1.5em;">
+                                        <span style="font-weight: bold;">Current Price: </span>@asset.CurrentPrice
+                                        <br />
+                                        <span style="font-weight: bold;">Number of Shares: </span>@asset.NumberOfShares
                                     </p>
-                                    <p class="card-text">
-                                        <small class="text-muted">Last updated 3 mins ago</small>
-                                    </p>
+                                </div>
+                                <div class="card-body" style="padding-top: 0;">
+                                    <!-- Sell button -->
+                                    <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@asset.Symbol', '@asset.CurrentPrice', '@CalculateNumberOfShares(asset.Symbol)')">
+                                        Sell Shares
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -105,8 +66,44 @@
 @section Scripts {
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
+        // Declare variables for storing daily data for each stock asset
         var dayOneTotal = 0, dayTwoTotal = 0, dayThreeTotal = 0, dayFourTotal = 0, dayFiveTotal = 0, daySixTotal = 0, daySevenTotal = 0;
         var dayOneDate = '', dayTwoDate = '', dayThreeDate = '', dayFourDate = '', dayFiveDate = '', daySixDate = '', daySevenDate = '';
+
+        // Methods to create chart
+        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        getPortfolioAmount();
+
+        function drawChart() {
+            getDailyTotals();
+            getDailyDates();
+
+            var data = google.visualization.arrayToDataTable([
+                ['Day', 'Amount'],
+                [dayOneDate, dayOneTotal],
+                [dayTwoDate, dayTwoTotal],
+                [dayThreeDate, dayThreeTotal],
+                [dayFourDate, dayFourTotal],
+                [dayFiveDate, dayFiveTotal],
+                [daySixDate, daySixTotal],
+                [daySevenDate, daySevenTotal]
+            ]);
+
+            var options = {
+                title: 'Last 7 Days Performance',
+                curveType: 'function',
+                legend: 'none',
+                vAxis: { format: 'currency', title: 'Amount' },
+                hAxis: { title: 'Date', },
+                lineWidth: 4,
+                colors: ['#11A65B'],
+                chartArea: { width: '70%', height: '80%' }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('mychart'));
+            chart.draw(data, options);
+        }
 
         function getDailyTotals() {
             @foreach (var asset in Model)
@@ -124,15 +121,8 @@
         function getDailyDates() {
             @{
                 var firstAsset = Model.First();
-                // var dayOne = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
-                // var dayTwo = firstAsset.LastSevenDaysData.ElementAt(0).Timestamp;
-                // var dayThree = firstAsset.LastSevenDaysData.ElementAt(2).Timestamp;
-                // var dayFour = firstAsset.LastSevenDaysData.ElementAt(3).Timestamp;
-                // var dayFive = firstAsset.LastSevenDaysData.ElementAt(4).Timestamp;
-                // var daySix = firstAsset.LastSevenDaysData.ElementAt(5).Timestamp;
-                // var daySeven = firstAsset.LastSevenDaysData.ElementAt(6).Timestamp;
 
-                @:dayOneDate = '@firstAsset.LastSevenDaysData.ElementAt(0).Timestamp.ToShortDateString().Replace("/2024","")';
+                @:dayOneDate = '@firstAsset.LastSevenDaysData.ElementAt(0).Timestamp.ToShortDateString().Replace("/2024", "")';
                 @:dayTwoDate = '@firstAsset.LastSevenDaysData.ElementAt(1).Timestamp.ToShortDateString().Replace("/2024", "")';
                 @:dayThreeDate = '@firstAsset.LastSevenDaysData.ElementAt(2).Timestamp.ToShortDateString().Replace("/2024", "")';
                 @:dayFourDate = '@firstAsset.LastSevenDaysData.ElementAt(3).Timestamp.ToShortDateString().Replace("/2024", "")';
@@ -142,32 +132,20 @@
             }
         }
 
-        google.charts.load('current', { packages: ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
+        function getPortfolioAmount() {
+            @{
+                decimal portfolioAmount = 0m;
 
-        function drawChart() {
-            //debugger;
-            getDailyTotals();
-            getDailyDates();
+                foreach(var asset in Model)
+                {
+                    var assetAmount = asset.CurrentPrice * asset.NumberOfShares;
+                    portfolioAmount += assetAmount;
+                }
 
-            var data = google.visualization.arrayToDataTable([
-                ['Day', 'Amount'],
-                [dayOneDate, dayOneTotal],
-                [dayTwoDate, dayTwoTotal],
-                [dayThreeDate, dayThreeTotal],
-                [dayFourDate, dayFourTotal],
-                [dayFiveDate, dayFiveTotal],
-                [daySixDate, daySixTotal],
-                [daySevenDate, daySevenTotal]
-            ]);
+                portfolioAmount = Math.Round(portfolioAmount, 2);
+             }
 
-            var options = {
-                title: 'Company Performance',
-                curveType: 'function',
-                legend: { position: 'bottom' }
-            };
-            var chart = new google.visualization.LineChart(document.getElementById('mychart'));
-            chart.draw(data, options);
+             $('#portfolioAmountField').text(String(@portfolioAmount));
         }
     </script>
 }
