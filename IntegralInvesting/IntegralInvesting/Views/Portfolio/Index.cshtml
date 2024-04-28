@@ -23,45 +23,52 @@
     </div>
 </div>
 
-<h2 style="padding-left: 2em;">Portfolio Amount: <span id="portfolioAmountField"></span></h2>
-
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <div id="mychart" style="width: 100%; height: 100%"></div>
-        </div>
-        <div class="d-flex col-6">
-            <div class="overflow-auto" style="height: 30em;">
-                @foreach (var asset in Model)
-                {
-                    <div class="card m-2">
-                        <div class="row g-0">
-                            <div class="col-md-4 text-center" style="display: flex; justify-content: center; align-items: center;">
-                                <h2 class="align-middle">@asset.Symbol</h2>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h4 class="card-title">@asset.Name</h4>
-                                    <p class="card-text" style="margin-top: 1.5em;">
-                                        <span style="font-weight: bold;">Current Price: </span>@asset.CurrentPrice
-                                        <br />
-                                        <span style="font-weight: bold;">Number of Shares: </span>@asset.NumberOfShares
-                                    </p>
+@if (Model.Count() > 0)
+{
+    <h2 style="padding-left: 2em;">Portfolio Amount: <span id="portfolioAmountField"></span></h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div id="mychart" style="width: 100%; height: 100%"></div>
+            </div>
+            <div class="d-flex col-6">
+                <div class="overflow-auto" style="height: 30em;">
+                    @foreach (var asset in Model)
+                    {
+                        <div class="card m-2">
+                            <div class="row g-0">
+                                <div class="col-md-4 text-center" style="display: flex; justify-content: center; align-items: center;">
+                                    <h2 class="align-middle">@asset.Symbol</h2>
                                 </div>
-                                <div class="card-body" style="padding-top: 0;">
-                                    <!-- Sell button -->
-                                    <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@asset.Symbol', '@asset.CurrentPrice', '@CalculateNumberOfShares(asset.Symbol)')">
-                                        Sell Shares
-                                    </a>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h4 class="card-title">@asset.Name</h4>
+                                        <p class="card-text" style="margin-top: 1.5em;">
+                                            <span style="font-weight: bold;">Current Price: </span>@asset.CurrentPrice
+                                            <br />
+                                            <span style="font-weight: bold;">Number of Shares: </span>@asset.NumberOfShares
+                                        </p>
+                                    </div>
+                                    <div class="card-body" style="padding-top: 0;">
+                                        <!-- Sell button -->
+                                        <a class="btn btn-success" data-modal="" id="btnOpenSellModal" onclick="OpenSellSharesModal('@asset.Symbol', '@asset.CurrentPrice', '@CalculateNumberOfShares(asset.Symbol)')">
+                                            Sell Shares
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <h2>Empty Portfolio</h2>
+    <h4>Please purchase some assets from the Purchase page</h4>
+}
 
 @section Scripts {
     <script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -77,6 +84,10 @@
         google.charts.setOnLoadCallback(drawChart);      
 
         function drawChart() {
+            if (@Model.Count() == 0) { 
+                return;
+            }
+
             getDailyTotals();
             getDailyGains();
             getDailyDates();
@@ -130,7 +141,9 @@
         }
 
         function getDailyDates() {
-            @{
+        @{
+            if (@Model.Count() > 0)
+            {
                 var firstAsset = Model.First();
 
                 @:dayOneDate = '@firstAsset.LastSevenDaysData.ElementAt(0).Timestamp.ToShortDateString().Replace("/2024", "")';
@@ -141,6 +154,8 @@
                 @:daySixDate = '@firstAsset.LastSevenDaysData.ElementAt(5).Timestamp.ToShortDateString().Replace("/2024", "")';
                 @:daySevenDate = '@firstAsset.LastSevenDaysData.ElementAt(6).Timestamp.ToShortDateString().Replace("/2024", "")';
             }
+  
+        }
         }
 
         function getPortfolioAmount() {

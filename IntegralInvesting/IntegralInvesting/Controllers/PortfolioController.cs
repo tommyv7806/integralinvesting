@@ -33,6 +33,9 @@ namespace IntegralInvesting.Controllers
             var currentUserId = _userManager.GetUserId(this.User);
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
 
+            if (userPortfolio.PortfolioAssets.Count == 0)
+                return View(new List<PortfolioAssetViewModel>());
+
             foreach (var asset in userPortfolio.PortfolioAssets)
             {
                 var stockDetails = GetBasicStockDetails(asset.Symbol);
