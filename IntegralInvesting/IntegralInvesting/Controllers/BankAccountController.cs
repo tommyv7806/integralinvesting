@@ -191,6 +191,14 @@ namespace IntegralInvesting.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult RemoveBankAccount(int id)
+        {
+            DeleteBankAccount(id);
+
+            return RedirectToAction("Index");
+        }
+
         private void ValidateUserIsLoggedIn()
         {
             // If the user is not logged in, return them to the Login page
@@ -251,6 +259,18 @@ namespace IntegralInvesting.Controllers
             }
 
             return accountNames;
+        }
+
+        private void DeleteBankAccount(int id)
+        {
+            try
+            {
+                var response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/BankAccount/Delete/" + id).Result;
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
         }
     }
 }
