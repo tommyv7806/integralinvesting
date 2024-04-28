@@ -8,13 +8,10 @@
 <div class="d-flex justify-content-center mt-3 mb-2">
     <div><h5>Current Funds in Account: $@ViewData["CurrentUserFunds"]</h5></div>
     <div style="margin-left: 2em">
-        @* <a asp-controller="BankAccount" asp-action="DepositFunds" class="btn yellow-button">Deposit Funds</a>
-        <a asp-controller="BankAccount" asp-action="WithdrawFunds" class="btn yellow-button">Withdraw Funds</a> *@
-
-        <a class="btn yellow-button" data-modal="" id="btnOpenDepositFundsModal" onclick="OpenDepositFundsModal()">
+        <a class="btn yellow-button" id="btnOpenDepositFundsModal" onclick="OpenDepositFundsModal()">
             Deposit Funds
         </a>
-        <a class="btn yellow-button" data-modal="" id="btnOpenWithdrawFundsModal" onclick="OpenWithdrawFundsModal()">
+        <a class="btn yellow-button" id="btnOpenWithdrawFundsModal" onclick="OpenWithdrawFundsModal()">
             Withdraw Funds
         </a>
     </div>
@@ -29,30 +26,32 @@
             </a>
         </div>
     </div>
-
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.AccountName)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (Model.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AccountName)
-                    </td>
-                    <td style="width: 0; min-width: fit-content;">
-                        <a id="btnRemoveBankAcc" asp-action="RemoveBankAccount" asp-route-id="@item.BankAccountId" class="btn red-button">Remove</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountName)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountName)
+                        </td>
+                        <td style="width: 0; min-width: fit-content;">
+                            <a id="btnRemoveBankAcc" asp-action="RemoveBankAccount" asp-route-id="@item.BankAccountId" class="btn red-button">Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 
 <!-- Link New Bank Account Modal placeholder -->
@@ -82,3 +81,12 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        // Disable the Deposit Funds and Withdraw Funds buttons if the user does not have any Bank Accounts linked yet
+        if (@Model.Count() == 0) {
+            $('#btnOpenDepositFundsModal').addClass('disabled');
+            $('#btnOpenWithdrawFundsModal').addClass('disabled');
+        }
+    </script>
+}
