@@ -117,12 +117,12 @@ namespace IntegralInvesting.Controllers
             UpdateUserCurrentFunds(userFunds);
             CreateOrUpdatePortfolioAsset(portfolioStock, userPortfolio);
 
-            return CreateNewPortfolioStock(portfolioStock);
+            return CreateNewPortfolioStock(portfolioStock, userPortfolio);
         }
 
         private void CreateOrUpdatePortfolioAsset(PortfolioStockViewModel portfolioStock, PortfolioViewModel portfolio)
         {
-            var portfolioAsset = GetPortfolioAssetForCurrentStock(portfolioStock.Symbol);
+            var portfolioAsset = portfolio.PortfolioAssets.FirstOrDefault(pa => pa.Symbol == portfolioStock.Symbol);
 
             if (portfolioAsset != null)
             {
@@ -142,9 +142,9 @@ namespace IntegralInvesting.Controllers
             }
         }
 
-        private IActionResult CreateNewPortfolioStock(PortfolioStockViewModel portfolioStock)
+        private IActionResult CreateNewPortfolioStock(PortfolioStockViewModel portfolioStock, PortfolioViewModel portfolio)
         {
-            var existingPortfolioAsset = GetPortfolioAssetForCurrentStock(portfolioStock.Symbol);
+            var existingPortfolioAsset = portfolio.PortfolioAssets.First(pa => pa.Symbol == portfolioStock.Symbol);
 
             portfolioStock.PortfolioAssetId = existingPortfolioAsset.PortfolioAssetId;
 
@@ -235,24 +235,6 @@ namespace IntegralInvesting.Controllers
             }
 
             return portfolio;
-        }
-
-        private PortfolioAssetViewModel GetPortfolioAssetForCurrentStock(string symbol)
-        {
-            PortfolioAssetViewModel portfolioAsset = new PortfolioAssetViewModel();
-            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbol/" + symbol).Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                string data = response.Content.ReadAsStringAsync().Result;
-                portfolioAsset = JsonConvert.DeserializeObject<PortfolioAssetViewModel>(data);
-            }
-            else
-            {
-                return null;
-            }
-
-            return portfolioAsset;
         }
 
         private UserFundViewModel GetFundsForCurrentUser(string currentUserId)

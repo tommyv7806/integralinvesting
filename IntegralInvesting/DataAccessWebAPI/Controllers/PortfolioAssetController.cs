@@ -88,6 +88,26 @@ namespace DataAccessWebAPI.Controllers
             }
         }
 
+        [HttpGet("{symbol},{portfolioId}")]
+        public IActionResult GetPortfolioAssetForStockSymbolFromPortfolio(string symbol, int portfolioId)
+        {
+            try
+            {
+                var portfolioAsset = _context.PortfolioAssets
+                    .Include(pa => pa.PortfolioStocks)
+                    .SingleOrDefault(pa => pa.Symbol.ToLower() == symbol.ToLower() && pa.PortfolioId == portfolioId);
+
+                if (portfolioAsset == null)
+                    return NotFound($"Portfolio Assets not available for Portfolio with Symbol of '{symbol}'");
+
+                return Ok(portfolioAsset);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPut]
         public IActionResult Put(PortfolioAsset model)
         {

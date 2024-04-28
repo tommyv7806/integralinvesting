@@ -64,7 +64,11 @@ namespace IntegralInvesting.Controllers
         [HttpGet]
         public IActionResult OpenSellModal(string symbol, decimal currentPrice, int numberOfShares)
         {
-            var portfolioAsset = GetSelectedPortfolioAsset(symbol);
+            ValidateUserIsLoggedIn();
+            var currentUserId = _userManager.GetUserId(this.User);
+            var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
+
+            var portfolioAsset = GetSelectedPortfolioAsset(symbol, userPortfolio.PortfolioId);
             portfolioAsset.NumberOfShares = numberOfShares;
             portfolioAsset.CurrentPrice = currentPrice;
 
@@ -105,7 +109,7 @@ namespace IntegralInvesting.Controllers
                         sellQuantity -= stock.PurchaseQuantity;
 
                         // Delete PortfolioStock record
-                        DeletePortfolioStock(stock);
+                        DeletePortfolioStock(stock, portfolioAsset.PortfolioId);
                     }
                 }
             }
@@ -113,7 +117,7 @@ namespace IntegralInvesting.Controllers
             return RedirectToAction("Index");
         }
 
-        private void DeletePortfolioStock(PortfolioStockViewModel portfolioStock)
+        private void DeletePortfolioStock(PortfolioStockViewModel portfolioStock, int portfolioId)
         {
             try
             {
@@ -121,7 +125,7 @@ namespace IntegralInvesting.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var portfolioAsset = GetSelectedPortfolioAsset(portfolioStock.Symbol);
+                    var portfolioAsset = GetSelectedPortfolioAsset(portfolioStock.Symbol, portfolioId);
 
                     if (portfolioAsset != null && portfolioAsset.PortfolioStocks.Count() == 0)
                         DeletePortfolioAsset(portfolioStock.PortfolioAssetId);
@@ -182,10 +186,10 @@ namespace IntegralInvesting.Controllers
             }
         }
 
-        private PortfolioAssetViewModel GetSelectedPortfolioAsset(string symbol)
+        private PortfolioAssetViewModel GetSelectedPortfolioAsset(string symbol, int portfolioId)
         {
             PortfolioAssetViewModel portfolioAsset = new PortfolioAssetViewModel();
-            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbol/" + symbol).Result;
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbolFromPortfolio/" + symbol + "," + portfolioId).Result;
 
             if (response.IsSuccessStatusCode)
             {
