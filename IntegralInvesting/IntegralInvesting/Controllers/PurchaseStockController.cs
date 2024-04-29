@@ -117,7 +117,7 @@ namespace IntegralInvesting.Controllers
             UpdateUserCurrentFunds(userFunds);
             CreateOrUpdatePortfolioAsset(portfolioStock, userPortfolio);
 
-            return CreateNewPortfolioStock(portfolioStock, userPortfolio);
+            return CreateNewPortfolioStock(portfolioStock);
         }
 
         private void CreateOrUpdatePortfolioAsset(PortfolioStockViewModel portfolioStock, PortfolioViewModel portfolio)
@@ -139,12 +139,17 @@ namespace IntegralInvesting.Controllers
                 };
 
                 CreateNewPortfolioAsset(portfolioAsset);
+
+                portfolio.PortfolioAssets.Add(portfolioAsset);
             }
         }
 
-        private IActionResult CreateNewPortfolioStock(PortfolioStockViewModel portfolioStock, PortfolioViewModel portfolio)
+        private IActionResult CreateNewPortfolioStock(PortfolioStockViewModel portfolioStock)
         {
-            var existingPortfolioAsset = portfolio.PortfolioAssets.First(pa => pa.Symbol == portfolioStock.Symbol);
+            var currentUserId = _userManager.GetUserId(this.User);
+            var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
+
+            var existingPortfolioAsset = userPortfolio.PortfolioAssets.First(pa => pa.Symbol == portfolioStock.Symbol);
 
             portfolioStock.PortfolioAssetId = existingPortfolioAsset.PortfolioAssetId;
 

@@ -12,6 +12,7 @@ namespace IntegralInvesting.Controllers
     {
         public IActionResult Index()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 

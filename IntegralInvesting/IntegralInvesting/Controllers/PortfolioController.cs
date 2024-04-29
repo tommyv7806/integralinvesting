@@ -29,6 +29,7 @@ namespace IntegralInvesting.Controllers
         // Display the information for the user's Portfolio
         public ActionResult Index()
         {
+            HttpContext.Session.Clear();
             ValidateUserIsLoggedIn();
             var currentUserId = _userManager.GetUserId(this.User);
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
@@ -114,6 +115,7 @@ namespace IntegralInvesting.Controllers
                 }
             }
 
+            TempData["SuccessMessage"] = $"Successfully sold {portfolioAsset.SellQuantity} share(s) of {portfolioAsset.Name} stock";
             return RedirectToAction("Index");
         }
 

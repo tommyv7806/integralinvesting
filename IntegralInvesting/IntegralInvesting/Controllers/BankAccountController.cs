@@ -26,6 +26,8 @@ namespace IntegralInvesting.Controllers
         {
             ValidateUserIsLoggedIn();
 
+            HttpContext.Session.Clear();
+
             var currentUserId = _userManager.GetUserId(this.User);
             var currentUserBankAccounts = GetBankAccountsForCurrentUser(currentUserId);
             var currentUserFunds = GetFundsForCurrentUser(currentUserId);
@@ -196,6 +198,7 @@ namespace IntegralInvesting.Controllers
         {
             DeleteBankAccount(id);
 
+            TempData["SuccessMessage"] = $"Successfully removed bank account";
             return RedirectToAction("Index");
         }
 
