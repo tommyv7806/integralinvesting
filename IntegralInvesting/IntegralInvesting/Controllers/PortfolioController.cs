@@ -3,6 +3,7 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NuGet.Packaging;
 using ServiceStack;
 using System.Text;
 
@@ -14,6 +15,7 @@ namespace IntegralInvesting.Controllers
         private readonly HttpClient _httpClient;
         private readonly UserManager<IntegralInvestingUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly string? _apiKey;
 
         public PortfolioController(UserManager<IntegralInvestingUser> userManager, IConfiguration config)
         {
@@ -21,29 +23,53 @@ namespace IntegralInvesting.Controllers
             _httpClient.BaseAddress = baseAddress;
             _userManager = userManager;
             _config = config;
+            _apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
         }
 
         // Display the information for the user's Portfolio
         public ActionResult Index()
         {
+            HttpContext.Session.Clear();
             ValidateUserIsLoggedIn();
             var currentUserId = _userManager.GetUserId(this.User);
             var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
+
+            if (userPortfolio.PortfolioAssets.Count == 0)
+                return View(new List<PortfolioAssetViewModel>());
 
             foreach (var asset in userPortfolio.PortfolioAssets)
             {
                 var stockDetails = GetBasicStockDetails(asset.Symbol);
                 asset.CurrentPrice = stockDetails.Price;
+                asset.NumberOfShares = asset.PortfolioStocks.Sum(ps => ps.PurchaseQuantity);
+
+                PopulateDataForLastWeek(asset);
             }
 
             return View(userPortfolio.PortfolioAssets);
+        }
+
+        private void PopulateDataForLastWeek(PortfolioAssetViewModel asset)
+        {
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={asset.Symbol}&apikey={_apiKey}&datatype=csv"
+                    .GetStringFromUrl();
+
+            var results = stockApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
+
+            var lastSevenDaysData = results.Take(7).Reverse().ToList();
+
+            asset.LastSevenDaysData.AddRange(lastSevenDaysData);
         }
 
         // Opens the modal where users can enter the number of shares of a particular stock they want to sell
         [HttpGet]
         public IActionResult OpenSellModal(string symbol, decimal currentPrice, int numberOfShares)
         {
-            var portfolioAsset = GetSelectedPortfolioAsset(symbol);
+            ValidateUserIsLoggedIn();
+            var currentUserId = _userManager.GetUserId(this.User);
+            var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
+
+            var portfolioAsset = GetSelectedPortfolioAsset(symbol, userPortfolio.PortfolioId);
             portfolioAsset.NumberOfShares = numberOfShares;
             portfolioAsset.CurrentPrice = currentPrice;
 
@@ -84,15 +110,16 @@ namespace IntegralInvesting.Controllers
                         sellQuantity -= stock.PurchaseQuantity;
 
                         // Delete PortfolioStock record
-                        DeletePortfolioStock(stock);
+                        DeletePortfolioStock(stock, portfolioAsset.PortfolioId);
                     }
                 }
             }
 
+            TempData["SuccessMessage"] = $"Successfully sold {portfolioAsset.SellQuantity} share(s) of {portfolioAsset.Name} stock";
             return RedirectToAction("Index");
         }
 
-        private void DeletePortfolioStock(PortfolioStockViewModel portfolioStock)
+        private void DeletePortfolioStock(PortfolioStockViewModel portfolioStock, int portfolioId)
         {
             try
             {
@@ -100,7 +127,7 @@ namespace IntegralInvesting.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var portfolioAsset = GetSelectedPortfolioAsset(portfolioStock.Symbol);
+                    var portfolioAsset = GetSelectedPortfolioAsset(portfolioStock.Symbol, portfolioId);
 
                     if (portfolioAsset != null && portfolioAsset.PortfolioStocks.Count() == 0)
                         DeletePortfolioAsset(portfolioStock.PortfolioAssetId);
@@ -161,10 +188,10 @@ namespace IntegralInvesting.Controllers
             }
         }
 
-        private PortfolioAssetViewModel GetSelectedPortfolioAsset(string symbol)
+        private PortfolioAssetViewModel GetSelectedPortfolioAsset(string symbol, int portfolioId)
         {
             PortfolioAssetViewModel portfolioAsset = new PortfolioAssetViewModel();
-            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbol/" + symbol).Result;
+            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbolFromPortfolio/" + symbol + "," + portfolioId).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -181,9 +208,7 @@ namespace IntegralInvesting.Controllers
 
         private StockDetailsViewModel GetBasicStockDetails(string symbol)
         {
-            var apiKey = _config.GetValue<string>("AlphaVantageSettings:ApiKey:Key");
-
-            var stockApiResponse = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={apiKey}&datatype=csv"
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={_apiKey}&datatype=csv"
                     .GetStringFromUrl();
 
             if (stockApiResponse.Contains("Invalid API call"))

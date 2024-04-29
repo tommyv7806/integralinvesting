@@ -44,3 +44,52 @@ body {
 .login-logut-card .card-body {
     padding: 10px 20px;
 }
+
+/* Background color for header throughout the site */
+.header-custom {
+    background-color: #11A65B;
+}
+
+/* Color for primary green buttons - Login, Register, and Link New Account */
+.green-button {
+    color: white;
+    background-color: #11A65B;
+    border-color: #11A65B;
+}
+
+.green-button:hover {
+    color: white;
+    background-color: #0C6F3D;
+    border-color: #0C6F3D;
+}
+
+/* Color for red buttons - Remove button on Bank Accounts page */
+.red-button {
+    color: white;
+    background-color: #F8333C;
+    border-color: #F8333C;
+}
+
+.red-button:hover {
+    color: white;
+    background-color: #EC0914;
+    border-color: #EC0914;
+}
+
+/* Color for yellow buttons - Deposit Funds and Withdraw Funds */
+.yellow-button {
+    color: white;
+    background-color: #F1A208;
+    border-color: #F1A208;
+}
+
+.yellow-button:hover {
+    color: white;
+    background-color: #C68606;
+    border-color: #C68606;
+}
+
+/* Colors for certain headers: H2 elements on the Login and Register pages */
+.main-green {
+    color: #11A65B;
+}

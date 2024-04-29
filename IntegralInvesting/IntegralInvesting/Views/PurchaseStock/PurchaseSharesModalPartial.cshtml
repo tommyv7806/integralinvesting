@@ -8,40 +8,33 @@
 }
 
 <div class="modal-header">
-    <h5 class="modal-title" id="purchaseStockLabel">Purchase Stock with Funds: @ViewData["UserFunds"]</h5>
+    <h5 class="modal-title mb-2" id="purchaseStockLabel">Purchase Shares for @Model.Name</h5><br />
 </div>
 <div class="modal-body">
+    <h6>Current Funds in Account: $@ViewData["UserFunds"]</h6>
     <form asp-controller="PurchaseStock" asp-action="PurchaseShares" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input readonly asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Symbol" class="control-label"></label>
-            <input readonly asp-for="Symbol" class="form-control" />
-            <span asp-validation-for="Symbol" class="text-danger"></span>
-        </div>
-        <div class="form-group">
+        <input asp-for="Name" type="hidden" />
+        <input asp-for="Symbol" type="hidden" />
+        <div class="form-group mb-2">
             <label asp-for="PurchasePrice" class="control-label"></label>
             <input readonly asp-for="PurchasePrice" class="form-control" />
             <span asp-validation-for="PurchasePrice" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-2">
             <label asp-for="PurchaseQuantity" class="control-label"></label>
             <input type="number" id="purchaseQuantityField" max="@CalculateMaxNumberOfShares()" asp-for="PurchaseQuantity" class="form-control" onchange="CalculatePurchaseTotal('@Model.PurchasePrice')"/>
             <span asp-validation-for="PurchaseQuantity" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label asp-for="PurchaseTotal" class="control-label"></label>
             <input readonly id="purchaseTotalField" asp-for="PurchaseTotal" class="form-control" />
             <span asp-validation-for="PurchaseTotal" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" id="btnModalPurchaseSubmit" class="btn btn-primary" data-save="modal">Save</button>
+            <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
+            <button type="submit" id="btnModalPurchaseSubmit" class="btn green-button" data-save="modal">Purchase</button>
         </div>
     </form>
 </div>

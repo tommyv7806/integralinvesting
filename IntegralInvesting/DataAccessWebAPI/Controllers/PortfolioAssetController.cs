@@ -1,6 +1,5 @@
 ﻿using DataAccessWebAPI.DataAccessLayer;
 using DataAccessWebAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -76,6 +75,26 @@ namespace DataAccessWebAPI.Controllers
                 var portfolioAsset = _context.PortfolioAssets
                     .Include(pa => pa.PortfolioStocks)
                     .SingleOrDefault(pa => pa.Symbol.ToLower() == symbol.ToLower());
+
+                if (portfolioAsset == null)
+                    return NotFound($"Portfolio Assets not available for Portfolio with Symbol of '{symbol}'");
+
+                return Ok(portfolioAsset);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("{symbol},{portfolioId}")]
+        public IActionResult GetPortfolioAssetForStockSymbolFromPortfolio(string symbol, int portfolioId)
+        {
+            try
+            {
+                var portfolioAsset = _context.PortfolioAssets
+                    .Include(pa => pa.PortfolioStocks)
+                    .SingleOrDefault(pa => pa.Symbol.ToLower() == symbol.ToLower() && pa.PortfolioId == portfolioId);
 
                 if (portfolioAsset == null)
                     return NotFound($"Portfolio Assets not available for Portfolio with Symbol of '{symbol}'");

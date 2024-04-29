@@ -10,19 +10,9 @@ namespace IntegralInvesting.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<IntegralInvestingUser> _userManager;
-
-        public HomeController(ILogger<HomeController> logger, UserManager<IntegralInvestingUser> userManager)
-        {
-            _logger = logger;
-            _userManager = userManager;
-        }
-
         public IActionResult Index()
         {
-            // How to retrieve User Id
-            //ViewData["UserId"] =  _userManager.GetUserId(this.User);
+            HttpContext.Session.Clear();
             return View();
         }
 

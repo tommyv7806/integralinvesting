@@ -26,6 +26,8 @@ namespace IntegralInvesting.Controllers
         {
             ValidateUserIsLoggedIn();
 
+            HttpContext.Session.Clear();
+
             var currentUserId = _userManager.GetUserId(this.User);
             var currentUserBankAccounts = GetBankAccountsForCurrentUser(currentUserId);
             var currentUserFunds = GetFundsForCurrentUser(currentUserId);
@@ -34,13 +36,11 @@ namespace IntegralInvesting.Controllers
             return View(currentUserBankAccounts);
         }
 
-        // When the user wants to link a new account
-        [HttpGet]   
-        public IActionResult LinkNewAccount()
+        // Opens the modal where users can link new bank accounts to their app account
+        [HttpGet]
+        public IActionResult OpenLinkNewAccountModal()
         {
-            ValidateUserIsLoggedIn();
-
-            return View();
+            return PartialView("LinkNewAccountModalPartial");
         }
 
         // When the user saves the newly linked account
@@ -71,6 +71,19 @@ namespace IntegralInvesting.Controllers
             }
 
             return View();            
+        }
+
+        [HttpGet]
+        public IActionResult OpenWithdrawFundsModal()
+        {
+            ValidateUserIsLoggedIn();
+
+            var currentUserId = _userManager.GetUserId(this.User);
+            var accountNames = GetAccountNamesForCurrentUser(currentUserId);
+            var currentUserFund = GetUserFundForCurrentUser(currentUserId);
+
+            ViewData["BankAccountNames"] = accountNames;
+            return PartialView("WithdrawFundsModalPartial", currentUserFund);
         }
 
         // When the user wants to withdraw funds from their linked bank account
@@ -121,6 +134,20 @@ namespace IntegralInvesting.Controllers
         }
 
         [HttpGet]
+        public IActionResult OpenDepositFundsModal()
+        {
+            ValidateUserIsLoggedIn();
+
+            var currentUserId = _userManager.GetUserId(this.User);
+            var accountNames = GetAccountNamesForCurrentUser(currentUserId);
+            var currentUserFund = GetUserFundForCurrentUser(currentUserId);
+            
+            ViewData["BankAccountNames"] = accountNames;
+
+            return PartialView("DepositFundsModalPartial", currentUserFund);
+        }
+
+        [HttpGet]
         public IActionResult DepositFunds()
         {
             ValidateUserIsLoggedIn();
@@ -164,6 +191,15 @@ namespace IntegralInvesting.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult RemoveBankAccount(int id)
+        {
+            DeleteBankAccount(id);
+
+            TempData["SuccessMessage"] = $"Successfully removed bank account";
+            return RedirectToAction("Index");
         }
 
         private void ValidateUserIsLoggedIn()
@@ -226,6 +262,18 @@ namespace IntegralInvesting.Controllers
             }
 
             return accountNames;
+        }
+
+        private void DeleteBankAccount(int id)
+        {
+            try
+            {
+                var response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/BankAccount/Delete/" + id).Result;
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
         }
     }
 }

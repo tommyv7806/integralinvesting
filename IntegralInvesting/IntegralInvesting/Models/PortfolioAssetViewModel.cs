@@ -6,7 +6,11 @@ namespace IntegralInvesting.Models
 {
     public class PortfolioAssetViewModel
     {
-        public PortfolioAssetViewModel() => PortfolioStocks = new List<PortfolioStockViewModel>();
+        public PortfolioAssetViewModel()
+        {
+            PortfolioStocks = new List<PortfolioStockViewModel>();
+            LastSevenDaysData = new List<StockTimeDetails>();
+        }
 
         [Key]
         public int PortfolioAssetId { get; set; }
@@ -37,5 +41,9 @@ namespace IntegralInvesting.Models
 
         [NotMapped]
         public decimal SaleTotal { get; set; } = 0;
+
+        [ValidateNever]
+        [NotMapped]
+        public ICollection<StockTimeDetails> LastSevenDaysData { get; set; }
     }
 }

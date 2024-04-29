@@ -12,6 +12,7 @@ builder.Services.AddDbContext<IntegralInvestingDataContext>(options => options.U
 builder.Services.AddDefaultIdentity<IntegralInvestingUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<IntegralInvestingDataContext>();
 
 // Add services to the container.
+builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddControllers().AddJsonOptions(x =>
@@ -33,6 +34,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

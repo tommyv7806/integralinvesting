@@ -3,6 +3,7 @@ using IntegralInvesting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NuGet.ContentModel;
 using ServiceStack;
 using System.Text;
 
@@ -28,15 +29,23 @@ namespace IntegralInvesting.Controllers
 
         // Displays the Purchase page without any search results - Only displays the search bar
         [HttpGet]
-        public IActionResult Index(string searchString)
+        public IActionResult Index()
         {
+            var searchQuery = HttpContext.Session.GetString("SearchQuery");
+            var symbol = HttpContext.Session.GetString("Symbol");
+            var stockName = HttpContext.Session.GetString("StockName");
+
+            ViewData["SearchQuery"] = searchQuery;
+            ViewData["Symbol"] = symbol;
+            ViewData["StockName"] = stockName;
+
             return View();
         }
 
         // After the user clicks the search button, display the initial search results on left side of screen
         public IActionResult InitialSearch(string searchString)
         {
-            ViewData["SearchQuery"] = searchString;
+            HttpContext.Session.SetString("SearchQuery", searchString);
 
             if (searchString != null)
             {
@@ -61,6 +70,9 @@ namespace IntegralInvesting.Controllers
             if (symbol != null)
             {
                 var stockDetails = GetBasicStockDetails(symbol);
+
+                HttpContext.Session.SetString("Symbol", symbol);
+                HttpContext.Session.SetString("StockName", stockName);
 
                 ViewData["Symbol"] = symbol;
                 ViewData["StockName"] = stockName;
@@ -110,7 +122,7 @@ namespace IntegralInvesting.Controllers
 
         private void CreateOrUpdatePortfolioAsset(PortfolioStockViewModel portfolioStock, PortfolioViewModel portfolio)
         {
-            var portfolioAsset = GetPortfolioAssetForCurrentStock(portfolioStock.Symbol);
+            var portfolioAsset = portfolio.PortfolioAssets.FirstOrDefault(pa => pa.Symbol == portfolioStock.Symbol);
 
             if (portfolioAsset != null)
             {
@@ -127,12 +139,17 @@ namespace IntegralInvesting.Controllers
                 };
 
                 CreateNewPortfolioAsset(portfolioAsset);
+
+                portfolio.PortfolioAssets.Add(portfolioAsset);
             }
         }
 
         private IActionResult CreateNewPortfolioStock(PortfolioStockViewModel portfolioStock)
         {
-            var existingPortfolioAsset = GetPortfolioAssetForCurrentStock(portfolioStock.Symbol);
+            var currentUserId = _userManager.GetUserId(this.User);
+            var userPortfolio = GetPortfolioForCurrentUser(currentUserId);
+
+            var existingPortfolioAsset = userPortfolio.PortfolioAssets.First(pa => pa.Symbol == portfolioStock.Symbol);
 
             portfolioStock.PortfolioAssetId = existingPortfolioAsset.PortfolioAssetId;
 
@@ -145,7 +162,7 @@ namespace IntegralInvesting.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["SuccessMessage"] = $"{portfolioStock.PurchaseQuantity} shares successfully purchased for {portfolioStock.Name}";
-                    return RedirectToAction("Index", "Portfolio");
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception e)
@@ -164,11 +181,6 @@ namespace IntegralInvesting.Controllers
                 string data = JsonConvert.SerializeObject(portfolioAsset);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/PortfolioAsset/Post", content).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    TempData["SuccessMessage"] = $"Shares successfully purchased for {portfolioAsset.Name}";
-                }
             }
             catch (Exception e)
             {
@@ -191,10 +203,14 @@ namespace IntegralInvesting.Controllers
 
         private List<StockTimeDetails> GetStockTimeDetails(string symbol)
         {
-            var timeDetailsApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&apikey={_apiKey}&interval=60min&datatype=csv"
+            var stockApiResponse = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={_apiKey}&datatype=csv"
                     .GetStringFromUrl();
 
-            return timeDetailsApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
+            var results = stockApiResponse.FromCsv<List<StockTimeDetails>>().ToList();
+
+            var lastSevenDaysData = results.Take(7).Reverse().ToList();
+
+            return lastSevenDaysData;
         }
 
         private void UpdateUserCurrentFunds(UserFundViewModel userFunds)
@@ -224,24 +240,6 @@ namespace IntegralInvesting.Controllers
             }
 
             return portfolio;
-        }
-
-        private PortfolioAssetViewModel GetPortfolioAssetForCurrentStock(string symbol)
-        {
-            PortfolioAssetViewModel portfolioAsset = new PortfolioAssetViewModel();
-            var response = _httpClient.GetAsync(_httpClient.BaseAddress + "/PortfolioAsset/GetPortfolioAssetForStockSymbol/" + symbol).Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                string data = response.Content.ReadAsStringAsync().Result;
-                portfolioAsset = JsonConvert.DeserializeObject<PortfolioAssetViewModel>(data);
-            }
-            else
-            {
-                return null;
-            }
-
-            return portfolioAsset;
         }
 
         private UserFundViewModel GetFundsForCurrentUser(string currentUserId)

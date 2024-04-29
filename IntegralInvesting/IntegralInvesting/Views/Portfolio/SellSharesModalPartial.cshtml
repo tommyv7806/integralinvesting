@@ -8,6 +8,8 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         
         <input type="hidden" asp-for="PortfolioAssetId" />
+        <input type="hidden" asp-for="PortfolioId" />
+        <input type="hidden" asp-for="Name" />
 
         <div class="form-group">
             <label asp-for="CurrentPrice" class="control-label"></label>
@@ -25,8 +27,8 @@
             <span asp-validation-for="SaleTotal" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" id="btnModalSellSubmit" class="btn btn-primary" data-save="modal">Sell</button>
+            <button type="button" class="btn yellow-button" data-bs-dismiss="modal">Close</button>
+            <button type="submit" id="btnModalSellSubmit" class="btn green-button" data-save="modal">Sell</button>
         </div>
     </form>
 </div>
